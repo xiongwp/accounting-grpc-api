@@ -1,0 +1,299 @@
+syntax = "proto3";
+
+package accounting.v1;
+
+option go_package = "github.com/xiongwp/accounting-grpc-api/gen/accounting/v1;accountingv1";
+
+import "google/protobuf/timestamp.proto";
+
+// ==================== Enums ====================
+
+// AccountType 账户类型
+enum AccountType {
+  ACCOUNT_TYPE_UNSPECIFIED = 0;
+  ACCOUNT_TYPE_USER = 1;        // 用户账户
+  ACCOUNT_TYPE_MERCHANT = 2;    // 商户账户
+  ACCOUNT_TYPE_PLATFORM = 3;    // 平台损益账户
+  ACCOUNT_TYPE_TRANSIT = 4;     // 中间账户
+}
+
+// AccountCategory 账户分类
+enum AccountCategory {
+  ACCOUNT_CATEGORY_UNSPECIFIED = 0;
+  ACCOUNT_CATEGORY_ASSET = 1;       // 资产
+  ACCOUNT_CATEGORY_LIABILITY = 2;   // 负债
+  ACCOUNT_CATEGORY_EQUITY = 3;      // 所有者权益
+  ACCOUNT_CATEGORY_REVENUE = 4;     // 收入
+  ACCOUNT_CATEGORY_EXPENSE = 5;     // 费用
+}
+
+// AccountStatus 账户状态
+enum AccountStatus {
+  ACCOUNT_STATUS_UNSPECIFIED = 0;
+  ACCOUNT_STATUS_DISABLED = 1;  // 禁用
+  ACCOUNT_STATUS_ACTIVE = 2;    // 正常
+  ACCOUNT_STATUS_FROZEN = 3;    // 冻结
+}
+
+// BusinessType 业务类型
+enum BusinessType {
+  BUSINESS_TYPE_UNSPECIFIED = 0;
+  BUSINESS_TYPE_TRANSFER = 1;   // 转账
+  BUSINESS_TYPE_PAYMENT = 2;    // 支付
+  BUSINESS_TYPE_REFUND = 3;     // 退款
+  BUSINESS_TYPE_WITHDRAW = 4;   // 提现
+  BUSINESS_TYPE_DEPOSIT = 5;    // 充值
+  BUSINESS_TYPE_COMMISSION = 6; // 佣金
+}
+
+// ExecutionMode 执行模式
+enum ExecutionMode {
+  EXECUTION_MODE_UNSPECIFIED = 0;
+  EXECUTION_MODE_SYNC = 1;   // 同步
+  EXECUTION_MODE_ASYNC = 2;  // 异步
+  EXECUTION_MODE_BATCH = 3;  // 批量
+}
+
+// ==================== Messages ====================
+
+// Account 账户信息
+message Account {
+  string account_no = 1;              // 账户号
+  int64 user_id = 2;                  // 用户ID
+  AccountType account_type = 3;       // 账户类型
+  AccountCategory category = 4;       // 账户分类
+  string currency = 5;                // 币种
+  string balance = 6;                 // 余额（字符串避免精度问题）
+  string frozen_balance = 7;          // 冻结余额
+  string available_balance = 8;       // 可用余额
+  AccountStatus status = 9;           // 状态
+  int64 version = 10;                 // 版本号
+  google.protobuf.Timestamp created_at = 11;  // 创建时间
+  google.protobuf.Timestamp updated_at = 12;  // 更新时间
+}
+
+// AccountingEntry 记账分录
+message AccountingEntry {
+  string account_no = 1;      // 账户号
+  string debit_amount = 2;    // 借方金额
+  string credit_amount = 3;   // 贷方金额
+  string description = 4;     // 描述
+}
+
+// Transaction 交易流水
+message Transaction {
+  string transaction_id = 1;          // 交易ID
+  string parent_transaction_id = 2;   // 父交易ID
+  string account_no = 3;              // 账户号
+  string business_no = 4;             // 业务订单号
+  BusinessType business_type = 5;     // 业务类型
+  string debit_amount = 6;            // 借方金额
+  string credit_amount = 7;           // 贷方金额
+  string balance_before = 8;          // 交易前余额
+  string balance_after = 9;           // 交易后余额
+  string currency = 10;               // 币种
+  string transaction_date = 11;       // 交易日期
+  google.protobuf.Timestamp transaction_time = 12;  // 交易时间
+  string description = 13;            // 描述
+  int32 status = 14;                  // 状态
+}
+
+// BalanceSnapshot 余额快照
+message BalanceSnapshot {
+  string account_no = 1;          // 账户号
+  string snapshot_date = 2;       // 快照日期
+  string beginning_balance = 3;   // 期初余额
+  string ending_balance = 4;      // 期末余额
+  string total_debit = 5;         // 当日借方总额
+  string total_credit = 6;        // 当日贷方总额
+  int32 transaction_count = 7;    // 交易笔数
+}
+
+// ==================== Requests & Responses ====================
+
+// CreateAccountRequest 创建账户请求
+message CreateAccountRequest {
+  int64 user_id = 1;
+  AccountType account_type = 2;
+  AccountCategory category = 3;
+  string currency = 4;
+  string description = 5;
+}
+
+message CreateAccountResponse {
+  int32 code = 1;
+  string message = 2;
+  Account account = 3;
+}
+
+// GetAccountRequest 查询账户请求
+message GetAccountRequest {
+  oneof identifier {
+    string account_no = 1;
+    int64 user_id = 2;
+  }
+}
+
+message GetAccountResponse {
+  int32 code = 1;
+  string message = 2;
+  Account account = 3;
+}
+
+// FreezeAccountRequest 冻结账户请求
+message FreezeAccountRequest {
+  string account_no = 1;
+  string reason = 2;
+  string operator = 3;
+}
+
+message FreezeAccountResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+// UnfreezeAccountRequest 解冻账户请求
+message UnfreezeAccountRequest {
+  string account_no = 1;
+  string reason = 2;
+  string operator = 3;
+}
+
+message UnfreezeAccountResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+// DoubleEntryBookingRequest 复式记账请求
+message DoubleEntryBookingRequest {
+  string business_no = 1;
+  BusinessType business_type = 2;
+  repeated AccountingEntry entries = 3;
+  string currency = 4;
+  string description = 5;
+  ExecutionMode mode = 6;  // 执行模式
+}
+
+message DoubleEntryBookingResponse {
+  int32 code = 1;
+  string message = 2;
+  string voucher_no = 3;
+  repeated string transaction_ids = 4;
+  bool async = 5;  // 是否异步处理
+}
+
+// BatchBookingRequest 批量记账请求
+message BatchBookingRequest {
+  repeated DoubleEntryBookingRequest requests = 1;
+  bool parallel = 2;  // 是否并行处理
+}
+
+message BatchBookingResponse {
+  int32 code = 1;
+  string message = 2;
+  int32 success = 3;
+  int32 failed = 4;
+  int32 total = 5;
+  repeated DoubleEntryBookingResponse results = 6;
+}
+
+// MoneyFlowRequest 资金流执行请求
+message MoneyFlowRequest {
+  string product_code = 1;   // 产品编码
+  string scene_code = 2;     // 场景编码
+  string business_no = 3;    // 业务订单号
+  string amount = 4;         // 金额
+  string currency = 5;       // 币种
+  map<string, string> participants = 6;  // 参与方账户映射
+  map<string, string> ext_params = 7;    // 扩展参数
+}
+
+message MoneyFlowResponse {
+  int32 code = 1;
+  string message = 2;
+  string voucher_no = 3;
+  repeated string transaction_ids = 4;
+}
+
+// GetTransactionRequest 查询流水请求
+message GetTransactionRequest {
+  string transaction_id = 1;      // 交易ID（可选）
+  string business_no = 2;         // 业务订单号（可选）
+  string account_no = 3;          // 账户号（可选）
+  string start_date = 4;          // 开始日期
+  string end_date = 5;            // 结束日期
+  int32 page_num = 6;             // 页码
+  int32 page_size = 7;            // 每页数量
+}
+
+message GetTransactionResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated Transaction transactions = 3;
+  int32 total = 4;
+}
+
+// GetBalanceSnapshotRequest 查询余额快照请求
+message GetBalanceSnapshotRequest {
+  string account_no = 1;
+  string snapshot_date = 2;  // 不传则查最新
+}
+
+message GetBalanceSnapshotResponse {
+  int32 code = 1;
+  string message = 2;
+  BalanceSnapshot snapshot = 3;
+}
+
+// TriggerDayCutRequest 触发日切请求
+message TriggerDayCutRequest {
+  string cut_date = 1;
+}
+
+message TriggerDayCutResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+// AdjustBalanceRequest 调账请求
+message AdjustBalanceRequest {
+  string account_no = 1;
+  string adjustment_type = 2;  // 调账类型
+  string amount = 3;           // 调账金额
+  bool is_increase = 4;        // 是否增加余额
+  string reason = 5;           // 调账原因
+  string operator = 6;         // 操作员
+  string approval_no = 7;      // 审批单号
+}
+
+message AdjustBalanceResponse {
+  int32 code = 1;
+  string message = 2;
+  string transaction_id = 3;
+  string voucher_no = 4;
+  string balance_before = 5;
+  string balance_after = 6;
+}
+
+// ==================== Service Definition ====================
+
+service AccountingService {
+  // 账户管理
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+  rpc GetAccount(GetAccountRequest) returns (GetAccountResponse);
+  rpc FreezeAccount(FreezeAccountRequest) returns (FreezeAccountResponse);
+  rpc UnfreezeAccount(UnfreezeAccountRequest) returns (UnfreezeAccountResponse);
+
+  // 记账操作
+  rpc DoubleEntryBooking(DoubleEntryBookingRequest) returns (DoubleEntryBookingResponse);
+  rpc BatchBooking(BatchBookingRequest) returns (BatchBookingResponse);
+  rpc MoneyFlow(MoneyFlowRequest) returns (MoneyFlowResponse);
+
+  // 查询操作
+  rpc GetTransaction(GetTransactionRequest) returns (GetTransactionResponse);
+  rpc GetBalanceSnapshot(GetBalanceSnapshotRequest) returns (GetBalanceSnapshotResponse);
+
+  // 管理操作
+  rpc TriggerDayCut(TriggerDayCutRequest) returns (TriggerDayCutResponse);
+  rpc AdjustBalance(AdjustBalanceRequest) returns (AdjustBalanceResponse);
+}
