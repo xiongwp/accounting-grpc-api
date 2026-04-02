@@ -2,13 +2,18 @@ module github.com/xiongwp/accounting-grpc-api
 
 go 1.21
 
+// 本仓库只包含 proto 定义和生成的 gRPC stub 代码
+// 不依赖 accounting-system，供 server/client 各方引入
+
 require (
-	github.com/cloudwego/kitex v0.9.1
-	github.com/xiongwp/accounting-system v0.1.0
 	google.golang.org/grpc v1.60.1
 	google.golang.org/protobuf v1.32.0
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0
-	go.uber.org/zap v1.26.0
-	github.com/spf13/viper v1.18.2
-	go.uber.org/fx v1.20.1
+)
+
+require (
+	github.com/golang/protobuf v1.5.3 // indirect
+	golang.org/x/net v0.19.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231120223509-83a465c0220f // indirect
 )
