@@ -13,9 +13,9 @@ gen-go: ## 从 proto 生成 Go gRPC stubs
 	protoc \
 		-I proto \
 		-I /usr/include \
-		--go_out=gen \
+		--go_out=. \
 		--go_opt=module=$(MODULE) \
-		--go-grpc_out=gen \
+		--go-grpc_out=. \
 		--go-grpc_opt=module=$(MODULE) \
 		proto/accounting.proto
 	@echo "Generated: gen/accounting/v1/"

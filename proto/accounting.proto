@@ -35,6 +35,15 @@ enum AccountStatus {
   ACCOUNT_STATUS_FROZEN = 3;    // 冻结
 }
 
+// AccountBusinessType 账户业务类型
+// userId + AccountBusinessType 为唯一键，重复创建返回 code=409
+enum AccountBusinessType {
+  ACCOUNT_BUSINESS_TYPE_UNSPECIFIED = 0;
+  ACCOUNT_BUSINESS_TYPE_USER_BALANCE = 1;             // 用户余额账户
+  ACCOUNT_BUSINESS_TYPE_MERCHANT_BALANCE = 2;         // 商户结算账户
+  ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE = 3;  // 商户待结算余额账户
+}
+
 // BusinessType 业务类型
 enum BusinessType {
   BUSINESS_TYPE_UNSPECIFIED = 0;
@@ -58,18 +67,19 @@ enum ExecutionMode {
 
 // Account 账户信息
 message Account {
-  string account_no = 1;              // 账户号
-  int64 user_id = 2;                  // 用户ID
-  AccountType account_type = 3;       // 账户类型
-  AccountCategory category = 4;       // 账户分类
-  string currency = 5;                // 币种
-  string balance = 6;                 // 余额（字符串避免精度问题）
-  string frozen_balance = 7;          // 冻结余额
-  string available_balance = 8;       // 可用余额
-  AccountStatus status = 9;           // 状态
-  int64 version = 10;                 // 版本号
-  google.protobuf.Timestamp created_at = 11;  // 创建时间
-  google.protobuf.Timestamp updated_at = 12;  // 更新时间
+  string account_no = 1;                          // 账户号（格式：{dbIdx:02d}{tableIdx:02d}{userId}-{businessType}）
+  int64 user_id = 2;                              // 用户ID
+  AccountType account_type = 3;                   // 账户类型
+  AccountCategory category = 4;                   // 账户分类
+  string currency = 5;                            // 币种
+  string balance = 6;                             // 余额（字符串避免精度问题）
+  string frozen_balance = 7;                      // 冻结余额
+  string available_balance = 8;                   // 可用余额
+  AccountStatus status = 9;                       // 状态
+  int64 version = 10;                             // 版本号
+  google.protobuf.Timestamp created_at = 11;      // 创建时间
+  google.protobuf.Timestamp updated_at = 12;      // 更新时间
+  AccountBusinessType account_business_type = 13; // 账户业务类型
 }
 
 // AccountingEntry 记账分录
@@ -112,12 +122,14 @@ message BalanceSnapshot {
 // ==================== Requests & Responses ====================
 
 // CreateAccountRequest 创建账户请求
+// userId + account_business_type 唯一键，重复创建时幂等返回已有账户（code=0）
 message CreateAccountRequest {
   int64 user_id = 1;
   AccountType account_type = 2;
   AccountCategory category = 3;
   string currency = 4;
   string description = 5;
+  AccountBusinessType account_business_type = 6; // 账户业务类型（必填）
 }
 
 message CreateAccountResponse {
@@ -126,11 +138,20 @@ message CreateAccountResponse {
   Account account = 3;
 }
 
+// UserIdAndBusinessTypeQuery 通过 userId + businessType 查询账户
+message UserIdAndBusinessTypeQuery {
+  int64 user_id = 1;
+  AccountBusinessType account_business_type = 2;
+}
+
 // GetAccountRequest 查询账户请求
+// 支持两种查询方式：
+//   1. 通过 account_no 查询
+//   2. 通过 userId + businessType 查询
 message GetAccountRequest {
   oneof identifier {
     string account_no = 1;
-    int64 user_id = 2;
+    UserIdAndBusinessTypeQuery user_id_and_business_type = 2;
   }
 }
 
@@ -171,7 +192,10 @@ message DoubleEntryBookingRequest {
   repeated AccountingEntry entries = 3;
   string currency = 4;
   string description = 5;
-  ExecutionMode mode = 6;  // 执行模式
+  ExecutionMode mode = 6;       // 执行模式
+  string request_id = 7;        // 幂等键（必填）：调用方生成的唯一 ID，重试时保持不变
+                                 // 同一 request_id 重复提交时返回首次成功结果，不重复记账
+                                 // 同一 request_id 携带不同参数时，服务端写 Fatal 日志并终止
 }
 
 message DoubleEntryBookingResponse {
@@ -255,6 +279,74 @@ message TriggerDayCutResponse {
   string message = 2;
 }
 
+// ==================== TCC 维护接口 ====================
+
+// TccBranchInfo TCC 分支详情
+message TccBranchInfo {
+  string tcc_id        = 1;  // 全局 TCC ID（= voucherNo）
+  string branch_id     = 2;  // 分支 ID（= transactionID）
+  string account_no    = 3;  // 账户号
+  string balance_delta = 4;  // Confirm 时余额增量（负=减少）
+  string frozen_amount = 5;  // Try 时冻结金额
+  int32  status        = 6;  // 0=TRYING 1=CONFIRMED 2=CANCELLED
+  int32  db_index      = 7;  // 所在 DB 分片
+  int32  table_index   = 8;  // 所在表分片
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+// GetTccStatusRequest
+message GetTccStatusRequest {
+  string tcc_id = 1;
+}
+
+message GetTccStatusResponse {
+  int32  code           = 1;
+  string message        = 2;
+  string tcc_id         = 3;
+  string overall_status = 4;  // CONFIRMED / CANCELLED / TRYING / PARTIAL
+  int32  branch_count   = 5;
+  repeated TccBranchInfo branches = 6;
+}
+
+// ListStuckTccRequest 查询超时未完成的 TRYING 分支
+message ListStuckTccRequest {
+  int32 timeout_minutes = 1;  // 超时阈值（分钟），默认 5
+  int32 limit           = 2;  // 最多返回条数，默认 50
+}
+
+message ListStuckTccResponse {
+  int32  code    = 1;
+  string message = 2;
+  int32  count   = 3;
+  repeated TccBranchInfo branches = 4;
+}
+
+// CancelTccRequest 取消整笔 TCC 事务（所有 TRYING 分支）
+message CancelTccRequest {
+  string tcc_id = 1;
+}
+
+message CancelTccResponse {
+  int32  code    = 1;
+  string message = 2;
+  string tcc_id  = 3;
+  string result  = 4;
+}
+
+// CancelTccBranchRequest 取消单条 TCC 分支
+message CancelTccBranchRequest {
+  string branch_id  = 1;
+  string account_no = 2;
+}
+
+message CancelTccBranchResponse {
+  int32  code      = 1;
+  string message   = 2;
+  string branch_id = 3;
+  string result    = 4;
+}
+
 // AdjustBalanceRequest 调账请求
 message AdjustBalanceRequest {
   string account_no = 1;
@@ -296,4 +388,10 @@ service AccountingService {
   // 管理操作
   rpc TriggerDayCut(TriggerDayCutRequest) returns (TriggerDayCutResponse);
   rpc AdjustBalance(AdjustBalanceRequest) returns (AdjustBalanceResponse);
+
+  // TCC 维护（运维/监控使用）
+  rpc GetTccStatus(GetTccStatusRequest)         returns (GetTccStatusResponse);
+  rpc ListStuckTcc(ListStuckTccRequest)         returns (ListStuckTccResponse);
+  rpc CancelTcc(CancelTccRequest)               returns (CancelTccResponse);
+  rpc CancelTccBranch(CancelTccBranchRequest)   returns (CancelTccBranchResponse);
 }

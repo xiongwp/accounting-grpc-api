@@ -32,6 +32,11 @@ type AccountingServiceClient interface {
 	// 管理操作
 	TriggerDayCut(ctx context.Context, in *TriggerDayCutRequest, opts ...grpc.CallOption) (*TriggerDayCutResponse, error)
 	AdjustBalance(ctx context.Context, in *AdjustBalanceRequest, opts ...grpc.CallOption) (*AdjustBalanceResponse, error)
+	// TCC 维护（运维/监控使用）
+	GetTccStatus(ctx context.Context, in *GetTccStatusRequest, opts ...grpc.CallOption) (*GetTccStatusResponse, error)
+	ListStuckTcc(ctx context.Context, in *ListStuckTccRequest, opts ...grpc.CallOption) (*ListStuckTccResponse, error)
+	CancelTcc(ctx context.Context, in *CancelTccRequest, opts ...grpc.CallOption) (*CancelTccResponse, error)
+	CancelTccBranch(ctx context.Context, in *CancelTccBranchRequest, opts ...grpc.CallOption) (*CancelTccBranchResponse, error)
 }
 
 type accountingServiceClient struct {
@@ -141,6 +146,42 @@ func (c *accountingServiceClient) AdjustBalance(ctx context.Context, in *AdjustB
 	return out, nil
 }
 
+func (c *accountingServiceClient) GetTccStatus(ctx context.Context, in *GetTccStatusRequest, opts ...grpc.CallOption) (*GetTccStatusResponse, error) {
+	out := new(GetTccStatusResponse)
+	err := c.cc.Invoke(ctx, "/accounting.v1.AccountingService/GetTccStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountingServiceClient) ListStuckTcc(ctx context.Context, in *ListStuckTccRequest, opts ...grpc.CallOption) (*ListStuckTccResponse, error) {
+	out := new(ListStuckTccResponse)
+	err := c.cc.Invoke(ctx, "/accounting.v1.AccountingService/ListStuckTcc", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountingServiceClient) CancelTcc(ctx context.Context, in *CancelTccRequest, opts ...grpc.CallOption) (*CancelTccResponse, error) {
+	out := new(CancelTccResponse)
+	err := c.cc.Invoke(ctx, "/accounting.v1.AccountingService/CancelTcc", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountingServiceClient) CancelTccBranch(ctx context.Context, in *CancelTccBranchRequest, opts ...grpc.CallOption) (*CancelTccBranchResponse, error) {
+	out := new(CancelTccBranchResponse)
+	err := c.cc.Invoke(ctx, "/accounting.v1.AccountingService/CancelTccBranch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountingServiceServer is the server API for AccountingService service.
 // All implementations must embed UnimplementedAccountingServiceServer
 // for forward compatibility
@@ -160,6 +201,11 @@ type AccountingServiceServer interface {
 	// 管理操作
 	TriggerDayCut(context.Context, *TriggerDayCutRequest) (*TriggerDayCutResponse, error)
 	AdjustBalance(context.Context, *AdjustBalanceRequest) (*AdjustBalanceResponse, error)
+	// TCC 维护（运维/监控使用）
+	GetTccStatus(context.Context, *GetTccStatusRequest) (*GetTccStatusResponse, error)
+	ListStuckTcc(context.Context, *ListStuckTccRequest) (*ListStuckTccResponse, error)
+	CancelTcc(context.Context, *CancelTccRequest) (*CancelTccResponse, error)
+	CancelTccBranch(context.Context, *CancelTccBranchRequest) (*CancelTccBranchResponse, error)
 	mustEmbedUnimplementedAccountingServiceServer()
 }
 
@@ -199,6 +245,18 @@ func (UnimplementedAccountingServiceServer) TriggerDayCut(context.Context, *Trig
 }
 func (UnimplementedAccountingServiceServer) AdjustBalance(context.Context, *AdjustBalanceRequest) (*AdjustBalanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdjustBalance not implemented")
+}
+func (UnimplementedAccountingServiceServer) GetTccStatus(context.Context, *GetTccStatusRequest) (*GetTccStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTccStatus not implemented")
+}
+func (UnimplementedAccountingServiceServer) ListStuckTcc(context.Context, *ListStuckTccRequest) (*ListStuckTccResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListStuckTcc not implemented")
+}
+func (UnimplementedAccountingServiceServer) CancelTcc(context.Context, *CancelTccRequest) (*CancelTccResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelTcc not implemented")
+}
+func (UnimplementedAccountingServiceServer) CancelTccBranch(context.Context, *CancelTccBranchRequest) (*CancelTccBranchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelTccBranch not implemented")
 }
 func (UnimplementedAccountingServiceServer) mustEmbedUnimplementedAccountingServiceServer() {}
 
@@ -411,6 +469,78 @@ func _AccountingService_AdjustBalance_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountingService_GetTccStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTccStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).GetTccStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/accounting.v1.AccountingService/GetTccStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).GetTccStatus(ctx, req.(*GetTccStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountingService_ListStuckTcc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListStuckTccRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).ListStuckTcc(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/accounting.v1.AccountingService/ListStuckTcc",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).ListStuckTcc(ctx, req.(*ListStuckTccRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountingService_CancelTcc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelTccRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).CancelTcc(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/accounting.v1.AccountingService/CancelTcc",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).CancelTcc(ctx, req.(*CancelTccRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountingService_CancelTccBranch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelTccBranchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).CancelTccBranch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/accounting.v1.AccountingService/CancelTccBranch",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).CancelTccBranch(ctx, req.(*CancelTccBranchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _AccountingService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "accounting.v1.AccountingService",
 	HandlerType: (*AccountingServiceServer)(nil),
@@ -458,6 +588,22 @@ var _AccountingService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AdjustBalance",
 			Handler:    _AccountingService_AdjustBalance_Handler,
+		},
+		{
+			MethodName: "GetTccStatus",
+			Handler:    _AccountingService_GetTccStatus_Handler,
+		},
+		{
+			MethodName: "ListStuckTcc",
+			Handler:    _AccountingService_ListStuckTcc_Handler,
+		},
+		{
+			MethodName: "CancelTcc",
+			Handler:    _AccountingService_CancelTcc_Handler,
+		},
+		{
+			MethodName: "CancelTccBranch",
+			Handler:    _AccountingService_CancelTccBranch_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
