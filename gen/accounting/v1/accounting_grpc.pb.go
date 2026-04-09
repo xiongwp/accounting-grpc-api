@@ -26,6 +26,10 @@ type AccountingServiceClient interface {
 	DoubleEntryBooking(ctx context.Context, in *DoubleEntryBookingRequest, opts ...grpc.CallOption) (*DoubleEntryBookingResponse, error)
 	BatchBooking(ctx context.Context, in *BatchBookingRequest, opts ...grpc.CallOption) (*BatchBookingResponse, error)
 	MoneyFlow(ctx context.Context, in *MoneyFlowRequest, opts ...grpc.CallOption) (*MoneyFlowResponse, error)
+	// 混合记账（热路径/冷路径自动切换，预生成 ID 保证幂等）
+	HybridDoubleEntryBooking(ctx context.Context, in *HybridDoubleEntryBookingRequest, opts ...grpc.CallOption) (*HybridDoubleEntryBookingResponse, error)
+	// 原子批量记账（全部成功或全部回滚，先持久化再执行）
+	AtomicBatchBooking(ctx context.Context, in *AtomicBatchBookingRequest, opts ...grpc.CallOption) (*AtomicBatchBookingResponse, error)
 	// 查询操作
 	GetTransaction(ctx context.Context, in *GetTransactionRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error)
 	GetBalanceSnapshot(ctx context.Context, in *GetBalanceSnapshotRequest, opts ...grpc.CallOption) (*GetBalanceSnapshotResponse, error)
@@ -104,6 +108,24 @@ func (c *accountingServiceClient) BatchBooking(ctx context.Context, in *BatchBoo
 func (c *accountingServiceClient) MoneyFlow(ctx context.Context, in *MoneyFlowRequest, opts ...grpc.CallOption) (*MoneyFlowResponse, error) {
 	out := new(MoneyFlowResponse)
 	err := c.cc.Invoke(ctx, "/accounting.v1.AccountingService/MoneyFlow", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountingServiceClient) HybridDoubleEntryBooking(ctx context.Context, in *HybridDoubleEntryBookingRequest, opts ...grpc.CallOption) (*HybridDoubleEntryBookingResponse, error) {
+	out := new(HybridDoubleEntryBookingResponse)
+	err := c.cc.Invoke(ctx, "/accounting.v1.AccountingService/HybridDoubleEntryBooking", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountingServiceClient) AtomicBatchBooking(ctx context.Context, in *AtomicBatchBookingRequest, opts ...grpc.CallOption) (*AtomicBatchBookingResponse, error) {
+	out := new(AtomicBatchBookingResponse)
+	err := c.cc.Invoke(ctx, "/accounting.v1.AccountingService/AtomicBatchBooking", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -195,6 +217,10 @@ type AccountingServiceServer interface {
 	DoubleEntryBooking(context.Context, *DoubleEntryBookingRequest) (*DoubleEntryBookingResponse, error)
 	BatchBooking(context.Context, *BatchBookingRequest) (*BatchBookingResponse, error)
 	MoneyFlow(context.Context, *MoneyFlowRequest) (*MoneyFlowResponse, error)
+	// 混合记账（热路径/冷路径自动切换，预生成 ID 保证幂等）
+	HybridDoubleEntryBooking(context.Context, *HybridDoubleEntryBookingRequest) (*HybridDoubleEntryBookingResponse, error)
+	// 原子批量记账（全部成功或全部回滚，先持久化再执行）
+	AtomicBatchBooking(context.Context, *AtomicBatchBookingRequest) (*AtomicBatchBookingResponse, error)
 	// 查询操作
 	GetTransaction(context.Context, *GetTransactionRequest) (*GetTransactionResponse, error)
 	GetBalanceSnapshot(context.Context, *GetBalanceSnapshotRequest) (*GetBalanceSnapshotResponse, error)
@@ -233,6 +259,12 @@ func (UnimplementedAccountingServiceServer) BatchBooking(context.Context, *Batch
 }
 func (UnimplementedAccountingServiceServer) MoneyFlow(context.Context, *MoneyFlowRequest) (*MoneyFlowResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MoneyFlow not implemented")
+}
+func (UnimplementedAccountingServiceServer) HybridDoubleEntryBooking(context.Context, *HybridDoubleEntryBookingRequest) (*HybridDoubleEntryBookingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HybridDoubleEntryBooking not implemented")
+}
+func (UnimplementedAccountingServiceServer) AtomicBatchBooking(context.Context, *AtomicBatchBookingRequest) (*AtomicBatchBookingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AtomicBatchBooking not implemented")
 }
 func (UnimplementedAccountingServiceServer) GetTransaction(context.Context, *GetTransactionRequest) (*GetTransactionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTransaction not implemented")
@@ -393,6 +425,42 @@ func _AccountingService_MoneyFlow_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AccountingServiceServer).MoneyFlow(ctx, req.(*MoneyFlowRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountingService_HybridDoubleEntryBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HybridDoubleEntryBookingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).HybridDoubleEntryBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/accounting.v1.AccountingService/HybridDoubleEntryBooking",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).HybridDoubleEntryBooking(ctx, req.(*HybridDoubleEntryBookingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountingService_AtomicBatchBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AtomicBatchBookingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).AtomicBatchBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/accounting.v1.AccountingService/AtomicBatchBooking",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).AtomicBatchBooking(ctx, req.(*AtomicBatchBookingRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -572,6 +640,14 @@ var _AccountingService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MoneyFlow",
 			Handler:    _AccountingService_MoneyFlow_Handler,
+		},
+		{
+			MethodName: "HybridDoubleEntryBooking",
+			Handler:    _AccountingService_HybridDoubleEntryBooking_Handler,
+		},
+		{
+			MethodName: "AtomicBatchBooking",
+			Handler:    _AccountingService_AtomicBatchBooking_Handler,
 		},
 		{
 			MethodName: "GetTransaction",
