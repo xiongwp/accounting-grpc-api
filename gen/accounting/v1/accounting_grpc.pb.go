@@ -41,6 +41,8 @@ type AccountingServiceClient interface {
 	ListStuckTcc(ctx context.Context, in *ListStuckTccRequest, opts ...grpc.CallOption) (*ListStuckTccResponse, error)
 	CancelTcc(ctx context.Context, in *CancelTccRequest, opts ...grpc.CallOption) (*CancelTccResponse, error)
 	CancelTccBranch(ctx context.Context, in *CancelTccBranchRequest, opts ...grpc.CallOption) (*CancelTccBranchResponse, error)
+	// 试算平衡（日切后触发，验证借贷平衡与会计恒等式）
+	RunTrialBalance(ctx context.Context, in *RunTrialBalanceRequest, opts ...grpc.CallOption) (*RunTrialBalanceResponse, error)
 }
 
 type accountingServiceClient struct {
@@ -204,6 +206,15 @@ func (c *accountingServiceClient) CancelTccBranch(ctx context.Context, in *Cance
 	return out, nil
 }
 
+func (c *accountingServiceClient) RunTrialBalance(ctx context.Context, in *RunTrialBalanceRequest, opts ...grpc.CallOption) (*RunTrialBalanceResponse, error) {
+	out := new(RunTrialBalanceResponse)
+	err := c.cc.Invoke(ctx, "/accounting.v1.AccountingService/RunTrialBalance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountingServiceServer is the server API for AccountingService service.
 // All implementations must embed UnimplementedAccountingServiceServer
 // for forward compatibility
@@ -232,6 +243,8 @@ type AccountingServiceServer interface {
 	ListStuckTcc(context.Context, *ListStuckTccRequest) (*ListStuckTccResponse, error)
 	CancelTcc(context.Context, *CancelTccRequest) (*CancelTccResponse, error)
 	CancelTccBranch(context.Context, *CancelTccBranchRequest) (*CancelTccBranchResponse, error)
+	// 试算平衡（日切后触发，验证借贷平衡与会计恒等式）
+	RunTrialBalance(context.Context, *RunTrialBalanceRequest) (*RunTrialBalanceResponse, error)
 	mustEmbedUnimplementedAccountingServiceServer()
 }
 
@@ -289,6 +302,9 @@ func (UnimplementedAccountingServiceServer) CancelTcc(context.Context, *CancelTc
 }
 func (UnimplementedAccountingServiceServer) CancelTccBranch(context.Context, *CancelTccBranchRequest) (*CancelTccBranchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelTccBranch not implemented")
+}
+func (UnimplementedAccountingServiceServer) RunTrialBalance(context.Context, *RunTrialBalanceRequest) (*RunTrialBalanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RunTrialBalance not implemented")
 }
 func (UnimplementedAccountingServiceServer) mustEmbedUnimplementedAccountingServiceServer() {}
 
@@ -609,6 +625,24 @@ func _AccountingService_CancelTccBranch_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountingService_RunTrialBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RunTrialBalanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).RunTrialBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/accounting.v1.AccountingService/RunTrialBalance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).RunTrialBalance(ctx, req.(*RunTrialBalanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _AccountingService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "accounting.v1.AccountingService",
 	HandlerType: (*AccountingServiceServer)(nil),
@@ -680,6 +714,10 @@ var _AccountingService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CancelTccBranch",
 			Handler:    _AccountingService_CancelTccBranch_Handler,
+		},
+		{
+			MethodName: "RunTrialBalance",
+			Handler:    _AccountingService_RunTrialBalance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
