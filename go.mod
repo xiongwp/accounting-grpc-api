@@ -17,3 +17,5 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231120223509-83a465c0220f // indirect
 )
+
+replace github.com/xiongwp/accounting-system => ../accounting-system
