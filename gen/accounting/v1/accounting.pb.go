@@ -205,6 +205,9 @@ const (
 	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_USER_BALANCE            AccountBusinessType = 1 // 用户余额账户
 	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_MERCHANT_BALANCE        AccountBusinessType = 2 // 商户结算账户
 	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE AccountBusinessType = 3 // 商户待结算余额账户
+	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_PLATFORM_PNL            AccountBusinessType = 4 // 平台损益账户
+	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_TRANSACTION_FEE         AccountBusinessType = 5 // 平台手续费账户
+	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_CHARGE_FEE              AccountBusinessType = 6 // 平台服务费账户
 )
 
 // Enum value maps for AccountBusinessType.
@@ -214,12 +217,18 @@ var (
 		1: "ACCOUNT_BUSINESS_TYPE_USER_BALANCE",
 		2: "ACCOUNT_BUSINESS_TYPE_MERCHANT_BALANCE",
 		3: "ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE",
+		4: "ACCOUNT_BUSINESS_TYPE_PLATFORM_PNL",
+		5: "ACCOUNT_BUSINESS_TYPE_TRANSACTION_FEE",
+		6: "ACCOUNT_BUSINESS_TYPE_CHARGE_FEE",
 	}
 	AccountBusinessType_value = map[string]int32{
 		"ACCOUNT_BUSINESS_TYPE_UNSPECIFIED":             0,
 		"ACCOUNT_BUSINESS_TYPE_USER_BALANCE":            1,
 		"ACCOUNT_BUSINESS_TYPE_MERCHANT_BALANCE":        2,
 		"ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE": 3,
+		"ACCOUNT_BUSINESS_TYPE_PLATFORM_PNL":            4,
+		"ACCOUNT_BUSINESS_TYPE_TRANSACTION_FEE":         5,
+		"ACCOUNT_BUSINESS_TYPE_CHARGE_FEE":              6,
 	}
 )
 
@@ -939,7 +948,7 @@ func (x *TccBranchInfo) GetUpdatedAt() *timestamppb.Timestamp {
 type TrialBalanceCategorySummary struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Category      string                 `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"` // AccountCategory 字符串：ASSET / LIABILITY / EQUITY / REVENUE / EXPENSE
-	Type          int32                  `protobuf:"varint,2,opt,name=type,proto3" json:"type,omitempty"`        // AccountType 数字：1=USER 2=MERCHANT 3=PLATFORM 4=TRANSIT
+	Type          int32                  `protobuf:"varint,2,opt,name=type,proto3" json:"type,omitempty"`        // AccountType 数字：1=USER 2=MERCHANT 3=PLATFORM 4=TRANSIT 5= 6=
 	AccountCount  int64                  `protobuf:"varint,3,opt,name=account_count,json=accountCount,proto3" json:"account_count,omitempty"`
 	SumBeginning  string                 `protobuf:"bytes,4,opt,name=sum_beginning,json=sumBeginning,proto3" json:"sum_beginning,omitempty"` // 期初余额合计
 	SumEnding     string                 `protobuf:"bytes,5,opt,name=sum_ending,json=sumEnding,proto3" json:"sum_ending,omitempty"`          // 期末余额合计
@@ -4106,12 +4115,15 @@ const file_accounting_proto_rawDesc = "" +
 	"\x1aACCOUNT_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17ACCOUNT_STATUS_DISABLED\x10\x01\x12\x19\n" +
 	"\x15ACCOUNT_STATUS_ACTIVE\x10\x02\x12\x19\n" +
-	"\x15ACCOUNT_STATUS_FROZEN\x10\x03*\xc3\x01\n" +
+	"\x15ACCOUNT_STATUS_FROZEN\x10\x03*\xbc\x02\n" +
 	"\x13AccountBusinessType\x12%\n" +
 	"!ACCOUNT_BUSINESS_TYPE_UNSPECIFIED\x10\x00\x12&\n" +
 	"\"ACCOUNT_BUSINESS_TYPE_USER_BALANCE\x10\x01\x12*\n" +
 	"&ACCOUNT_BUSINESS_TYPE_MERCHANT_BALANCE\x10\x02\x121\n" +
-	"-ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE\x10\x03*\xd3\x01\n" +
+	"-ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE\x10\x03\x12&\n" +
+	"\"ACCOUNT_BUSINESS_TYPE_PLATFORM_PNL\x10\x04\x12)\n" +
+	"%ACCOUNT_BUSINESS_TYPE_TRANSACTION_FEE\x10\x05\x12$\n" +
+	" ACCOUNT_BUSINESS_TYPE_CHARGE_FEE\x10\x06*\xd3\x01\n" +
 	"\fBusinessType\x12\x1d\n" +
 	"\x19BUSINESS_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16BUSINESS_TYPE_TRANSFER\x10\x01\x12\x19\n" +

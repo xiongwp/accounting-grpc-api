@@ -44,6 +44,9 @@ enum AccountBusinessType {
   ACCOUNT_BUSINESS_TYPE_USER_BALANCE            = 1; // 用户余额账户
   ACCOUNT_BUSINESS_TYPE_MERCHANT_BALANCE        = 2; // 商户结算账户
   ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE = 3; // 商户待结算余额账户
+  ACCOUNT_BUSINESS_TYPE_PLATFORM_PNL            = 4; // 平台损益账户
+	ACCOUNT_BUSINESS_TYPE_TRANSACTION_FEE         = 5; // 平台手续费账户
+	ACCOUNT_BUSINESS_TYPE_CHARGE_FEE              = 6; // 平台服务费账户
 }
 
 // BusinessType 业务类型
@@ -139,7 +142,7 @@ message TccBranchInfo {
 // TrialBalanceCategorySummary 单个账户类别+账户类型的试算汇总
 message TrialBalanceCategorySummary {
   string category      = 1; // AccountCategory 字符串：ASSET / LIABILITY / EQUITY / REVENUE / EXPENSE
-  int32  type          = 2; // AccountType 数字：1=USER 2=MERCHANT 3=PLATFORM 4=TRANSIT
+  int32  type          = 2; // AccountType 数字：1=USER 2=MERCHANT 3=PLATFORM 4=TRANSIT 5= 6=
   int64  account_count = 3;
   string sum_beginning = 4; // 期初余额合计
   string sum_ending    = 5; // 期末余额合计
