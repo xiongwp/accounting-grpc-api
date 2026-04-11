@@ -15,6 +15,8 @@ enum AccountType {
   ACCOUNT_TYPE_MERCHANT    = 2; // 商户账户
   ACCOUNT_TYPE_PLATFORM    = 3; // 平台损益账户
   ACCOUNT_TYPE_TRANSIT     = 4; // 中间账户
+  ACCOUNT_TYPE_TRANSIT_CHANNEL_RECEIVABLE = 5; // 中间账户渠道应收款
+  ACCOUNT_TYPE_TRANSIT_CHANNEL_PAYABLE = 6; // 中间账户渠道应付款
 }
 
 // AccountCategory 账户分类（会计科目）
