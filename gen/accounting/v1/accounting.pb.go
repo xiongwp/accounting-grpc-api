@@ -7,11 +7,12 @@
 package accountingv1
 
 import (
+	reflect "reflect"
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -198,6 +199,7 @@ const (
 	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_USER_BALANCE            AccountBusinessType = 1 // 用户余额账户
 	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_MERCHANT_BALANCE        AccountBusinessType = 2 // 商户结算账户
 	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE AccountBusinessType = 3 // 商户待结算余额账户
+	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_PLATFORM_PNL            AccountBusinessType = 4 // 平台损益账户
 )
 
 // Enum value maps for AccountBusinessType.
@@ -207,12 +209,14 @@ var (
 		1: "ACCOUNT_BUSINESS_TYPE_USER_BALANCE",
 		2: "ACCOUNT_BUSINESS_TYPE_MERCHANT_BALANCE",
 		3: "ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE",
+		4: "ACCOUNT_BUSINESS_TYPE_PLATFORM_PNL",
 	}
 	AccountBusinessType_value = map[string]int32{
 		"ACCOUNT_BUSINESS_TYPE_UNSPECIFIED":             0,
 		"ACCOUNT_BUSINESS_TYPE_USER_BALANCE":            1,
 		"ACCOUNT_BUSINESS_TYPE_MERCHANT_BALANCE":        2,
 		"ACCOUNT_BUSINESS_TYPE_MERCHANT_PENDING_SETTLE": 3,
+		"ACCOUNT_BUSINESS_TYPE_PLATFORM_PNL":            4,
 	}
 )
 
