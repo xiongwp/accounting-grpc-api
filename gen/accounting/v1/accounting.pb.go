@@ -29,11 +29,13 @@ const (
 	AccountType_ACCOUNT_TYPE_UNSPECIFIED                AccountType = 0
 	AccountType_ACCOUNT_TYPE_USER                       AccountType = 1 // 用户账户
 	AccountType_ACCOUNT_TYPE_MERCHANT                   AccountType = 2 // 商户账户
-	AccountType_ACCOUNT_TYPE_PLATFORM                   AccountType = 3 // 平台损益账户
-	AccountType_ACCOUNT_TYPE_TRANSIT                    AccountType = 4 // 中间账户
+	AccountType_ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE    AccountType = 3 // 商户待结算账户
+	AccountType_ACCOUNT_TYPE_PLATFORM                   AccountType = 4 // 平台损益账户
 	AccountType_ACCOUNT_TYPE_TRANSIT_CHANNEL_RECEIVABLE AccountType = 5 // 中间账户渠道应收款
 	AccountType_ACCOUNT_TYPE_TRANSIT_CHANNEL_PAYABLE    AccountType = 6 // 中间账户渠道应付款
-	AccountType_ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE    AccountType = 7 // 商户待结算账户
+	AccountType_ACCOUNT_TYPE_TRANSACTION_FEE            AccountType = 7 // 平台手续费账户
+	AccountType_ACCOUNT_TYPE_CHARGE_FEE                 AccountType = 8 // 平台服务费账户
+	AccountType_ACCOUNT_TYPE_TRANSIT                    AccountType = 9 // 平台中间账户
 )
 
 // Enum value maps for AccountType.
@@ -42,21 +44,25 @@ var (
 		0: "ACCOUNT_TYPE_UNSPECIFIED",
 		1: "ACCOUNT_TYPE_USER",
 		2: "ACCOUNT_TYPE_MERCHANT",
-		3: "ACCOUNT_TYPE_PLATFORM",
-		4: "ACCOUNT_TYPE_TRANSIT",
+		3: "ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE",
+		4: "ACCOUNT_TYPE_PLATFORM",
 		5: "ACCOUNT_TYPE_TRANSIT_CHANNEL_RECEIVABLE",
 		6: "ACCOUNT_TYPE_TRANSIT_CHANNEL_PAYABLE",
-		7: "ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE",
+		7: "ACCOUNT_TYPE_TRANSACTION_FEE",
+		8: "ACCOUNT_TYPE_CHARGE_FEE",
+		9: "ACCOUNT_TYPE_TRANSIT",
 	}
 	AccountType_value = map[string]int32{
 		"ACCOUNT_TYPE_UNSPECIFIED":                0,
 		"ACCOUNT_TYPE_USER":                       1,
 		"ACCOUNT_TYPE_MERCHANT":                   2,
-		"ACCOUNT_TYPE_PLATFORM":                   3,
-		"ACCOUNT_TYPE_TRANSIT":                    4,
+		"ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE":    3,
+		"ACCOUNT_TYPE_PLATFORM":                   4,
 		"ACCOUNT_TYPE_TRANSIT_CHANNEL_RECEIVABLE": 5,
 		"ACCOUNT_TYPE_TRANSIT_CHANNEL_PAYABLE":    6,
-		"ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE":    7,
+		"ACCOUNT_TYPE_TRANSACTION_FEE":            7,
+		"ACCOUNT_TYPE_CHARGE_FEE":                 8,
+		"ACCOUNT_TYPE_TRANSIT":                    9,
 	}
 )
 
@@ -213,6 +219,7 @@ const (
 	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_TRANSIT_CHANNEL_PAYABLE    AccountBusinessType = 6 // 中间账户渠道应付款
 	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_TRANSACTION_FEE            AccountBusinessType = 7 // 平台手续费账户
 	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_CHARGE_FEE                 AccountBusinessType = 8 // 平台服务费账户
+	AccountBusinessType_ACCOUNT_BUSINESS_TYPE_TRANSIT                    AccountBusinessType = 9 // 平台中间账户
 )
 
 // Enum value maps for AccountBusinessType.
@@ -227,6 +234,7 @@ var (
 		6: "ACCOUNT_BUSINESS_TYPE_TRANSIT_CHANNEL_PAYABLE",
 		7: "ACCOUNT_BUSINESS_TYPE_TRANSACTION_FEE",
 		8: "ACCOUNT_BUSINESS_TYPE_CHARGE_FEE",
+		9: "ACCOUNT_BUSINESS_TYPE_TRANSIT",
 	}
 	AccountBusinessType_value = map[string]int32{
 		"ACCOUNT_BUSINESS_TYPE_UNSPECIFIED":                0,
@@ -238,6 +246,7 @@ var (
 		"ACCOUNT_BUSINESS_TYPE_TRANSIT_CHANNEL_PAYABLE":    6,
 		"ACCOUNT_BUSINESS_TYPE_TRANSACTION_FEE":            7,
 		"ACCOUNT_BUSINESS_TYPE_CHARGE_FEE":                 8,
+		"ACCOUNT_BUSINESS_TYPE_TRANSIT":                    9,
 	}
 )
 
@@ -4104,16 +4113,18 @@ const file_accounting_proto_rawDesc = "" +
 	"\x16revenue_ending_balance\x18\f \x01(\tR\x14revenueEndingBalance\x124\n" +
 	"\x16expense_ending_balance\x18\r \x01(\tR\x14expenseEndingBalance\x12*\n" +
 	"\x11is_equation_valid\x18\x0e \x01(\bR\x0fisEquationValid\x12#\n" +
-	"\requation_diff\x18\x0f \x01(\tR\fequationDiff*\x93\x02\n" +
+	"\requation_diff\x18\x0f \x01(\tR\fequationDiff*\xd2\x02\n" +
 	"\vAccountType\x12\x1c\n" +
 	"\x18ACCOUNT_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11ACCOUNT_TYPE_USER\x10\x01\x12\x19\n" +
-	"\x15ACCOUNT_TYPE_MERCHANT\x10\x02\x12\x19\n" +
-	"\x15ACCOUNT_TYPE_PLATFORM\x10\x03\x12\x18\n" +
-	"\x14ACCOUNT_TYPE_TRANSIT\x10\x04\x12+\n" +
+	"\x15ACCOUNT_TYPE_MERCHANT\x10\x02\x12(\n" +
+	"$ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE\x10\x03\x12\x19\n" +
+	"\x15ACCOUNT_TYPE_PLATFORM\x10\x04\x12+\n" +
 	"'ACCOUNT_TYPE_TRANSIT_CHANNEL_RECEIVABLE\x10\x05\x12(\n" +
-	"$ACCOUNT_TYPE_TRANSIT_CHANNEL_PAYABLE\x10\x06\x12(\n" +
-	"$ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE\x10\a*\xc8\x01\n" +
+	"$ACCOUNT_TYPE_TRANSIT_CHANNEL_PAYABLE\x10\x06\x12 \n" +
+	"\x1cACCOUNT_TYPE_TRANSACTION_FEE\x10\a\x12\x1b\n" +
+	"\x17ACCOUNT_TYPE_CHARGE_FEE\x10\b\x12\x18\n" +
+	"\x14ACCOUNT_TYPE_TRANSIT\x10\t*\xc8\x01\n" +
 	"\x0fAccountCategory\x12 \n" +
 	"\x1cACCOUNT_CATEGORY_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16ACCOUNT_CATEGORY_ASSET\x10\x01\x12\x1e\n" +
@@ -4125,7 +4136,7 @@ const file_accounting_proto_rawDesc = "" +
 	"\x1aACCOUNT_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17ACCOUNT_STATUS_DISABLED\x10\x01\x12\x19\n" +
 	"\x15ACCOUNT_STATUS_ACTIVE\x10\x02\x12\x19\n" +
-	"\x15ACCOUNT_STATUS_FROZEN\x10\x03*\xa5\x03\n" +
+	"\x15ACCOUNT_STATUS_FROZEN\x10\x03*\xc8\x03\n" +
 	"\x13AccountBusinessType\x12%\n" +
 	"!ACCOUNT_BUSINESS_TYPE_UNSPECIFIED\x10\x00\x12&\n" +
 	"\"ACCOUNT_BUSINESS_TYPE_USER_BALANCE\x10\x01\x12*\n" +
@@ -4135,7 +4146,8 @@ const file_accounting_proto_rawDesc = "" +
 	"0ACCOUNT_BUSINESS_TYPE_TRANSIT_CHANNEL_RECEIVABLE\x10\x05\x121\n" +
 	"-ACCOUNT_BUSINESS_TYPE_TRANSIT_CHANNEL_PAYABLE\x10\x06\x12)\n" +
 	"%ACCOUNT_BUSINESS_TYPE_TRANSACTION_FEE\x10\a\x12$\n" +
-	" ACCOUNT_BUSINESS_TYPE_CHARGE_FEE\x10\b*\xd3\x01\n" +
+	" ACCOUNT_BUSINESS_TYPE_CHARGE_FEE\x10\b\x12!\n" +
+	"\x1dACCOUNT_BUSINESS_TYPE_TRANSIT\x10\t*\xd3\x01\n" +
 	"\fBusinessType\x12\x1d\n" +
 	"\x19BUSINESS_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16BUSINESS_TYPE_TRANSFER\x10\x01\x12\x19\n" +
