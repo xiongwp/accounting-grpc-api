@@ -24,14 +24,14 @@ type DayCutHistoryEntry struct {
 	Failed      int32  `protobuf:"varint,7,opt,name=failed,proto3"                         json:"failed,omitempty"`
 }
 
-func (x *DayCutHistoryEntry) Reset()        { *x = DayCutHistoryEntry{} }
+func (x *DayCutHistoryEntry) Reset()         { *x = DayCutHistoryEntry{} }
 func (x *DayCutHistoryEntry) String() string { return fmt.Sprintf("%+v", *x) }
 func (*DayCutHistoryEntry) ProtoMessage()    {}
 
 // ListDayCutHistoryRequest is the request for the ListDayCutHistory RPC.
 type ListDayCutHistoryRequest struct{}
 
-func (x *ListDayCutHistoryRequest) Reset()        { *x = ListDayCutHistoryRequest{} }
+func (x *ListDayCutHistoryRequest) Reset()         { *x = ListDayCutHistoryRequest{} }
 func (x *ListDayCutHistoryRequest) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ListDayCutHistoryRequest) ProtoMessage()    {}
 
@@ -42,14 +42,14 @@ type ListDayCutHistoryResponse struct {
 	Entries []*DayCutHistoryEntry `protobuf:"bytes,3,rep,name=entries,proto3" json:"entries,omitempty"`
 }
 
-func (x *ListDayCutHistoryResponse) Reset()        { *x = ListDayCutHistoryResponse{} }
+func (x *ListDayCutHistoryResponse) Reset()         { *x = ListDayCutHistoryResponse{} }
 func (x *ListDayCutHistoryResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ListDayCutHistoryResponse) ProtoMessage()    {}
 
 // ListSnapshotDatesRequest is the request for the ListSnapshotDates RPC.
 type ListSnapshotDatesRequest struct{}
 
-func (x *ListSnapshotDatesRequest) Reset()        { *x = ListSnapshotDatesRequest{} }
+func (x *ListSnapshotDatesRequest) Reset()         { *x = ListSnapshotDatesRequest{} }
 func (x *ListSnapshotDatesRequest) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ListSnapshotDatesRequest) ProtoMessage()    {}
 
@@ -60,7 +60,7 @@ type ListSnapshotDatesResponse struct {
 	Dates   []string `protobuf:"bytes,3,rep,name=dates,proto3"   json:"dates,omitempty"`
 }
 
-func (x *ListSnapshotDatesResponse) Reset()        { *x = ListSnapshotDatesResponse{} }
+func (x *ListSnapshotDatesResponse) Reset()         { *x = ListSnapshotDatesResponse{} }
 func (x *ListSnapshotDatesResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ListSnapshotDatesResponse) ProtoMessage()    {}
 
@@ -72,7 +72,7 @@ type ProcessAsyncTasksRequest struct {
 	BatchSize int32 `protobuf:"varint,1,opt,name=batch_size,json=batchSize,proto3" json:"batch_size,omitempty"`
 }
 
-func (x *ProcessAsyncTasksRequest) Reset()        { *x = ProcessAsyncTasksRequest{} }
+func (x *ProcessAsyncTasksRequest) Reset()         { *x = ProcessAsyncTasksRequest{} }
 func (x *ProcessAsyncTasksRequest) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ProcessAsyncTasksRequest) ProtoMessage()    {}
 
@@ -83,7 +83,7 @@ type ProcessAsyncTasksResponse struct {
 	Processed int32  `protobuf:"varint,3,opt,name=processed,proto3" json:"processed,omitempty"`
 }
 
-func (x *ProcessAsyncTasksResponse) Reset()        { *x = ProcessAsyncTasksResponse{} }
+func (x *ProcessAsyncTasksResponse) Reset()         { *x = ProcessAsyncTasksResponse{} }
 func (x *ProcessAsyncTasksResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ProcessAsyncTasksResponse) ProtoMessage()    {}
 
@@ -93,7 +93,7 @@ type DayCutWatchdogRequest struct {
 	StuckThresholdSeconds int32 `protobuf:"varint,1,opt,name=stuck_threshold_seconds,json=stuckThresholdSeconds,proto3" json:"stuck_threshold_seconds,omitempty"`
 }
 
-func (x *DayCutWatchdogRequest) Reset()        { *x = DayCutWatchdogRequest{} }
+func (x *DayCutWatchdogRequest) Reset()         { *x = DayCutWatchdogRequest{} }
 func (x *DayCutWatchdogRequest) String() string { return fmt.Sprintf("%+v", *x) }
 func (*DayCutWatchdogRequest) ProtoMessage()    {}
 
@@ -103,7 +103,7 @@ type DayCutWatchdogResponse struct {
 	Message string `protobuf:"bytes,2,opt,name=message,proto3"  json:"message,omitempty"`
 }
 
-func (x *DayCutWatchdogResponse) Reset()        { *x = DayCutWatchdogResponse{} }
+func (x *DayCutWatchdogResponse) Reset()         { *x = DayCutWatchdogResponse{} }
 func (x *DayCutWatchdogResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*DayCutWatchdogResponse) ProtoMessage()    {}
 
@@ -116,7 +116,7 @@ type ManualTask struct {
 	RetryCount   int32  `protobuf:"varint,5,opt,name=retry_count,json=retryCount,proto3"    json:"retry_count,omitempty"`
 }
 
-func (x *ManualTask) Reset()        { *x = ManualTask{} }
+func (x *ManualTask) Reset()         { *x = ManualTask{} }
 func (x *ManualTask) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ManualTask) ProtoMessage()    {}
 
@@ -126,7 +126,7 @@ type ListManualTasksRequest struct {
 	Limit int32 `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
 }
 
-func (x *ListManualTasksRequest) Reset()        { *x = ListManualTasksRequest{} }
+func (x *ListManualTasksRequest) Reset()         { *x = ListManualTasksRequest{} }
 func (x *ListManualTasksRequest) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ListManualTasksRequest) ProtoMessage()    {}
 
@@ -137,7 +137,7 @@ type ListManualTasksResponse struct {
 	Tasks   []*ManualTask `protobuf:"bytes,3,rep,name=tasks,proto3"   json:"tasks,omitempty"`
 }
 
-func (x *ListManualTasksResponse) Reset()        { *x = ListManualTasksResponse{} }
+func (x *ListManualTasksResponse) Reset()         { *x = ListManualTasksResponse{} }
 func (x *ListManualTasksResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ListManualTasksResponse) ProtoMessage()    {}
 
@@ -162,26 +162,6 @@ func (x *RecoverStuckTasksResponse) Reset()         { *x = RecoverStuckTasksResp
 func (x *RecoverStuckTasksResponse) String() string  { return fmt.Sprintf("%+v", *x) }
 func (*RecoverStuckTasksResponse) ProtoMessage()     {}
 
-// ─── Hot account allowlist reload ───────────────────────────────────────────
-
-// ReloadHotAccountAllowlistRequest triggers a reload of the hot account allowlist from account_meta DB.
-type ReloadHotAccountAllowlistRequest struct{}
-
-func (x *ReloadHotAccountAllowlistRequest) Reset()         { *x = ReloadHotAccountAllowlistRequest{} }
-func (x *ReloadHotAccountAllowlistRequest) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*ReloadHotAccountAllowlistRequest) ProtoMessage()     {}
-
-// ReloadHotAccountAllowlistResponse reports the reload result.
-type ReloadHotAccountAllowlistResponse struct {
-	Code         int32  `protobuf:"varint,1,opt,name=code,proto3"          json:"code,omitempty"`
-	Message      string `protobuf:"bytes,2,opt,name=message,proto3"        json:"message,omitempty"`
-	AccountCount int32  `protobuf:"varint,3,opt,name=account_count,json=accountCount,proto3" json:"account_count,omitempty"`
-}
-
-func (x *ReloadHotAccountAllowlistResponse) Reset()         { *x = ReloadHotAccountAllowlistResponse{} }
-func (x *ReloadHotAccountAllowlistResponse) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*ReloadHotAccountAllowlistResponse) ProtoMessage()     {}
-
 // ─── Buffer account config reload ────────────────────────────────────────────
 
 // ReloadBufferAccountConfigRequest triggers a reload of the buffer account config from account_meta DB.
@@ -201,101 +181,6 @@ type ReloadBufferAccountConfigResponse struct {
 func (x *ReloadBufferAccountConfigResponse) Reset()         { *x = ReloadBufferAccountConfigResponse{} }
 func (x *ReloadBufferAccountConfigResponse) String() string  { return fmt.Sprintf("%+v", *x) }
 func (*ReloadBufferAccountConfigResponse) ProtoMessage()     {}
-
-// ─── Hot account CRUD ────────────────────────────────────────────────────────
-
-// HotAccountEntry represents a single hot account configuration record.
-type HotAccountEntry struct {
-	Id          int64  `protobuf:"varint,1,opt,name=id,proto3"                   json:"id,omitempty"`
-	AccountNo   string `protobuf:"bytes,2,opt,name=account_no,json=accountNo,proto3"   json:"account_no,omitempty"`
-	Enabled     bool   `protobuf:"varint,3,opt,name=enabled,proto3"              json:"enabled,omitempty"`
-	Description string `protobuf:"bytes,4,opt,name=description,proto3"          json:"description,omitempty"`
-	CreatedAt   string `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3"  json:"created_at,omitempty"`
-	UpdatedAt   string `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3"  json:"updated_at,omitempty"`
-}
-
-func (x *HotAccountEntry) Reset()         { *x = HotAccountEntry{} }
-func (x *HotAccountEntry) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*HotAccountEntry) ProtoMessage()    {}
-
-// ListHotAccountsRequest requests all hot account configuration records.
-type ListHotAccountsRequest struct{}
-
-func (x *ListHotAccountsRequest) Reset()         { *x = ListHotAccountsRequest{} }
-func (x *ListHotAccountsRequest) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*ListHotAccountsRequest) ProtoMessage()    {}
-
-// ListHotAccountsResponse returns the list of hot account configurations.
-type ListHotAccountsResponse struct {
-	Code    int32              `protobuf:"varint,1,opt,name=code,proto3"   json:"code,omitempty"`
-	Message string             `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	Items   []*HotAccountEntry `protobuf:"bytes,3,rep,name=items,proto3"   json:"items,omitempty"`
-}
-
-func (x *ListHotAccountsResponse) Reset()         { *x = ListHotAccountsResponse{} }
-func (x *ListHotAccountsResponse) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*ListHotAccountsResponse) ProtoMessage()    {}
-
-// CreateHotAccountRequest creates a new hot account configuration entry.
-type CreateHotAccountRequest struct {
-	AccountNo   string `protobuf:"bytes,1,opt,name=account_no,json=accountNo,proto3"   json:"account_no,omitempty"`
-	Description string `protobuf:"bytes,2,opt,name=description,proto3"               json:"description,omitempty"`
-}
-
-func (x *CreateHotAccountRequest) Reset()         { *x = CreateHotAccountRequest{} }
-func (x *CreateHotAccountRequest) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*CreateHotAccountRequest) ProtoMessage()    {}
-
-// CreateHotAccountResponse returns the created entry.
-type CreateHotAccountResponse struct {
-	Code    int32            `protobuf:"varint,1,opt,name=code,proto3"   json:"code,omitempty"`
-	Message string           `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	Item    *HotAccountEntry `protobuf:"bytes,3,opt,name=item,proto3"    json:"item,omitempty"`
-}
-
-func (x *CreateHotAccountResponse) Reset()         { *x = CreateHotAccountResponse{} }
-func (x *CreateHotAccountResponse) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*CreateHotAccountResponse) ProtoMessage()    {}
-
-// UpdateHotAccountRequest updates an existing hot account configuration entry.
-type UpdateHotAccountRequest struct {
-	Id          int64  `protobuf:"varint,1,opt,name=id,proto3"              json:"id,omitempty"`
-	Enabled     bool   `protobuf:"varint,2,opt,name=enabled,proto3"         json:"enabled,omitempty"`
-	Description string `protobuf:"bytes,3,opt,name=description,proto3"     json:"description,omitempty"`
-}
-
-func (x *UpdateHotAccountRequest) Reset()         { *x = UpdateHotAccountRequest{} }
-func (x *UpdateHotAccountRequest) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*UpdateHotAccountRequest) ProtoMessage()    {}
-
-// UpdateHotAccountResponse confirms the update.
-type UpdateHotAccountResponse struct {
-	Code    int32  `protobuf:"varint,1,opt,name=code,proto3"   json:"code,omitempty"`
-	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-}
-
-func (x *UpdateHotAccountResponse) Reset()         { *x = UpdateHotAccountResponse{} }
-func (x *UpdateHotAccountResponse) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*UpdateHotAccountResponse) ProtoMessage()    {}
-
-// DeleteHotAccountRequest deletes a hot account configuration entry.
-type DeleteHotAccountRequest struct {
-	Id int64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-}
-
-func (x *DeleteHotAccountRequest) Reset()         { *x = DeleteHotAccountRequest{} }
-func (x *DeleteHotAccountRequest) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*DeleteHotAccountRequest) ProtoMessage()    {}
-
-// DeleteHotAccountResponse confirms the deletion.
-type DeleteHotAccountResponse struct {
-	Code    int32  `protobuf:"varint,1,opt,name=code,proto3"   json:"code,omitempty"`
-	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-}
-
-func (x *DeleteHotAccountResponse) Reset()         { *x = DeleteHotAccountResponse{} }
-func (x *DeleteHotAccountResponse) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*DeleteHotAccountResponse) ProtoMessage()    {}
 
 // ─── Buffer account CRUD ─────────────────────────────────────────────────────
 
@@ -403,12 +288,7 @@ type AccountingAdminServiceClient interface {
 	DayCutWatchdog(ctx context.Context, in *DayCutWatchdogRequest, opts ...grpc.CallOption) (*DayCutWatchdogResponse, error)
 	ListManualTasks(ctx context.Context, in *ListManualTasksRequest, opts ...grpc.CallOption) (*ListManualTasksResponse, error)
 	RecoverStuckTasks(ctx context.Context, in *RecoverStuckTasksRequest, opts ...grpc.CallOption) (*RecoverStuckTasksResponse, error)
-	ReloadHotAccountAllowlist(ctx context.Context, in *ReloadHotAccountAllowlistRequest, opts ...grpc.CallOption) (*ReloadHotAccountAllowlistResponse, error)
 	ReloadBufferAccountConfig(ctx context.Context, in *ReloadBufferAccountConfigRequest, opts ...grpc.CallOption) (*ReloadBufferAccountConfigResponse, error)
-	ListHotAccounts(ctx context.Context, in *ListHotAccountsRequest, opts ...grpc.CallOption) (*ListHotAccountsResponse, error)
-	CreateHotAccount(ctx context.Context, in *CreateHotAccountRequest, opts ...grpc.CallOption) (*CreateHotAccountResponse, error)
-	UpdateHotAccount(ctx context.Context, in *UpdateHotAccountRequest, opts ...grpc.CallOption) (*UpdateHotAccountResponse, error)
-	DeleteHotAccount(ctx context.Context, in *DeleteHotAccountRequest, opts ...grpc.CallOption) (*DeleteHotAccountResponse, error)
 	ListBufferAccounts(ctx context.Context, in *ListBufferAccountsRequest, opts ...grpc.CallOption) (*ListBufferAccountsResponse, error)
 	CreateBufferAccount(ctx context.Context, in *CreateBufferAccountRequest, opts ...grpc.CallOption) (*CreateBufferAccountResponse, error)
 	UpdateBufferAccount(ctx context.Context, in *UpdateBufferAccountRequest, opts ...grpc.CallOption) (*UpdateBufferAccountResponse, error)
@@ -460,55 +340,10 @@ func (c *accountingAdminServiceClient) RecoverStuckTasks(ctx context.Context, in
 	return out, nil
 }
 
-func (c *accountingAdminServiceClient) ReloadHotAccountAllowlist(ctx context.Context, in *ReloadHotAccountAllowlistRequest, opts ...grpc.CallOption) (*ReloadHotAccountAllowlistResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ReloadHotAccountAllowlistResponse)
-	if err := c.cc.Invoke(ctx, "/accounting.v1.AccountingAdminService/ReloadHotAccountAllowlist", in, out, cOpts...); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *accountingAdminServiceClient) ReloadBufferAccountConfig(ctx context.Context, in *ReloadBufferAccountConfigRequest, opts ...grpc.CallOption) (*ReloadBufferAccountConfigResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ReloadBufferAccountConfigResponse)
 	if err := c.cc.Invoke(ctx, "/accounting.v1.AccountingAdminService/ReloadBufferAccountConfig", in, out, cOpts...); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *accountingAdminServiceClient) ListHotAccounts(ctx context.Context, in *ListHotAccountsRequest, opts ...grpc.CallOption) (*ListHotAccountsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListHotAccountsResponse)
-	if err := c.cc.Invoke(ctx, "/accounting.v1.AccountingAdminService/ListHotAccounts", in, out, cOpts...); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *accountingAdminServiceClient) CreateHotAccount(ctx context.Context, in *CreateHotAccountRequest, opts ...grpc.CallOption) (*CreateHotAccountResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateHotAccountResponse)
-	if err := c.cc.Invoke(ctx, "/accounting.v1.AccountingAdminService/CreateHotAccount", in, out, cOpts...); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *accountingAdminServiceClient) UpdateHotAccount(ctx context.Context, in *UpdateHotAccountRequest, opts ...grpc.CallOption) (*UpdateHotAccountResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateHotAccountResponse)
-	if err := c.cc.Invoke(ctx, "/accounting.v1.AccountingAdminService/UpdateHotAccount", in, out, cOpts...); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *accountingAdminServiceClient) DeleteHotAccount(ctx context.Context, in *DeleteHotAccountRequest, opts ...grpc.CallOption) (*DeleteHotAccountResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteHotAccountResponse)
-	if err := c.cc.Invoke(ctx, "/accounting.v1.AccountingAdminService/DeleteHotAccount", in, out, cOpts...); err != nil {
 		return nil, err
 	}
 	return out, nil
@@ -558,12 +393,7 @@ type AccountingAdminServiceServer interface {
 	DayCutWatchdog(context.Context, *DayCutWatchdogRequest) (*DayCutWatchdogResponse, error)
 	ListManualTasks(context.Context, *ListManualTasksRequest) (*ListManualTasksResponse, error)
 	RecoverStuckTasks(context.Context, *RecoverStuckTasksRequest) (*RecoverStuckTasksResponse, error)
-	ReloadHotAccountAllowlist(context.Context, *ReloadHotAccountAllowlistRequest) (*ReloadHotAccountAllowlistResponse, error)
 	ReloadBufferAccountConfig(context.Context, *ReloadBufferAccountConfigRequest) (*ReloadBufferAccountConfigResponse, error)
-	ListHotAccounts(context.Context, *ListHotAccountsRequest) (*ListHotAccountsResponse, error)
-	CreateHotAccount(context.Context, *CreateHotAccountRequest) (*CreateHotAccountResponse, error)
-	UpdateHotAccount(context.Context, *UpdateHotAccountRequest) (*UpdateHotAccountResponse, error)
-	DeleteHotAccount(context.Context, *DeleteHotAccountRequest) (*DeleteHotAccountResponse, error)
 	ListBufferAccounts(context.Context, *ListBufferAccountsRequest) (*ListBufferAccountsResponse, error)
 	CreateBufferAccount(context.Context, *CreateBufferAccountRequest) (*CreateBufferAccountResponse, error)
 	UpdateBufferAccount(context.Context, *UpdateBufferAccountRequest) (*UpdateBufferAccountResponse, error)
@@ -586,23 +416,8 @@ func (UnimplementedAccountingAdminServiceServer) ListManualTasks(context.Context
 func (UnimplementedAccountingAdminServiceServer) RecoverStuckTasks(context.Context, *RecoverStuckTasksRequest) (*RecoverStuckTasksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RecoverStuckTasks not implemented")
 }
-func (UnimplementedAccountingAdminServiceServer) ReloadHotAccountAllowlist(context.Context, *ReloadHotAccountAllowlistRequest) (*ReloadHotAccountAllowlistResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReloadHotAccountAllowlist not implemented")
-}
 func (UnimplementedAccountingAdminServiceServer) ReloadBufferAccountConfig(context.Context, *ReloadBufferAccountConfigRequest) (*ReloadBufferAccountConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReloadBufferAccountConfig not implemented")
-}
-func (UnimplementedAccountingAdminServiceServer) ListHotAccounts(context.Context, *ListHotAccountsRequest) (*ListHotAccountsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListHotAccounts not implemented")
-}
-func (UnimplementedAccountingAdminServiceServer) CreateHotAccount(context.Context, *CreateHotAccountRequest) (*CreateHotAccountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateHotAccount not implemented")
-}
-func (UnimplementedAccountingAdminServiceServer) UpdateHotAccount(context.Context, *UpdateHotAccountRequest) (*UpdateHotAccountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateHotAccount not implemented")
-}
-func (UnimplementedAccountingAdminServiceServer) DeleteHotAccount(context.Context, *DeleteHotAccountRequest) (*DeleteHotAccountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteHotAccount not implemented")
 }
 func (UnimplementedAccountingAdminServiceServer) ListBufferAccounts(context.Context, *ListBufferAccountsRequest) (*ListBufferAccountsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBufferAccounts not implemented")
@@ -698,21 +513,6 @@ func _AccountingAdminService_RecoverStuckTasks_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AccountingAdminService_ReloadHotAccountAllowlist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReloadHotAccountAllowlistRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AccountingAdminServiceServer).ReloadHotAccountAllowlist(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{Server: srv, FullMethod: "/accounting.v1.AccountingAdminService/ReloadHotAccountAllowlist"}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountingAdminServiceServer).ReloadHotAccountAllowlist(ctx, req.(*ReloadHotAccountAllowlistRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _AccountingAdminService_ReloadBufferAccountConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReloadBufferAccountConfigRequest)
 	if err := dec(in); err != nil {
@@ -724,66 +524,6 @@ func _AccountingAdminService_ReloadBufferAccountConfig_Handler(srv interface{}, 
 	info := &grpc.UnaryServerInfo{Server: srv, FullMethod: "/accounting.v1.AccountingAdminService/ReloadBufferAccountConfig"}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AccountingAdminServiceServer).ReloadBufferAccountConfig(ctx, req.(*ReloadBufferAccountConfigRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AccountingAdminService_ListHotAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListHotAccountsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AccountingAdminServiceServer).ListHotAccounts(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{Server: srv, FullMethod: "/accounting.v1.AccountingAdminService/ListHotAccounts"}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountingAdminServiceServer).ListHotAccounts(ctx, req.(*ListHotAccountsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AccountingAdminService_CreateHotAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateHotAccountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AccountingAdminServiceServer).CreateHotAccount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{Server: srv, FullMethod: "/accounting.v1.AccountingAdminService/CreateHotAccount"}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountingAdminServiceServer).CreateHotAccount(ctx, req.(*CreateHotAccountRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AccountingAdminService_UpdateHotAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateHotAccountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AccountingAdminServiceServer).UpdateHotAccount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{Server: srv, FullMethod: "/accounting.v1.AccountingAdminService/UpdateHotAccount"}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountingAdminServiceServer).UpdateHotAccount(ctx, req.(*UpdateHotAccountRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AccountingAdminService_DeleteHotAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteHotAccountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AccountingAdminServiceServer).DeleteHotAccount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{Server: srv, FullMethod: "/accounting.v1.AccountingAdminService/DeleteHotAccount"}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountingAdminServiceServer).DeleteHotAccount(ctx, req.(*DeleteHotAccountRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -857,12 +597,7 @@ var AccountingAdminService_ServiceDesc = grpc.ServiceDesc{
 		{MethodName: "DayCutWatchdog", Handler: _AccountingAdminService_DayCutWatchdog_Handler},
 		{MethodName: "ListManualTasks", Handler: _AccountingAdminService_ListManualTasks_Handler},
 		{MethodName: "RecoverStuckTasks", Handler: _AccountingAdminService_RecoverStuckTasks_Handler},
-		{MethodName: "ReloadHotAccountAllowlist", Handler: _AccountingAdminService_ReloadHotAccountAllowlist_Handler},
 		{MethodName: "ReloadBufferAccountConfig", Handler: _AccountingAdminService_ReloadBufferAccountConfig_Handler},
-		{MethodName: "ListHotAccounts", Handler: _AccountingAdminService_ListHotAccounts_Handler},
-		{MethodName: "CreateHotAccount", Handler: _AccountingAdminService_CreateHotAccount_Handler},
-		{MethodName: "UpdateHotAccount", Handler: _AccountingAdminService_UpdateHotAccount_Handler},
-		{MethodName: "DeleteHotAccount", Handler: _AccountingAdminService_DeleteHotAccount_Handler},
 		{MethodName: "ListBufferAccounts", Handler: _AccountingAdminService_ListBufferAccounts_Handler},
 		{MethodName: "CreateBufferAccount", Handler: _AccountingAdminService_CreateBufferAccount_Handler},
 		{MethodName: "UpdateBufferAccount", Handler: _AccountingAdminService_UpdateBufferAccount_Handler},
