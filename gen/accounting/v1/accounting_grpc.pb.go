@@ -37,6 +37,8 @@ const (
 	AccountingService_CancelTcc_FullMethodName                = "/accounting.v1.AccountingService/CancelTcc"
 	AccountingService_CancelTccBranch_FullMethodName          = "/accounting.v1.AccountingService/CancelTccBranch"
 	AccountingService_RunTrialBalance_FullMethodName          = "/accounting.v1.AccountingService/RunTrialBalance"
+	AccountingService_ListDayCutHistory_FullMethodName        = "/accounting.v1.AccountingService/ListDayCutHistory"
+	AccountingService_ListSnapshotDates_FullMethodName        = "/accounting.v1.AccountingService/ListSnapshotDates"
 )
 
 // AccountingServiceClient is the client API for AccountingService service.
@@ -69,6 +71,9 @@ type AccountingServiceClient interface {
 	CancelTccBranch(ctx context.Context, in *CancelTccBranchRequest, opts ...grpc.CallOption) (*CancelTccBranchResponse, error)
 	// ── 试算平衡（日切后触发，验证借贷平衡与会计恒等式） ──────────────────────────
 	RunTrialBalance(ctx context.Context, in *RunTrialBalanceRequest, opts ...grpc.CallOption) (*RunTrialBalanceResponse, error)
+	// ── 管理查询（日切历史、快照日期列表） ──────────────────────────────────────────
+	ListDayCutHistory(ctx context.Context, in *ListDayCutHistoryRequest, opts ...grpc.CallOption) (*ListDayCutHistoryResponse, error)
+	ListSnapshotDates(ctx context.Context, in *ListSnapshotDatesRequest, opts ...grpc.CallOption) (*ListSnapshotDatesResponse, error)
 }
 
 type accountingServiceClient struct {
@@ -259,6 +264,26 @@ func (c *accountingServiceClient) RunTrialBalance(ctx context.Context, in *RunTr
 	return out, nil
 }
 
+func (c *accountingServiceClient) ListDayCutHistory(ctx context.Context, in *ListDayCutHistoryRequest, opts ...grpc.CallOption) (*ListDayCutHistoryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListDayCutHistoryResponse)
+	err := c.cc.Invoke(ctx, AccountingService_ListDayCutHistory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountingServiceClient) ListSnapshotDates(ctx context.Context, in *ListSnapshotDatesRequest, opts ...grpc.CallOption) (*ListSnapshotDatesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListSnapshotDatesResponse)
+	err := c.cc.Invoke(ctx, AccountingService_ListSnapshotDates_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountingServiceServer is the server API for AccountingService service.
 // All implementations must embed UnimplementedAccountingServiceServer
 // for forward compatibility.
@@ -289,6 +314,9 @@ type AccountingServiceServer interface {
 	CancelTccBranch(context.Context, *CancelTccBranchRequest) (*CancelTccBranchResponse, error)
 	// ── 试算平衡（日切后触发，验证借贷平衡与会计恒等式） ──────────────────────────
 	RunTrialBalance(context.Context, *RunTrialBalanceRequest) (*RunTrialBalanceResponse, error)
+	// ── 管理查询（日切历史、快照日期列表） ──────────────────────────────────────────
+	ListDayCutHistory(context.Context, *ListDayCutHistoryRequest) (*ListDayCutHistoryResponse, error)
+	ListSnapshotDates(context.Context, *ListSnapshotDatesRequest) (*ListSnapshotDatesResponse, error)
 	mustEmbedUnimplementedAccountingServiceServer()
 }
 
@@ -352,6 +380,12 @@ func (UnimplementedAccountingServiceServer) CancelTccBranch(context.Context, *Ca
 }
 func (UnimplementedAccountingServiceServer) RunTrialBalance(context.Context, *RunTrialBalanceRequest) (*RunTrialBalanceResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RunTrialBalance not implemented")
+}
+func (UnimplementedAccountingServiceServer) ListDayCutHistory(context.Context, *ListDayCutHistoryRequest) (*ListDayCutHistoryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListDayCutHistory not implemented")
+}
+func (UnimplementedAccountingServiceServer) ListSnapshotDates(context.Context, *ListSnapshotDatesRequest) (*ListSnapshotDatesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListSnapshotDates not implemented")
 }
 func (UnimplementedAccountingServiceServer) mustEmbedUnimplementedAccountingServiceServer() {}
 func (UnimplementedAccountingServiceServer) testEmbeddedByValue()                           {}
@@ -698,6 +732,42 @@ func _AccountingService_RunTrialBalance_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountingService_ListDayCutHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListDayCutHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).ListDayCutHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountingService_ListDayCutHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).ListDayCutHistory(ctx, req.(*ListDayCutHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountingService_ListSnapshotDates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSnapshotDatesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).ListSnapshotDates(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountingService_ListSnapshotDates_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).ListSnapshotDates(ctx, req.(*ListSnapshotDatesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountingService_ServiceDesc is the grpc.ServiceDesc for AccountingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -776,6 +846,14 @@ var AccountingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RunTrialBalance",
 			Handler:    _AccountingService_RunTrialBalance_Handler,
+		},
+		{
+			MethodName: "ListDayCutHistory",
+			Handler:    _AccountingService_ListDayCutHistory_Handler,
+		},
+		{
+			MethodName: "ListSnapshotDates",
+			Handler:    _AccountingService_ListSnapshotDates_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
