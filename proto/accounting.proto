@@ -10,14 +10,16 @@ import "google/protobuf/timestamp.proto";
 
 // AccountType 账户类型
 enum AccountType {
-  ACCOUNT_TYPE_UNSPECIFIED = 0;
-  ACCOUNT_TYPE_USER        = 1; // 用户账户
-  ACCOUNT_TYPE_MERCHANT    = 2; // 商户账户
-  ACCOUNT_TYPE_PLATFORM    = 3; // 平台损益账户
-  ACCOUNT_TYPE_TRANSIT     = 4; // 中间账户
+  ACCOUNT_TYPE_UNSPECIFIED                = 0;
+  ACCOUNT_TYPE_USER                       = 1; // 用户账户
+  ACCOUNT_TYPE_MERCHANT                   = 2; // 商户账户
+  ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE    = 3; // 商户待结算账户
+  ACCOUNT_TYPE_PLATFORM                   = 4; // 平台损益账户
   ACCOUNT_TYPE_TRANSIT_CHANNEL_RECEIVABLE = 5; // 中间账户渠道应收款
-  ACCOUNT_TYPE_TRANSIT_CHANNEL_PAYABLE = 6; // 中间账户渠道应付款
-  ACCOUNT_TYPE_MERCHANT_PENDING_SETTLE  = 7; // 商户待结算账户
+  ACCOUNT_TYPE_TRANSIT_CHANNEL_PAYABLE    = 6; // 中间账户渠道应付款
+  ACCOUNT_TYPE_TRANSACTION_FEE            = 7; // 平台手续费账户
+  ACCOUNT_TYPE_CHARGE_FEE                 = 8; // 平台服务费账户
+  ACCOUNT_TYPE_TRANSIT                    = 9; // 平台中间账户
 }
 
 // AccountCategory 账户分类（会计科目）
@@ -115,6 +117,7 @@ message Transaction {
   google.protobuf.Timestamp transaction_time      = 12;
   string                    description           = 13;
   int32                     status                = 14;
+  int32                     booking_type          = 15; // 1=实时记账 2=缓冲记账
 }
 
 // BalanceSnapshot 账户余额快照
