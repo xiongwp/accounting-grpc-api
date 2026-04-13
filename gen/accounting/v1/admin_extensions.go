@@ -5,14 +5,15 @@ package accountingv1
 
 import "fmt"
 
-// DayCutHistoryEntry holds the aggregated day-cut status for a single cut_date across all shards.
+// DayCutHistoryEntry holds the aggregated day-cut status for a single (cut_date, run_id) across all shards.
 type DayCutHistoryEntry struct {
 	CutDate     string `protobuf:"bytes,1,opt,name=cut_date,json=cutDate,proto3"           json:"cut_date,omitempty"`
-	TotalShards int32  `protobuf:"varint,2,opt,name=total_shards,json=totalShards,proto3"  json:"total_shards,omitempty"`
-	Pending     int32  `protobuf:"varint,3,opt,name=pending,proto3"                         json:"pending,omitempty"`
-	Processing  int32  `protobuf:"varint,4,opt,name=processing,proto3"                      json:"processing,omitempty"`
-	Completed   int32  `protobuf:"varint,5,opt,name=completed,proto3"                       json:"completed,omitempty"`
-	Failed      int32  `protobuf:"varint,6,opt,name=failed,proto3"                          json:"failed,omitempty"`
+	RunId       int32  `protobuf:"varint,2,opt,name=run_id,json=runId,proto3"              json:"run_id,omitempty"`
+	TotalShards int32  `protobuf:"varint,3,opt,name=total_shards,json=totalShards,proto3"  json:"total_shards,omitempty"`
+	Pending     int32  `protobuf:"varint,4,opt,name=pending,proto3"                         json:"pending,omitempty"`
+	Processing  int32  `protobuf:"varint,5,opt,name=processing,proto3"                      json:"processing,omitempty"`
+	Completed   int32  `protobuf:"varint,6,opt,name=completed,proto3"                       json:"completed,omitempty"`
+	Failed      int32  `protobuf:"varint,7,opt,name=failed,proto3"                          json:"failed,omitempty"`
 }
 
 func (x *DayCutHistoryEntry) Reset()         { *x = DayCutHistoryEntry{} }
