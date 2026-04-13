@@ -22,14 +22,14 @@ import (
 // OrderNo is the caller-supplied idempotency key (globally unique per freeze).
 // BusinessNo / BusinessType are stored in the freeze order for audit purposes.
 type FreezeBalanceRequest struct {
-	OrderNo      string `protobuf:"bytes,1,opt,name=order_no,json=orderNo,proto3"           json:"order_no,omitempty"`
-	AccountNo    string `protobuf:"bytes,2,opt,name=account_no,json=accountNo,proto3"       json:"account_no,omitempty"`
-	BusinessNo   string `protobuf:"bytes,3,opt,name=business_no,json=businessNo,proto3"     json:"business_no,omitempty"`
-	BusinessType string `protobuf:"bytes,4,opt,name=business_type,json=businessType,proto3" json:"business_type,omitempty"`
+	OrderNo      string       `protobuf:"bytes,1,opt,name=order_no,json=orderNo,proto3"                            json:"order_no,omitempty"`
+	AccountNo    string       `protobuf:"bytes,2,opt,name=account_no,json=accountNo,proto3"                        json:"account_no,omitempty"`
+	BusinessNo   string       `protobuf:"bytes,3,opt,name=business_no,json=businessNo,proto3"                      json:"business_no,omitempty"`
+	BusinessType BusinessType `protobuf:"varint,4,opt,name=business_type,json=businessType,proto3,enum=accounting.v1.BusinessType" json:"business_type,omitempty"`
 	// Amount is in the smallest currency unit × 100 (same convention as the rest of the system).
-	Amount      int64  `protobuf:"varint,5,opt,name=amount,proto3"                          json:"amount,omitempty"`
-	Currency    string `protobuf:"bytes,6,opt,name=currency,proto3"                         json:"currency,omitempty"`
-	Description string `protobuf:"bytes,7,opt,name=description,proto3"                      json:"description,omitempty"`
+	Amount      int64  `protobuf:"varint,5,opt,name=amount,proto3"   json:"amount,omitempty"`
+	Currency    string `protobuf:"bytes,6,opt,name=currency,proto3"  json:"currency,omitempty"`
+	Description string `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
 }
 
 func (x *FreezeBalanceRequest) Reset()         { *x = FreezeBalanceRequest{} }
@@ -70,13 +70,13 @@ func (*UnfreezeEntry) ProtoMessage()    {}
 // FreezeAccountNo is required for shard routing; it must match the account_no
 // provided in the original FreezeBalance call.
 type UnfreezeAndDebitRequest struct {
-	FreezeOrderNo      string          `protobuf:"bytes,1,opt,name=freeze_order_no,json=freezeOrderNo,proto3"           json:"freeze_order_no,omitempty"`
-	FreezeAccountNo    string          `protobuf:"bytes,2,opt,name=freeze_account_no,json=freezeAccountNo,proto3"       json:"freeze_account_no,omitempty"`
-	FreezeBusinessNo   string          `protobuf:"bytes,3,opt,name=freeze_business_no,json=freezeBusinessNo,proto3"     json:"freeze_business_no,omitempty"`
-	FreezeBusinessType string          `protobuf:"bytes,4,opt,name=freeze_business_type,json=freezeBusinessType,proto3" json:"freeze_business_type,omitempty"`
-	Entries            []*UnfreezeEntry `protobuf:"bytes,5,rep,name=entries,proto3"                                       json:"entries,omitempty"`
-	Currency           string          `protobuf:"bytes,6,opt,name=currency,proto3"                                      json:"currency,omitempty"`
-	Description        string          `protobuf:"bytes,7,opt,name=description,proto3"                                   json:"description,omitempty"`
+	FreezeOrderNo      string           `protobuf:"bytes,1,opt,name=freeze_order_no,json=freezeOrderNo,proto3"                                         json:"freeze_order_no,omitempty"`
+	FreezeAccountNo    string           `protobuf:"bytes,2,opt,name=freeze_account_no,json=freezeAccountNo,proto3"                                     json:"freeze_account_no,omitempty"`
+	FreezeBusinessNo   string           `protobuf:"bytes,3,opt,name=freeze_business_no,json=freezeBusinessNo,proto3"                                   json:"freeze_business_no,omitempty"`
+	FreezeBusinessType BusinessType     `protobuf:"varint,4,opt,name=freeze_business_type,json=freezeBusinessType,proto3,enum=accounting.v1.BusinessType" json:"freeze_business_type,omitempty"`
+	Entries            []*UnfreezeEntry `protobuf:"bytes,5,rep,name=entries,proto3"                                                                    json:"entries,omitempty"`
+	Currency           string           `protobuf:"bytes,6,opt,name=currency,proto3"                                                                   json:"currency,omitempty"`
+	Description        string           `protobuf:"bytes,7,opt,name=description,proto3"                                                                json:"description,omitempty"`
 }
 
 func (x *UnfreezeAndDebitRequest) Reset()         { *x = UnfreezeAndDebitRequest{} }
@@ -98,10 +98,10 @@ func (*UnfreezeAndDebitResponse) ProtoMessage()    {}
 // UnfreezeAndReturnRequest releases frozen funds back to available_balance
 // when the payment attempt fails.  The freeze order transitions FROZEN → FAILED.
 type UnfreezeAndReturnRequest struct {
-	FreezeOrderNo      string `protobuf:"bytes,1,opt,name=freeze_order_no,json=freezeOrderNo,proto3"           json:"freeze_order_no,omitempty"`
-	FreezeAccountNo    string `protobuf:"bytes,2,opt,name=freeze_account_no,json=freezeAccountNo,proto3"       json:"freeze_account_no,omitempty"`
-	FreezeBusinessNo   string `protobuf:"bytes,3,opt,name=freeze_business_no,json=freezeBusinessNo,proto3"     json:"freeze_business_no,omitempty"`
-	FreezeBusinessType string `protobuf:"bytes,4,opt,name=freeze_business_type,json=freezeBusinessType,proto3" json:"freeze_business_type,omitempty"`
+	FreezeOrderNo      string       `protobuf:"bytes,1,opt,name=freeze_order_no,json=freezeOrderNo,proto3"                                         json:"freeze_order_no,omitempty"`
+	FreezeAccountNo    string       `protobuf:"bytes,2,opt,name=freeze_account_no,json=freezeAccountNo,proto3"                                     json:"freeze_account_no,omitempty"`
+	FreezeBusinessNo   string       `protobuf:"bytes,3,opt,name=freeze_business_no,json=freezeBusinessNo,proto3"                                   json:"freeze_business_no,omitempty"`
+	FreezeBusinessType BusinessType `protobuf:"varint,4,opt,name=freeze_business_type,json=freezeBusinessType,proto3,enum=accounting.v1.BusinessType" json:"freeze_business_type,omitempty"`
 }
 
 func (x *UnfreezeAndReturnRequest) Reset()         { *x = UnfreezeAndReturnRequest{} }
