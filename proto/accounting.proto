@@ -93,12 +93,26 @@ message Account {
   AccountBusinessType account_business_type = 13;
 }
 
+// Money 最小货币单位 + 币种码。规避"string decimal 精度问题 + 客户端/服务端
+// 单位不一致导致金额错位"的老坑。
+// 例：¥100.00 → minor_units=10000, currency="PHP"；
+//     USD $5.25 → minor_units=525, currency="USD"。
+// 最小单位的粒度由 ISO 4217 决定（多数 2 位小数 → cents；JPY 0 位 → units）。
+message Money {
+  int64  minor_units = 1;
+  string currency    = 2;
+}
+
 // AccountingEntry 记账分录
 message AccountingEntry {
   string account_no    = 1; // 账户号
-  string debit_amount  = 2; // 借方金额
-  string credit_amount = 3; // 贷方金额
+  // Deprecated: 改用 debit_money / credit_money。老客户端仍可用 string decimal，
+  // 但服务端优先读 Money 字段；两者同时非空时 Money 胜出。
+  string debit_amount  = 2 [deprecated = true];
+  string credit_amount = 3 [deprecated = true];
   string description   = 4; // 描述
+  Money  debit_money   = 5; // 借方金额（Money），与 debit_amount 二选一
+  Money  credit_money  = 6; // 贷方金额（Money），与 credit_amount 二选一
 }
 
 // Transaction 账户流水
