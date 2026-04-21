@@ -3667,6 +3667,290 @@ func (x *CancelTccBranchResponse) GetResult() string {
 	return ""
 }
 
+type ListDayCutHistoryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListDayCutHistoryRequest) Reset() {
+	*x = ListDayCutHistoryRequest{}
+	mi := &file_accounting_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListDayCutHistoryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListDayCutHistoryRequest) ProtoMessage() {}
+
+func (x *ListDayCutHistoryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListDayCutHistoryRequest.ProtoReflect.Descriptor instead.
+func (*ListDayCutHistoryRequest) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{44}
+}
+
+type ListDayCutHistoryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int32                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Entries       []*DayCutHistoryEntry  `protobuf:"bytes,3,rep,name=entries,proto3" json:"entries,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListDayCutHistoryResponse) Reset() {
+	*x = ListDayCutHistoryResponse{}
+	mi := &file_accounting_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListDayCutHistoryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListDayCutHistoryResponse) ProtoMessage() {}
+
+func (x *ListDayCutHistoryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListDayCutHistoryResponse.ProtoReflect.Descriptor instead.
+func (*ListDayCutHistoryResponse) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *ListDayCutHistoryResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *ListDayCutHistoryResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ListDayCutHistoryResponse) GetEntries() []*DayCutHistoryEntry {
+	if x != nil {
+		return x.Entries
+	}
+	return nil
+}
+
+type DayCutHistoryEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CutDate       string                 `protobuf:"bytes,1,opt,name=cut_date,json=cutDate,proto3" json:"cut_date,omitempty"`
+	RunId         int32                  `protobuf:"varint,2,opt,name=run_id,json=runId,proto3" json:"run_id,omitempty"`
+	TotalShards   int32                  `protobuf:"varint,3,opt,name=total_shards,json=totalShards,proto3" json:"total_shards,omitempty"`
+	Pending       int32                  `protobuf:"varint,4,opt,name=pending,proto3" json:"pending,omitempty"`
+	Processing    int32                  `protobuf:"varint,5,opt,name=processing,proto3" json:"processing,omitempty"`
+	Completed     int32                  `protobuf:"varint,6,opt,name=completed,proto3" json:"completed,omitempty"`
+	Failed        int32                  `protobuf:"varint,7,opt,name=failed,proto3" json:"failed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DayCutHistoryEntry) Reset() {
+	*x = DayCutHistoryEntry{}
+	mi := &file_accounting_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DayCutHistoryEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DayCutHistoryEntry) ProtoMessage() {}
+
+func (x *DayCutHistoryEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DayCutHistoryEntry.ProtoReflect.Descriptor instead.
+func (*DayCutHistoryEntry) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *DayCutHistoryEntry) GetCutDate() string {
+	if x != nil {
+		return x.CutDate
+	}
+	return ""
+}
+
+func (x *DayCutHistoryEntry) GetRunId() int32 {
+	if x != nil {
+		return x.RunId
+	}
+	return 0
+}
+
+func (x *DayCutHistoryEntry) GetTotalShards() int32 {
+	if x != nil {
+		return x.TotalShards
+	}
+	return 0
+}
+
+func (x *DayCutHistoryEntry) GetPending() int32 {
+	if x != nil {
+		return x.Pending
+	}
+	return 0
+}
+
+func (x *DayCutHistoryEntry) GetProcessing() int32 {
+	if x != nil {
+		return x.Processing
+	}
+	return 0
+}
+
+func (x *DayCutHistoryEntry) GetCompleted() int32 {
+	if x != nil {
+		return x.Completed
+	}
+	return 0
+}
+
+func (x *DayCutHistoryEntry) GetFailed() int32 {
+	if x != nil {
+		return x.Failed
+	}
+	return 0
+}
+
+type ListSnapshotDatesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSnapshotDatesRequest) Reset() {
+	*x = ListSnapshotDatesRequest{}
+	mi := &file_accounting_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSnapshotDatesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSnapshotDatesRequest) ProtoMessage() {}
+
+func (x *ListSnapshotDatesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSnapshotDatesRequest.ProtoReflect.Descriptor instead.
+func (*ListSnapshotDatesRequest) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{47}
+}
+
+type ListSnapshotDatesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int32                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Dates         []string               `protobuf:"bytes,3,rep,name=dates,proto3" json:"dates,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSnapshotDatesResponse) Reset() {
+	*x = ListSnapshotDatesResponse{}
+	mi := &file_accounting_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSnapshotDatesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSnapshotDatesResponse) ProtoMessage() {}
+
+func (x *ListSnapshotDatesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSnapshotDatesResponse.ProtoReflect.Descriptor instead.
+func (*ListSnapshotDatesResponse) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *ListSnapshotDatesResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *ListSnapshotDatesResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ListSnapshotDatesResponse) GetDates() []string {
+	if x != nil {
+		return x.Dates
+	}
+	return nil
+}
+
 // RunTrialBalanceRequest 试算平衡请求
 type RunTrialBalanceRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -3678,7 +3962,7 @@ type RunTrialBalanceRequest struct {
 
 func (x *RunTrialBalanceRequest) Reset() {
 	*x = RunTrialBalanceRequest{}
-	mi := &file_accounting_proto_msgTypes[44]
+	mi := &file_accounting_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3690,7 +3974,7 @@ func (x *RunTrialBalanceRequest) String() string {
 func (*RunTrialBalanceRequest) ProtoMessage() {}
 
 func (x *RunTrialBalanceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_accounting_proto_msgTypes[44]
+	mi := &file_accounting_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3703,7 +3987,7 @@ func (x *RunTrialBalanceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RunTrialBalanceRequest.ProtoReflect.Descriptor instead.
 func (*RunTrialBalanceRequest) Descriptor() ([]byte, []int) {
-	return file_accounting_proto_rawDescGZIP(), []int{44}
+	return file_accounting_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *RunTrialBalanceRequest) GetSnapshotDate() string {
@@ -3747,7 +4031,7 @@ type RunTrialBalanceResponse struct {
 
 func (x *RunTrialBalanceResponse) Reset() {
 	*x = RunTrialBalanceResponse{}
-	mi := &file_accounting_proto_msgTypes[45]
+	mi := &file_accounting_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3759,7 +4043,7 @@ func (x *RunTrialBalanceResponse) String() string {
 func (*RunTrialBalanceResponse) ProtoMessage() {}
 
 func (x *RunTrialBalanceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_accounting_proto_msgTypes[45]
+	mi := &file_accounting_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3772,7 +4056,7 @@ func (x *RunTrialBalanceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RunTrialBalanceResponse.ProtoReflect.Descriptor instead.
 func (*RunTrialBalanceResponse) Descriptor() ([]byte, []int) {
-	return file_accounting_proto_rawDescGZIP(), []int{45}
+	return file_accounting_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *RunTrialBalanceResponse) GetCode() int32 {
@@ -3878,290 +4162,6 @@ func (x *RunTrialBalanceResponse) GetEquationDiff() string {
 		return x.EquationDiff
 	}
 	return ""
-}
-
-type ListDayCutHistoryRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListDayCutHistoryRequest) Reset() {
-	*x = ListDayCutHistoryRequest{}
-	mi := &file_accounting_proto_msgTypes[46]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListDayCutHistoryRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListDayCutHistoryRequest) ProtoMessage() {}
-
-func (x *ListDayCutHistoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_accounting_proto_msgTypes[46]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListDayCutHistoryRequest.ProtoReflect.Descriptor instead.
-func (*ListDayCutHistoryRequest) Descriptor() ([]byte, []int) {
-	return file_accounting_proto_rawDescGZIP(), []int{46}
-}
-
-type ListDayCutHistoryResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          int32                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	Entries       []*DayCutHistoryEntry  `protobuf:"bytes,3,rep,name=entries,proto3" json:"entries,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListDayCutHistoryResponse) Reset() {
-	*x = ListDayCutHistoryResponse{}
-	mi := &file_accounting_proto_msgTypes[47]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListDayCutHistoryResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListDayCutHistoryResponse) ProtoMessage() {}
-
-func (x *ListDayCutHistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_accounting_proto_msgTypes[47]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListDayCutHistoryResponse.ProtoReflect.Descriptor instead.
-func (*ListDayCutHistoryResponse) Descriptor() ([]byte, []int) {
-	return file_accounting_proto_rawDescGZIP(), []int{47}
-}
-
-func (x *ListDayCutHistoryResponse) GetCode() int32 {
-	if x != nil {
-		return x.Code
-	}
-	return 0
-}
-
-func (x *ListDayCutHistoryResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *ListDayCutHistoryResponse) GetEntries() []*DayCutHistoryEntry {
-	if x != nil {
-		return x.Entries
-	}
-	return nil
-}
-
-type DayCutHistoryEntry struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CutDate       string                 `protobuf:"bytes,1,opt,name=cut_date,json=cutDate,proto3" json:"cut_date,omitempty"`
-	RunId         int32                  `protobuf:"varint,2,opt,name=run_id,json=runId,proto3" json:"run_id,omitempty"`
-	TotalShards   int32                  `protobuf:"varint,3,opt,name=total_shards,json=totalShards,proto3" json:"total_shards,omitempty"`
-	Pending       int32                  `protobuf:"varint,4,opt,name=pending,proto3" json:"pending,omitempty"`
-	Processing    int32                  `protobuf:"varint,5,opt,name=processing,proto3" json:"processing,omitempty"`
-	Completed     int32                  `protobuf:"varint,6,opt,name=completed,proto3" json:"completed,omitempty"`
-	Failed        int32                  `protobuf:"varint,7,opt,name=failed,proto3" json:"failed,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DayCutHistoryEntry) Reset() {
-	*x = DayCutHistoryEntry{}
-	mi := &file_accounting_proto_msgTypes[48]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DayCutHistoryEntry) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DayCutHistoryEntry) ProtoMessage() {}
-
-func (x *DayCutHistoryEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_accounting_proto_msgTypes[48]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DayCutHistoryEntry.ProtoReflect.Descriptor instead.
-func (*DayCutHistoryEntry) Descriptor() ([]byte, []int) {
-	return file_accounting_proto_rawDescGZIP(), []int{48}
-}
-
-func (x *DayCutHistoryEntry) GetCutDate() string {
-	if x != nil {
-		return x.CutDate
-	}
-	return ""
-}
-
-func (x *DayCutHistoryEntry) GetRunId() int32 {
-	if x != nil {
-		return x.RunId
-	}
-	return 0
-}
-
-func (x *DayCutHistoryEntry) GetTotalShards() int32 {
-	if x != nil {
-		return x.TotalShards
-	}
-	return 0
-}
-
-func (x *DayCutHistoryEntry) GetPending() int32 {
-	if x != nil {
-		return x.Pending
-	}
-	return 0
-}
-
-func (x *DayCutHistoryEntry) GetProcessing() int32 {
-	if x != nil {
-		return x.Processing
-	}
-	return 0
-}
-
-func (x *DayCutHistoryEntry) GetCompleted() int32 {
-	if x != nil {
-		return x.Completed
-	}
-	return 0
-}
-
-func (x *DayCutHistoryEntry) GetFailed() int32 {
-	if x != nil {
-		return x.Failed
-	}
-	return 0
-}
-
-type ListSnapshotDatesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListSnapshotDatesRequest) Reset() {
-	*x = ListSnapshotDatesRequest{}
-	mi := &file_accounting_proto_msgTypes[49]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListSnapshotDatesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListSnapshotDatesRequest) ProtoMessage() {}
-
-func (x *ListSnapshotDatesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_accounting_proto_msgTypes[49]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListSnapshotDatesRequest.ProtoReflect.Descriptor instead.
-func (*ListSnapshotDatesRequest) Descriptor() ([]byte, []int) {
-	return file_accounting_proto_rawDescGZIP(), []int{49}
-}
-
-type ListSnapshotDatesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          int32                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	Dates         []string               `protobuf:"bytes,3,rep,name=dates,proto3" json:"dates,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListSnapshotDatesResponse) Reset() {
-	*x = ListSnapshotDatesResponse{}
-	mi := &file_accounting_proto_msgTypes[50]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListSnapshotDatesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListSnapshotDatesResponse) ProtoMessage() {}
-
-func (x *ListSnapshotDatesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_accounting_proto_msgTypes[50]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListSnapshotDatesResponse.ProtoReflect.Descriptor instead.
-func (*ListSnapshotDatesResponse) Descriptor() ([]byte, []int) {
-	return file_accounting_proto_rawDescGZIP(), []int{50}
-}
-
-func (x *ListSnapshotDatesResponse) GetCode() int32 {
-	if x != nil {
-		return x.Code
-	}
-	return 0
-}
-
-func (x *ListSnapshotDatesResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *ListSnapshotDatesResponse) GetDates() []string {
-	if x != nil {
-		return x.Dates
-	}
-	return nil
 }
 
 var File_accounting_proto protoreflect.FileDescriptor
@@ -4471,7 +4471,27 @@ const file_accounting_proto_rawDesc = "" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12\x1b\n" +
 	"\tbranch_id\x18\x03 \x01(\tR\bbranchId\x12\x16\n" +
-	"\x06result\x18\x04 \x01(\tR\x06result\"=\n" +
+	"\x06result\x18\x04 \x01(\tR\x06result\"\x1a\n" +
+	"\x18ListDayCutHistoryRequest\"\x86\x01\n" +
+	"\x19ListDayCutHistoryResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12;\n" +
+	"\aentries\x18\x03 \x03(\v2!.accounting.v1.DayCutHistoryEntryR\aentries\"\xd9\x01\n" +
+	"\x12DayCutHistoryEntry\x12\x19\n" +
+	"\bcut_date\x18\x01 \x01(\tR\acutDate\x12\x15\n" +
+	"\x06run_id\x18\x02 \x01(\x05R\x05runId\x12!\n" +
+	"\ftotal_shards\x18\x03 \x01(\x05R\vtotalShards\x12\x18\n" +
+	"\apending\x18\x04 \x01(\x05R\apending\x12\x1e\n" +
+	"\n" +
+	"processing\x18\x05 \x01(\x05R\n" +
+	"processing\x12\x1c\n" +
+	"\tcompleted\x18\x06 \x01(\x05R\tcompleted\x12\x16\n" +
+	"\x06failed\x18\a \x01(\x05R\x06failed\"\x1a\n" +
+	"\x18ListSnapshotDatesRequest\"_\n" +
+	"\x19ListSnapshotDatesResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x14\n" +
+	"\x05dates\x18\x03 \x03(\tR\x05dates\"=\n" +
 	"\x16RunTrialBalanceRequest\x12#\n" +
 	"\rsnapshot_date\x18\x01 \x01(\tR\fsnapshotDate\"\x96\x05\n" +
 	"\x17RunTrialBalanceResponse\x12\x12\n" +
@@ -4492,27 +4512,7 @@ const file_accounting_proto_rawDesc = "" +
 	"\x16revenue_ending_balance\x18\f \x01(\tR\x14revenueEndingBalance\x124\n" +
 	"\x16expense_ending_balance\x18\r \x01(\tR\x14expenseEndingBalance\x12*\n" +
 	"\x11is_equation_valid\x18\x0e \x01(\bR\x0fisEquationValid\x12#\n" +
-	"\requation_diff\x18\x0f \x01(\tR\fequationDiff\"\x1a\n" +
-	"\x18ListDayCutHistoryRequest\"\x86\x01\n" +
-	"\x19ListDayCutHistoryResponse\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x12;\n" +
-	"\aentries\x18\x03 \x03(\v2!.accounting.v1.DayCutHistoryEntryR\aentries\"\xd9\x01\n" +
-	"\x12DayCutHistoryEntry\x12\x19\n" +
-	"\bcut_date\x18\x01 \x01(\tR\acutDate\x12\x15\n" +
-	"\x06run_id\x18\x02 \x01(\x05R\x05runId\x12!\n" +
-	"\ftotal_shards\x18\x03 \x01(\x05R\vtotalShards\x12\x18\n" +
-	"\apending\x18\x04 \x01(\x05R\apending\x12\x1e\n" +
-	"\n" +
-	"processing\x18\x05 \x01(\x05R\n" +
-	"processing\x12\x1c\n" +
-	"\tcompleted\x18\x06 \x01(\x05R\tcompleted\x12\x16\n" +
-	"\x06failed\x18\a \x01(\x05R\x06failed\"\x1a\n" +
-	"\x18ListSnapshotDatesRequest\"_\n" +
-	"\x19ListSnapshotDatesResponse\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x12\x14\n" +
-	"\x05dates\x18\x03 \x03(\tR\x05dates*\xd2\x02\n" +
+	"\requation_diff\x18\x0f \x01(\tR\fequationDiff*\xd2\x02\n" +
 	"\vAccountType\x12\x1c\n" +
 	"\x18ACCOUNT_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11ACCOUNT_TYPE_USER\x10\x01\x12\x19\n" +
@@ -4647,13 +4647,13 @@ var file_accounting_proto_goTypes = []any{
 	(*CancelTccResponse)(nil),                // 47: accounting.v1.CancelTccResponse
 	(*CancelTccBranchRequest)(nil),           // 48: accounting.v1.CancelTccBranchRequest
 	(*CancelTccBranchResponse)(nil),          // 49: accounting.v1.CancelTccBranchResponse
-	(*RunTrialBalanceRequest)(nil),           // 50: accounting.v1.RunTrialBalanceRequest
-	(*RunTrialBalanceResponse)(nil),          // 51: accounting.v1.RunTrialBalanceResponse
-	(*ListDayCutHistoryRequest)(nil),         // 52: accounting.v1.ListDayCutHistoryRequest
-	(*ListDayCutHistoryResponse)(nil),        // 53: accounting.v1.ListDayCutHistoryResponse
-	(*DayCutHistoryEntry)(nil),               // 54: accounting.v1.DayCutHistoryEntry
-	(*ListSnapshotDatesRequest)(nil),         // 55: accounting.v1.ListSnapshotDatesRequest
-	(*ListSnapshotDatesResponse)(nil),        // 56: accounting.v1.ListSnapshotDatesResponse
+	(*ListDayCutHistoryRequest)(nil),         // 50: accounting.v1.ListDayCutHistoryRequest
+	(*ListDayCutHistoryResponse)(nil),        // 51: accounting.v1.ListDayCutHistoryResponse
+	(*DayCutHistoryEntry)(nil),               // 52: accounting.v1.DayCutHistoryEntry
+	(*ListSnapshotDatesRequest)(nil),         // 53: accounting.v1.ListSnapshotDatesRequest
+	(*ListSnapshotDatesResponse)(nil),        // 54: accounting.v1.ListSnapshotDatesResponse
+	(*RunTrialBalanceRequest)(nil),           // 55: accounting.v1.RunTrialBalanceRequest
+	(*RunTrialBalanceResponse)(nil),          // 56: accounting.v1.RunTrialBalanceResponse
 	nil,                                      // 57: accounting.v1.MoneyFlowRequest.ParticipantsEntry
 	nil,                                      // 58: accounting.v1.MoneyFlowRequest.ExtParamsEntry
 	(*timestamppb.Timestamp)(nil),            // 59: google.protobuf.Timestamp
@@ -4695,8 +4695,8 @@ var file_accounting_proto_depIdxs = []int32{
 	10, // 33: accounting.v1.GetBalanceSnapshotResponse.snapshot:type_name -> accounting.v1.BalanceSnapshot
 	11, // 34: accounting.v1.GetTccStatusResponse.branches:type_name -> accounting.v1.TccBranchInfo
 	11, // 35: accounting.v1.ListStuckTccResponse.branches:type_name -> accounting.v1.TccBranchInfo
-	12, // 36: accounting.v1.RunTrialBalanceResponse.summaries:type_name -> accounting.v1.TrialBalanceCategorySummary
-	54, // 37: accounting.v1.ListDayCutHistoryResponse.entries:type_name -> accounting.v1.DayCutHistoryEntry
+	52, // 36: accounting.v1.ListDayCutHistoryResponse.entries:type_name -> accounting.v1.DayCutHistoryEntry
+	12, // 37: accounting.v1.RunTrialBalanceResponse.summaries:type_name -> accounting.v1.TrialBalanceCategorySummary
 	13, // 38: accounting.v1.AccountingService.CreateAccount:input_type -> accounting.v1.CreateAccountRequest
 	16, // 39: accounting.v1.AccountingService.GetAccount:input_type -> accounting.v1.GetAccountRequest
 	18, // 40: accounting.v1.AccountingService.FreezeAccount:input_type -> accounting.v1.FreezeAccountRequest
@@ -4714,9 +4714,9 @@ var file_accounting_proto_depIdxs = []int32{
 	44, // 52: accounting.v1.AccountingService.ListStuckTcc:input_type -> accounting.v1.ListStuckTccRequest
 	46, // 53: accounting.v1.AccountingService.CancelTcc:input_type -> accounting.v1.CancelTccRequest
 	48, // 54: accounting.v1.AccountingService.CancelTccBranch:input_type -> accounting.v1.CancelTccBranchRequest
-	50, // 55: accounting.v1.AccountingService.RunTrialBalance:input_type -> accounting.v1.RunTrialBalanceRequest
-	52, // 56: accounting.v1.AccountingService.ListDayCutHistory:input_type -> accounting.v1.ListDayCutHistoryRequest
-	55, // 57: accounting.v1.AccountingService.ListSnapshotDates:input_type -> accounting.v1.ListSnapshotDatesRequest
+	55, // 55: accounting.v1.AccountingService.RunTrialBalance:input_type -> accounting.v1.RunTrialBalanceRequest
+	50, // 56: accounting.v1.AccountingService.ListDayCutHistory:input_type -> accounting.v1.ListDayCutHistoryRequest
+	53, // 57: accounting.v1.AccountingService.ListSnapshotDates:input_type -> accounting.v1.ListSnapshotDatesRequest
 	14, // 58: accounting.v1.AccountingService.CreateAccount:output_type -> accounting.v1.CreateAccountResponse
 	17, // 59: accounting.v1.AccountingService.GetAccount:output_type -> accounting.v1.GetAccountResponse
 	19, // 60: accounting.v1.AccountingService.FreezeAccount:output_type -> accounting.v1.FreezeAccountResponse
@@ -4734,9 +4734,9 @@ var file_accounting_proto_depIdxs = []int32{
 	45, // 72: accounting.v1.AccountingService.ListStuckTcc:output_type -> accounting.v1.ListStuckTccResponse
 	47, // 73: accounting.v1.AccountingService.CancelTcc:output_type -> accounting.v1.CancelTccResponse
 	49, // 74: accounting.v1.AccountingService.CancelTccBranch:output_type -> accounting.v1.CancelTccBranchResponse
-	51, // 75: accounting.v1.AccountingService.RunTrialBalance:output_type -> accounting.v1.RunTrialBalanceResponse
-	53, // 76: accounting.v1.AccountingService.ListDayCutHistory:output_type -> accounting.v1.ListDayCutHistoryResponse
-	56, // 77: accounting.v1.AccountingService.ListSnapshotDates:output_type -> accounting.v1.ListSnapshotDatesResponse
+	56, // 75: accounting.v1.AccountingService.RunTrialBalance:output_type -> accounting.v1.RunTrialBalanceResponse
+	51, // 76: accounting.v1.AccountingService.ListDayCutHistory:output_type -> accounting.v1.ListDayCutHistoryResponse
+	54, // 77: accounting.v1.AccountingService.ListSnapshotDates:output_type -> accounting.v1.ListSnapshotDatesResponse
 	58, // [58:78] is the sub-list for method output_type
 	38, // [38:58] is the sub-list for method input_type
 	38, // [38:38] is the sub-list for extension type_name

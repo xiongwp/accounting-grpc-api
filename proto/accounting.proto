@@ -441,6 +441,28 @@ message CancelTccBranchResponse {
   string result    = 4;
 }
 
+message ListDayCutHistoryRequest {}
+message ListDayCutHistoryResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated DayCutHistoryEntry entries = 3;
+}
+message DayCutHistoryEntry {
+  string cut_date = 1;
+  int32 run_id = 2;
+  int32 total_shards = 3;
+  int32 pending = 4;
+  int32 processing = 5;
+  int32 completed = 6;
+  int32 failed = 7;
+}
+message ListSnapshotDatesRequest {}
+message ListSnapshotDatesResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated string dates = 3;
+}
+
 // ─── 试算平衡 Request / Response ─────────────────────────────────────────────
 
 // RunTrialBalanceRequest 试算平衡请求
@@ -480,28 +502,6 @@ message RunTrialBalanceResponse {
   // 会计恒等式：资产 = 负债 + 所有者权益 + 收入 - 费用
   bool   is_equation_valid = 14;
   string equation_diff     = 15; // 资产 - (负债+权益+收入-费用)；成立时为 "0"
-}
-
-message ListDayCutHistoryRequest {}
-message ListDayCutHistoryResponse {
-  int32 code = 1;
-  string message = 2;
-  repeated DayCutHistoryEntry entries = 3;
-}
-message DayCutHistoryEntry {
-  string cut_date = 1;
-  int32 run_id = 2;
-  int32 total_shards = 3;
-  int32 pending = 4;
-  int32 processing = 5;
-  int32 completed = 6;
-  int32 failed = 7;
-}
-message ListSnapshotDatesRequest {}
-message ListSnapshotDatesResponse {
-  int32 code = 1;
-  string message = 2;
-  repeated string dates = 3;
 }
 
 

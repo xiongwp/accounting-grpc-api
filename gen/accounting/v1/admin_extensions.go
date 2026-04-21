@@ -11,59 +11,6 @@ import (
 	status "google.golang.org/grpc/status"
 )
 
-// ─── AccountingService extension types ──────────────────────────────────────
-
-// DayCutHistoryEntry holds the aggregated day-cut status for a single (cut_date, run_id) across all shards.
-type DayCutHistoryEntry struct {
-	CutDate     string `protobuf:"bytes,1,opt,name=cut_date,json=cutDate,proto3"           json:"cut_date,omitempty"`
-	RunId       int32  `protobuf:"varint,2,opt,name=run_id,json=runId,proto3"              json:"run_id,omitempty"`
-	TotalShards int32  `protobuf:"varint,3,opt,name=total_shards,json=totalShards,proto3"  json:"total_shards,omitempty"`
-	Pending     int32  `protobuf:"varint,4,opt,name=pending,proto3"                        json:"pending,omitempty"`
-	Processing  int32  `protobuf:"varint,5,opt,name=processing,proto3"                     json:"processing,omitempty"`
-	Completed   int32  `protobuf:"varint,6,opt,name=completed,proto3"                      json:"completed,omitempty"`
-	Failed      int32  `protobuf:"varint,7,opt,name=failed,proto3"                         json:"failed,omitempty"`
-}
-
-func (x *DayCutHistoryEntry) Reset()         { *x = DayCutHistoryEntry{} }
-func (x *DayCutHistoryEntry) String() string { return fmt.Sprintf("%+v", *x) }
-func (*DayCutHistoryEntry) ProtoMessage()    {}
-
-// ListDayCutHistoryRequest is the request for the ListDayCutHistory RPC.
-type ListDayCutHistoryRequest struct{}
-
-func (x *ListDayCutHistoryRequest) Reset()         { *x = ListDayCutHistoryRequest{} }
-func (x *ListDayCutHistoryRequest) String() string { return fmt.Sprintf("%+v", *x) }
-func (*ListDayCutHistoryRequest) ProtoMessage()    {}
-
-// ListDayCutHistoryResponse is the response from the ListDayCutHistory RPC.
-type ListDayCutHistoryResponse struct {
-	Code    int32                `protobuf:"varint,1,opt,name=code,proto3"   json:"code,omitempty"`
-	Message string               `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	Entries []*DayCutHistoryEntry `protobuf:"bytes,3,rep,name=entries,proto3" json:"entries,omitempty"`
-}
-
-func (x *ListDayCutHistoryResponse) Reset()         { *x = ListDayCutHistoryResponse{} }
-func (x *ListDayCutHistoryResponse) String() string { return fmt.Sprintf("%+v", *x) }
-func (*ListDayCutHistoryResponse) ProtoMessage()    {}
-
-// ListSnapshotDatesRequest is the request for the ListSnapshotDates RPC.
-type ListSnapshotDatesRequest struct{}
-
-func (x *ListSnapshotDatesRequest) Reset()         { *x = ListSnapshotDatesRequest{} }
-func (x *ListSnapshotDatesRequest) String() string { return fmt.Sprintf("%+v", *x) }
-func (*ListSnapshotDatesRequest) ProtoMessage()    {}
-
-// ListSnapshotDatesResponse is the response from the ListSnapshotDates RPC.
-type ListSnapshotDatesResponse struct {
-	Code    int32    `protobuf:"varint,1,opt,name=code,proto3"   json:"code,omitempty"`
-	Message string   `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	Dates   []string `protobuf:"bytes,3,rep,name=dates,proto3"   json:"dates,omitempty"`
-}
-
-func (x *ListSnapshotDatesResponse) Reset()         { *x = ListSnapshotDatesResponse{} }
-func (x *ListSnapshotDatesResponse) String() string { return fmt.Sprintf("%+v", *x) }
-func (*ListSnapshotDatesResponse) ProtoMessage()    {}
-
 // ─── AccountingAdminService — maintenance / batch-task RPCs ─────────────────
 
 // ProcessAsyncTasksRequest triggers a batch run of pending async tasks.
@@ -148,8 +95,8 @@ type RecoverStuckTasksRequest struct {
 }
 
 func (x *RecoverStuckTasksRequest) Reset()         { *x = RecoverStuckTasksRequest{} }
-func (x *RecoverStuckTasksRequest) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*RecoverStuckTasksRequest) ProtoMessage()     {}
+func (x *RecoverStuckTasksRequest) String() string { return fmt.Sprintf("%+v", *x) }
+func (*RecoverStuckTasksRequest) ProtoMessage()    {}
 
 // RecoverStuckTasksResponse reports how many tasks were recovered.
 type RecoverStuckTasksResponse struct {
@@ -159,8 +106,8 @@ type RecoverStuckTasksResponse struct {
 }
 
 func (x *RecoverStuckTasksResponse) Reset()         { *x = RecoverStuckTasksResponse{} }
-func (x *RecoverStuckTasksResponse) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*RecoverStuckTasksResponse) ProtoMessage()     {}
+func (x *RecoverStuckTasksResponse) String() string { return fmt.Sprintf("%+v", *x) }
+func (*RecoverStuckTasksResponse) ProtoMessage()    {}
 
 // ─── Buffer account config reload ────────────────────────────────────────────
 
@@ -168,8 +115,8 @@ func (*RecoverStuckTasksResponse) ProtoMessage()     {}
 type ReloadBufferAccountConfigRequest struct{}
 
 func (x *ReloadBufferAccountConfigRequest) Reset()         { *x = ReloadBufferAccountConfigRequest{} }
-func (x *ReloadBufferAccountConfigRequest) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*ReloadBufferAccountConfigRequest) ProtoMessage()     {}
+func (x *ReloadBufferAccountConfigRequest) String() string { return fmt.Sprintf("%+v", *x) }
+func (*ReloadBufferAccountConfigRequest) ProtoMessage()    {}
 
 // ReloadBufferAccountConfigResponse reports the reload result.
 type ReloadBufferAccountConfigResponse struct {
@@ -179,8 +126,8 @@ type ReloadBufferAccountConfigResponse struct {
 }
 
 func (x *ReloadBufferAccountConfigResponse) Reset()         { *x = ReloadBufferAccountConfigResponse{} }
-func (x *ReloadBufferAccountConfigResponse) String() string  { return fmt.Sprintf("%+v", *x) }
-func (*ReloadBufferAccountConfigResponse) ProtoMessage()     {}
+func (x *ReloadBufferAccountConfigResponse) String() string { return fmt.Sprintf("%+v", *x) }
+func (*ReloadBufferAccountConfigResponse) ProtoMessage()    {}
 
 // ─── Buffer account CRUD ─────────────────────────────────────────────────────
 
@@ -196,14 +143,14 @@ type BufferAccountEntry struct {
 }
 
 func (x *BufferAccountEntry) Reset()         { *x = BufferAccountEntry{} }
-func (x *BufferAccountEntry) String() string  { return fmt.Sprintf("%+v", *x) }
+func (x *BufferAccountEntry) String() string { return fmt.Sprintf("%+v", *x) }
 func (*BufferAccountEntry) ProtoMessage()    {}
 
 // ListBufferAccountsRequest requests all buffer account configuration records.
 type ListBufferAccountsRequest struct{}
 
 func (x *ListBufferAccountsRequest) Reset()         { *x = ListBufferAccountsRequest{} }
-func (x *ListBufferAccountsRequest) String() string  { return fmt.Sprintf("%+v", *x) }
+func (x *ListBufferAccountsRequest) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ListBufferAccountsRequest) ProtoMessage()    {}
 
 // ListBufferAccountsResponse returns the list of buffer account configurations.
@@ -214,7 +161,7 @@ type ListBufferAccountsResponse struct {
 }
 
 func (x *ListBufferAccountsResponse) Reset()         { *x = ListBufferAccountsResponse{} }
-func (x *ListBufferAccountsResponse) String() string  { return fmt.Sprintf("%+v", *x) }
+func (x *ListBufferAccountsResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*ListBufferAccountsResponse) ProtoMessage()    {}
 
 // CreateBufferAccountRequest creates a new buffer account configuration entry.
@@ -225,7 +172,7 @@ type CreateBufferAccountRequest struct {
 }
 
 func (x *CreateBufferAccountRequest) Reset()         { *x = CreateBufferAccountRequest{} }
-func (x *CreateBufferAccountRequest) String() string  { return fmt.Sprintf("%+v", *x) }
+func (x *CreateBufferAccountRequest) String() string { return fmt.Sprintf("%+v", *x) }
 func (*CreateBufferAccountRequest) ProtoMessage()    {}
 
 // CreateBufferAccountResponse returns the created entry.
@@ -236,7 +183,7 @@ type CreateBufferAccountResponse struct {
 }
 
 func (x *CreateBufferAccountResponse) Reset()         { *x = CreateBufferAccountResponse{} }
-func (x *CreateBufferAccountResponse) String() string  { return fmt.Sprintf("%+v", *x) }
+func (x *CreateBufferAccountResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*CreateBufferAccountResponse) ProtoMessage()    {}
 
 // UpdateBufferAccountRequest updates an existing buffer account configuration entry.
@@ -248,7 +195,7 @@ type UpdateBufferAccountRequest struct {
 }
 
 func (x *UpdateBufferAccountRequest) Reset()         { *x = UpdateBufferAccountRequest{} }
-func (x *UpdateBufferAccountRequest) String() string  { return fmt.Sprintf("%+v", *x) }
+func (x *UpdateBufferAccountRequest) String() string { return fmt.Sprintf("%+v", *x) }
 func (*UpdateBufferAccountRequest) ProtoMessage()    {}
 
 // UpdateBufferAccountResponse confirms the update.
@@ -258,7 +205,7 @@ type UpdateBufferAccountResponse struct {
 }
 
 func (x *UpdateBufferAccountResponse) Reset()         { *x = UpdateBufferAccountResponse{} }
-func (x *UpdateBufferAccountResponse) String() string  { return fmt.Sprintf("%+v", *x) }
+func (x *UpdateBufferAccountResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*UpdateBufferAccountResponse) ProtoMessage()    {}
 
 // DeleteBufferAccountRequest deletes a buffer account configuration entry.
@@ -267,7 +214,7 @@ type DeleteBufferAccountRequest struct {
 }
 
 func (x *DeleteBufferAccountRequest) Reset()         { *x = DeleteBufferAccountRequest{} }
-func (x *DeleteBufferAccountRequest) String() string  { return fmt.Sprintf("%+v", *x) }
+func (x *DeleteBufferAccountRequest) String() string { return fmt.Sprintf("%+v", *x) }
 func (*DeleteBufferAccountRequest) ProtoMessage()    {}
 
 // DeleteBufferAccountResponse confirms the deletion.
@@ -277,7 +224,7 @@ type DeleteBufferAccountResponse struct {
 }
 
 func (x *DeleteBufferAccountResponse) Reset()         { *x = DeleteBufferAccountResponse{} }
-func (x *DeleteBufferAccountResponse) String() string  { return fmt.Sprintf("%+v", *x) }
+func (x *DeleteBufferAccountResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*DeleteBufferAccountResponse) ProtoMessage()    {}
 
 // ─── AccountingAdminServiceClient ───────────────────────────────────────────
