@@ -71,6 +71,7 @@ type AccountingServiceClient interface {
 	CancelTccBranch(ctx context.Context, in *CancelTccBranchRequest, opts ...grpc.CallOption) (*CancelTccBranchResponse, error)
 	// ── 试算平衡（日切后触发，验证借贷平衡与会计恒等式） ──────────────────────────
 	RunTrialBalance(ctx context.Context, in *RunTrialBalanceRequest, opts ...grpc.CallOption) (*RunTrialBalanceResponse, error)
+	// ── 日切历史 / 快照日期（admin 查询） ─────────────────────────────────────────
 	ListDayCutHistory(ctx context.Context, in *ListDayCutHistoryRequest, opts ...grpc.CallOption) (*ListDayCutHistoryResponse, error)
 	ListSnapshotDates(ctx context.Context, in *ListSnapshotDatesRequest, opts ...grpc.CallOption) (*ListSnapshotDatesResponse, error)
 }
@@ -313,6 +314,7 @@ type AccountingServiceServer interface {
 	CancelTccBranch(context.Context, *CancelTccBranchRequest) (*CancelTccBranchResponse, error)
 	// ── 试算平衡（日切后触发，验证借贷平衡与会计恒等式） ──────────────────────────
 	RunTrialBalance(context.Context, *RunTrialBalanceRequest) (*RunTrialBalanceResponse, error)
+	// ── 日切历史 / 快照日期（admin 查询） ─────────────────────────────────────────
 	ListDayCutHistory(context.Context, *ListDayCutHistoryRequest) (*ListDayCutHistoryResponse, error)
 	ListSnapshotDates(context.Context, *ListSnapshotDatesRequest) (*ListSnapshotDatesResponse, error)
 	mustEmbedUnimplementedAccountingServiceServer()
