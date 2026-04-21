@@ -518,4 +518,9 @@ service AccountingService {
 
   // ── 试算平衡（日切后触发，验证借贷平衡与会计恒等式） ──────────────────────────
   rpc RunTrialBalance (RunTrialBalanceRequest) returns (RunTrialBalanceResponse);
+
+  // ── 日切历史 / 快照日期（admin 查询） ─────────────────────────────────────────
+  // 消息定义见 gen/accounting/v1/admin_extensions.go（手写扩展，暂未迁入 proto）
+  rpc ListDayCutHistory (ListDayCutHistoryRequest) returns (ListDayCutHistoryResponse);
+  rpc ListSnapshotDates (ListSnapshotDatesRequest) returns (ListSnapshotDatesResponse);
 }
