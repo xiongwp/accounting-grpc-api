@@ -519,26 +519,3 @@ service AccountingService {
   // ── 试算平衡（日切后触发，验证借贷平衡与会计恒等式） ──────────────────────────
   rpc RunTrialBalance (RunTrialBalanceRequest) returns (RunTrialBalanceResponse);
 }
-
-
-message ListDayCutHistoryRequest {}
-message ListDayCutHistoryResponse {
-  int32 code = 1;
-  string message = 2;
-  repeated DayCutHistoryEntry entries = 3;
-}
-message DayCutHistoryEntry {
-  string cut_date = 1;
-  int32 run_id = 2;
-  int32 total_shards = 3;
-  int32 pending = 4;
-  int32 processing = 5;
-  int32 completed = 6;
-  int32 failed = 7;
-}
-message ListSnapshotDatesRequest {}
-message ListSnapshotDatesResponse {
-  int32 code = 1;
-  string message = 2;
-  repeated string dates = 3;
-}
