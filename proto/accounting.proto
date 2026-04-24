@@ -504,6 +504,52 @@ message RunTrialBalanceResponse {
   string equation_diff     = 15; // 资产 - (负债+权益+收入-费用)；成立时为 "0"
 }
 
+// ListAccountsByUserAndBusinessType 按 (user_id, business_type) 列出所有币种
+// 账户。currency 可选，非空时精确过滤单币种。
+message ListAccountsByUserAndBusinessTypeRequest {
+  int64               user_id               = 1;
+  AccountBusinessType account_business_type = 2;
+  string              currency              = 3;
+}
+message ListAccountsByUserAndBusinessTypeResponse {
+  int32             code     = 1;
+  string            message  = 2;
+  repeated Account  accounts = 3;
+}
+
+// RebuildHotAccounts 从 MySQL 重建 Redis 热账户余额（灾难恢复）。
+// 消息体见 proto；服务端逻辑见 accounting-system/internal/service/redis_rebuild.go。
+message RebuildHotAccountsRequest {
+  // as_of: ""         → 用 account 表当前余额（最常用）
+  //        "5m"/"2h"  → 相对时长，回放到 N 前的 transaction_journal 快照
+  //        RFC3339    → 回放到指定时刻
+  string          as_of       = 1;
+  // 空 → 全量启用的 hot_account_config；非空 → 仅指定账户（必须仍在白名单）
+  repeated string account_nos = 2;
+  bool            dry_run     = 3;
+}
+message RebuildHotAccountEntry {
+  string account_no     = 1;
+  string balance_before = 2; // "" 表示 cache miss
+  string balance_after  = 3;
+  string source         = 4; // "account" | "transaction_journal"
+  string journal_cutoff = 5;
+  bool   skipped        = 6;
+  string reason         = 7;
+}
+message RebuildHotAccountsResponse {
+  int32                            code     = 1;
+  string                           message  = 2;
+  string                           as_of    = 3;
+  bool                             dry_run  = 4;
+  int32                            total    = 5;
+  int32                            updated  = 6;
+  int32                            skipped  = 7;
+  int32                            failed   = 8;
+  string                           duration = 9;
+  repeated RebuildHotAccountEntry  entries  = 10;
+}
+
 
 // ─── Service ──────────────────────────────────────────────────────────────────
 
