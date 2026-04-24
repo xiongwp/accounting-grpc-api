@@ -227,94 +227,14 @@ func (x *DeleteBufferAccountResponse) Reset()         { *x = DeleteBufferAccount
 func (x *DeleteBufferAccountResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*DeleteBufferAccountResponse) ProtoMessage()    {}
 
-// ─── Multi-currency account lookup (on AccountingService) ────────────────────
-//
-// GetAccount(user_id, business_type) returns a single account, but the same
-// (user_id, business_type) pair can have several accounts if the user holds
-// balances in multiple currencies. ListAccountsByUserAndBusinessType returns
-// all of them so admin UIs don't have to guess which currency to show.
-
-// ListAccountsByUserAndBusinessTypeRequest 按 user_id + business_type 查询该
-// 用户在该业务类型下全部币种的账户。currency 留空则返回所有币种；指定则
-// 等价于精确匹配单账户。
-type ListAccountsByUserAndBusinessTypeRequest struct {
-	UserId              int64               `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	AccountBusinessType AccountBusinessType `protobuf:"varint,2,opt,name=account_business_type,json=accountBusinessType,proto3,enum=accounting.v1.AccountBusinessType" json:"account_business_type,omitempty"`
-	Currency            string              `protobuf:"bytes,3,opt,name=currency,proto3" json:"currency,omitempty"`
-}
-
-func (x *ListAccountsByUserAndBusinessTypeRequest) Reset() {
-	*x = ListAccountsByUserAndBusinessTypeRequest{}
-}
-func (x *ListAccountsByUserAndBusinessTypeRequest) String() string { return fmt.Sprintf("%+v", *x) }
-func (*ListAccountsByUserAndBusinessTypeRequest) ProtoMessage()    {}
-
-// ListAccountsByUserAndBusinessTypeResponse carries the account list; code/message
-// follow the same envelope as the rest of AccountingService.
-type ListAccountsByUserAndBusinessTypeResponse struct {
-	Code     int32      `protobuf:"varint,1,opt,name=code,proto3"        json:"code,omitempty"`
-	Message  string     `protobuf:"bytes,2,opt,name=message,proto3"      json:"message,omitempty"`
-	Accounts []*Account `protobuf:"bytes,3,rep,name=accounts,proto3"     json:"accounts,omitempty"`
-}
-
-func (x *ListAccountsByUserAndBusinessTypeResponse) Reset() {
-	*x = ListAccountsByUserAndBusinessTypeResponse{}
-}
-func (x *ListAccountsByUserAndBusinessTypeResponse) String() string { return fmt.Sprintf("%+v", *x) }
-func (*ListAccountsByUserAndBusinessTypeResponse) ProtoMessage()    {}
-
-// ─── Redis hot-account rebuild (disaster recovery) ──────────────────────────
-
-// RebuildHotAccountsRequest 触发从 MySQL 重建 Redis 热账户余额。
-//
-//	as_of:        ""           → 用 account 表当前余额（最常用）
-//	              "5m"/"2h"    → 相对时长，回放到 N 分钟前的快照
-//	              RFC3339 时间戳 → 回放到指定时刻
-//	account_nos:  空 → 全量启用的 hot_account_config
-//	              非空 → 只重建指定账户（前提：仍在白名单）
-//	dry_run:      true → 只算 diff 不写 Redis
-type RebuildHotAccountsRequest struct {
-	AsOf       string   `protobuf:"bytes,1,opt,name=as_of,json=asOf,proto3"             json:"as_of,omitempty"`
-	AccountNos []string `protobuf:"bytes,2,rep,name=account_nos,json=accountNos,proto3" json:"account_nos,omitempty"`
-	DryRun     bool     `protobuf:"varint,3,opt,name=dry_run,json=dryRun,proto3"        json:"dry_run,omitempty"`
-}
-
-func (x *RebuildHotAccountsRequest) Reset()         { *x = RebuildHotAccountsRequest{} }
-func (x *RebuildHotAccountsRequest) String() string { return fmt.Sprintf("%+v", *x) }
-func (*RebuildHotAccountsRequest) ProtoMessage()    {}
-
-// RebuildHotAccountEntry 单账户的重建结果。
-type RebuildHotAccountEntry struct {
-	AccountNo     string `protobuf:"bytes,1,opt,name=account_no,json=accountNo,proto3"          json:"account_no,omitempty"`
-	BalanceBefore string `protobuf:"bytes,2,opt,name=balance_before,json=balanceBefore,proto3"  json:"balance_before,omitempty"`
-	BalanceAfter  string `protobuf:"bytes,3,opt,name=balance_after,json=balanceAfter,proto3"    json:"balance_after,omitempty"`
-	Source        string `protobuf:"bytes,4,opt,name=source,proto3"                              json:"source,omitempty"`
-	JournalCutoff string `protobuf:"bytes,5,opt,name=journal_cutoff,json=journalCutoff,proto3"  json:"journal_cutoff,omitempty"`
-	Skipped       bool   `protobuf:"varint,6,opt,name=skipped,proto3"                            json:"skipped,omitempty"`
-	Reason        string `protobuf:"bytes,7,opt,name=reason,proto3"                              json:"reason,omitempty"`
-}
-
-func (x *RebuildHotAccountEntry) Reset()         { *x = RebuildHotAccountEntry{} }
-func (x *RebuildHotAccountEntry) String() string { return fmt.Sprintf("%+v", *x) }
-func (*RebuildHotAccountEntry) ProtoMessage()    {}
-
-// RebuildHotAccountsResponse 重建汇总报告。
-type RebuildHotAccountsResponse struct {
-	Code      int32                     `protobuf:"varint,1,opt,name=code,proto3"                      json:"code,omitempty"`
-	Message   string                    `protobuf:"bytes,2,opt,name=message,proto3"                    json:"message,omitempty"`
-	AsOf      string                    `protobuf:"bytes,3,opt,name=as_of,json=asOf,proto3"            json:"as_of,omitempty"`
-	DryRun    bool                      `protobuf:"varint,4,opt,name=dry_run,json=dryRun,proto3"       json:"dry_run,omitempty"`
-	Total     int32                     `protobuf:"varint,5,opt,name=total,proto3"                     json:"total,omitempty"`
-	Updated   int32                     `protobuf:"varint,6,opt,name=updated,proto3"                   json:"updated,omitempty"`
-	Skipped   int32                     `protobuf:"varint,7,opt,name=skipped,proto3"                   json:"skipped,omitempty"`
-	Failed    int32                     `protobuf:"varint,8,opt,name=failed,proto3"                    json:"failed,omitempty"`
-	Duration  string                    `protobuf:"bytes,9,opt,name=duration,proto3"                   json:"duration,omitempty"`
-	Entries   []*RebuildHotAccountEntry `protobuf:"bytes,10,rep,name=entries,proto3"                   json:"entries,omitempty"`
-}
-
-func (x *RebuildHotAccountsResponse) Reset()         { *x = RebuildHotAccountsResponse{} }
-func (x *RebuildHotAccountsResponse) String() string { return fmt.Sprintf("%+v", *x) }
-func (*RebuildHotAccountsResponse) ProtoMessage()    {}
+// NOTE: ListAccountsByUserAndBusinessTypeRequest / Response and
+// RebuildHotAccountsRequest / Response / RebuildHotAccountEntry used to live
+// here as hand-written types. They are now declared in proto/accounting.proto
+// and generated into accounting.pb.go by `make gen-go`, so the definitions
+// below were removed to avoid duplicate-symbol errors after regeneration.
+// If you need to re-introduce a hand-written type for a new RPC, mirror the
+// BufferAccount* pattern above and keep its proto declaration out of
+// accounting.proto.
 
 // ─── AccountingAdminServiceClient ───────────────────────────────────────────
 
