@@ -553,4 +553,9 @@ service AccountingService {
   // 消息定义见 gen/accounting/v1/admin_extensions.go。
   rpc ListAccountsByUserAndBusinessType (ListAccountsByUserAndBusinessTypeRequest)
       returns (ListAccountsByUserAndBusinessTypeResponse);
+
+  // RebuildHotAccounts 灾难恢复：从 MySQL 重建 Redis 上的热点账户余额。
+  // 触发场景：Redis 数据丢失 / 损坏，或怀疑最近一段时间的 Redis 写入被污染。
+  // 消息定义见 gen/accounting/v1/admin_extensions.go。
+  rpc RebuildHotAccounts (RebuildHotAccountsRequest) returns (RebuildHotAccountsResponse);
 }

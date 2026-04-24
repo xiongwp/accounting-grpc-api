@@ -40,6 +40,7 @@ const (
 	AccountingService_ListDayCutHistory_FullMethodName        = "/accounting.v1.AccountingService/ListDayCutHistory"
 	AccountingService_ListSnapshotDates_FullMethodName        = "/accounting.v1.AccountingService/ListSnapshotDates"
 	AccountingService_ListAccountsByUserAndBusinessType_FullMethodName = "/accounting.v1.AccountingService/ListAccountsByUserAndBusinessType"
+	AccountingService_RebuildHotAccounts_FullMethodName                = "/accounting.v1.AccountingService/RebuildHotAccounts"
 )
 
 // AccountingServiceClient is the client API for AccountingService service.
@@ -80,6 +81,10 @@ type AccountingServiceClient interface {
 	// GetAccount and got an ambiguous "first" match when multiple currencies
 	// existed.
 	ListAccountsByUserAndBusinessType(ctx context.Context, in *ListAccountsByUserAndBusinessTypeRequest, opts ...grpc.CallOption) (*ListAccountsByUserAndBusinessTypeResponse, error)
+	// RebuildHotAccounts (disaster recovery) — rebuild Redis hot-account
+	// balances from MySQL. Triggered by admin-web when Redis data is lost
+	// or suspected corrupted.
+	RebuildHotAccounts(ctx context.Context, in *RebuildHotAccountsRequest, opts ...grpc.CallOption) (*RebuildHotAccountsResponse, error)
 }
 
 type accountingServiceClient struct {
@@ -300,6 +305,16 @@ func (c *accountingServiceClient) ListAccountsByUserAndBusinessType(ctx context.
 	return out, nil
 }
 
+func (c *accountingServiceClient) RebuildHotAccounts(ctx context.Context, in *RebuildHotAccountsRequest, opts ...grpc.CallOption) (*RebuildHotAccountsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RebuildHotAccountsResponse)
+	err := c.cc.Invoke(ctx, AccountingService_RebuildHotAccounts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountingServiceServer is the server API for AccountingService service.
 // All implementations must embed UnimplementedAccountingServiceServer
 // for forward compatibility.
@@ -334,6 +349,7 @@ type AccountingServiceServer interface {
 	ListDayCutHistory(context.Context, *ListDayCutHistoryRequest) (*ListDayCutHistoryResponse, error)
 	ListSnapshotDates(context.Context, *ListSnapshotDatesRequest) (*ListSnapshotDatesResponse, error)
 	ListAccountsByUserAndBusinessType(context.Context, *ListAccountsByUserAndBusinessTypeRequest) (*ListAccountsByUserAndBusinessTypeResponse, error)
+	RebuildHotAccounts(context.Context, *RebuildHotAccountsRequest) (*RebuildHotAccountsResponse, error)
 	mustEmbedUnimplementedAccountingServiceServer()
 }
 
@@ -406,6 +422,9 @@ func (UnimplementedAccountingServiceServer) ListSnapshotDates(context.Context, *
 }
 func (UnimplementedAccountingServiceServer) ListAccountsByUserAndBusinessType(context.Context, *ListAccountsByUserAndBusinessTypeRequest) (*ListAccountsByUserAndBusinessTypeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListAccountsByUserAndBusinessType not implemented")
+}
+func (UnimplementedAccountingServiceServer) RebuildHotAccounts(context.Context, *RebuildHotAccountsRequest) (*RebuildHotAccountsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RebuildHotAccounts not implemented")
 }
 func (UnimplementedAccountingServiceServer) mustEmbedUnimplementedAccountingServiceServer() {}
 func (UnimplementedAccountingServiceServer) testEmbeddedByValue()                           {}
@@ -806,6 +825,24 @@ func _AccountingService_ListAccountsByUserAndBusinessType_Handler(srv interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountingService_RebuildHotAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RebuildHotAccountsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).RebuildHotAccounts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountingService_RebuildHotAccounts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).RebuildHotAccounts(ctx, req.(*RebuildHotAccountsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountingService_ServiceDesc is the grpc.ServiceDesc for AccountingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -896,6 +933,10 @@ var AccountingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListAccountsByUserAndBusinessType",
 			Handler:    _AccountingService_ListAccountsByUserAndBusinessType_Handler,
+		},
+		{
+			MethodName: "RebuildHotAccounts",
+			Handler:    _AccountingService_RebuildHotAccounts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
