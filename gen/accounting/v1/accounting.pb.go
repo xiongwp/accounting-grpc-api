@@ -3775,14 +3775,17 @@ func (x *ListDayCutHistoryResponse) GetEntries() []*DayCutHistoryEntry {
 }
 
 type DayCutHistoryEntry struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CutDate       string                 `protobuf:"bytes,1,opt,name=cut_date,json=cutDate,proto3" json:"cut_date,omitempty"`
-	RunId         int32                  `protobuf:"varint,2,opt,name=run_id,json=runId,proto3" json:"run_id,omitempty"`
-	TotalShards   int32                  `protobuf:"varint,3,opt,name=total_shards,json=totalShards,proto3" json:"total_shards,omitempty"`
-	Pending       int32                  `protobuf:"varint,4,opt,name=pending,proto3" json:"pending,omitempty"`
-	Processing    int32                  `protobuf:"varint,5,opt,name=processing,proto3" json:"processing,omitempty"`
-	Completed     int32                  `protobuf:"varint,6,opt,name=completed,proto3" json:"completed,omitempty"`
-	Failed        int32                  `protobuf:"varint,7,opt,name=failed,proto3" json:"failed,omitempty"`
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	CutDate     string                 `protobuf:"bytes,1,opt,name=cut_date,json=cutDate,proto3" json:"cut_date,omitempty"`
+	RunId       int32                  `protobuf:"varint,2,opt,name=run_id,json=runId,proto3" json:"run_id,omitempty"`
+	TotalShards int32                  `protobuf:"varint,3,opt,name=total_shards,json=totalShards,proto3" json:"total_shards,omitempty"`
+	Pending     int32                  `protobuf:"varint,4,opt,name=pending,proto3" json:"pending,omitempty"`
+	Processing  int32                  `protobuf:"varint,5,opt,name=processing,proto3" json:"processing,omitempty"`
+	Completed   int32                  `protobuf:"varint,6,opt,name=completed,proto3" json:"completed,omitempty"`
+	Failed      int32                  `protobuf:"varint,7,opt,name=failed,proto3" json:"failed,omitempty"`
+	// currency 该次 run 的币种过滤；空 = 历史 run（未带 filter）。
+	// 同一 (cut_date, currency) 各自独立的 run_id 进度。
+	Currency      string `protobuf:"bytes,8,opt,name=currency,proto3" json:"currency,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3864,6 +3867,13 @@ func (x *DayCutHistoryEntry) GetFailed() int32 {
 		return x.Failed
 	}
 	return 0
+}
+
+func (x *DayCutHistoryEntry) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
 }
 
 type ListSnapshotDatesRequest struct {
@@ -4896,7 +4906,7 @@ const file_accounting_proto_rawDesc = "" +
 	"\x19ListDayCutHistoryResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12;\n" +
-	"\aentries\x18\x03 \x03(\v2!.accounting.v1.DayCutHistoryEntryR\aentries\"\xd9\x01\n" +
+	"\aentries\x18\x03 \x03(\v2!.accounting.v1.DayCutHistoryEntryR\aentries\"\xf5\x01\n" +
 	"\x12DayCutHistoryEntry\x12\x19\n" +
 	"\bcut_date\x18\x01 \x01(\tR\acutDate\x12\x15\n" +
 	"\x06run_id\x18\x02 \x01(\x05R\x05runId\x12!\n" +
@@ -4906,7 +4916,8 @@ const file_accounting_proto_rawDesc = "" +
 	"processing\x18\x05 \x01(\x05R\n" +
 	"processing\x12\x1c\n" +
 	"\tcompleted\x18\x06 \x01(\x05R\tcompleted\x12\x16\n" +
-	"\x06failed\x18\a \x01(\x05R\x06failed\"\x1a\n" +
+	"\x06failed\x18\a \x01(\x05R\x06failed\x12\x1a\n" +
+	"\bcurrency\x18\b \x01(\tR\bcurrency\"\x1a\n" +
 	"\x18ListSnapshotDatesRequest\"_\n" +
 	"\x19ListSnapshotDatesResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
