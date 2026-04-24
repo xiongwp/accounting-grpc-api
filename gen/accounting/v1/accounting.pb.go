@@ -4164,6 +4164,403 @@ func (x *RunTrialBalanceResponse) GetEquationDiff() string {
 	return ""
 }
 
+// ListAccountsByUserAndBusinessType 按 (user_id, business_type) 列出所有币种
+// 账户。currency 可选，非空时精确过滤单币种。
+type ListAccountsByUserAndBusinessTypeRequest struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	UserId              int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	AccountBusinessType AccountBusinessType    `protobuf:"varint,2,opt,name=account_business_type,json=accountBusinessType,proto3,enum=accounting.v1.AccountBusinessType" json:"account_business_type,omitempty"`
+	Currency            string                 `protobuf:"bytes,3,opt,name=currency,proto3" json:"currency,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *ListAccountsByUserAndBusinessTypeRequest) Reset() {
+	*x = ListAccountsByUserAndBusinessTypeRequest{}
+	mi := &file_accounting_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAccountsByUserAndBusinessTypeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAccountsByUserAndBusinessTypeRequest) ProtoMessage() {}
+
+func (x *ListAccountsByUserAndBusinessTypeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAccountsByUserAndBusinessTypeRequest.ProtoReflect.Descriptor instead.
+func (*ListAccountsByUserAndBusinessTypeRequest) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *ListAccountsByUserAndBusinessTypeRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *ListAccountsByUserAndBusinessTypeRequest) GetAccountBusinessType() AccountBusinessType {
+	if x != nil {
+		return x.AccountBusinessType
+	}
+	return AccountBusinessType_ACCOUNT_BUSINESS_TYPE_UNSPECIFIED
+}
+
+func (x *ListAccountsByUserAndBusinessTypeRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+type ListAccountsByUserAndBusinessTypeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int32                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Accounts      []*Account             `protobuf:"bytes,3,rep,name=accounts,proto3" json:"accounts,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAccountsByUserAndBusinessTypeResponse) Reset() {
+	*x = ListAccountsByUserAndBusinessTypeResponse{}
+	mi := &file_accounting_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAccountsByUserAndBusinessTypeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAccountsByUserAndBusinessTypeResponse) ProtoMessage() {}
+
+func (x *ListAccountsByUserAndBusinessTypeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAccountsByUserAndBusinessTypeResponse.ProtoReflect.Descriptor instead.
+func (*ListAccountsByUserAndBusinessTypeResponse) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *ListAccountsByUserAndBusinessTypeResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *ListAccountsByUserAndBusinessTypeResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ListAccountsByUserAndBusinessTypeResponse) GetAccounts() []*Account {
+	if x != nil {
+		return x.Accounts
+	}
+	return nil
+}
+
+// RebuildHotAccounts 从 MySQL 重建 Redis 热账户余额（灾难恢复）。
+// 消息体见 proto；服务端逻辑见 accounting-system/internal/service/redis_rebuild.go。
+type RebuildHotAccountsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// as_of: ""         → 用 account 表当前余额（最常用）
+	//
+	//	"5m"/"2h"  → 相对时长，回放到 N 前的 transaction_journal 快照
+	//	RFC3339    → 回放到指定时刻
+	AsOf string `protobuf:"bytes,1,opt,name=as_of,json=asOf,proto3" json:"as_of,omitempty"`
+	// 空 → 全量启用的 hot_account_config；非空 → 仅指定账户（必须仍在白名单）
+	AccountNos    []string `protobuf:"bytes,2,rep,name=account_nos,json=accountNos,proto3" json:"account_nos,omitempty"`
+	DryRun        bool     `protobuf:"varint,3,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RebuildHotAccountsRequest) Reset() {
+	*x = RebuildHotAccountsRequest{}
+	mi := &file_accounting_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RebuildHotAccountsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RebuildHotAccountsRequest) ProtoMessage() {}
+
+func (x *RebuildHotAccountsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RebuildHotAccountsRequest.ProtoReflect.Descriptor instead.
+func (*RebuildHotAccountsRequest) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *RebuildHotAccountsRequest) GetAsOf() string {
+	if x != nil {
+		return x.AsOf
+	}
+	return ""
+}
+
+func (x *RebuildHotAccountsRequest) GetAccountNos() []string {
+	if x != nil {
+		return x.AccountNos
+	}
+	return nil
+}
+
+func (x *RebuildHotAccountsRequest) GetDryRun() bool {
+	if x != nil {
+		return x.DryRun
+	}
+	return false
+}
+
+type RebuildHotAccountEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AccountNo     string                 `protobuf:"bytes,1,opt,name=account_no,json=accountNo,proto3" json:"account_no,omitempty"`
+	BalanceBefore string                 `protobuf:"bytes,2,opt,name=balance_before,json=balanceBefore,proto3" json:"balance_before,omitempty"` // "" 表示 cache miss
+	BalanceAfter  string                 `protobuf:"bytes,3,opt,name=balance_after,json=balanceAfter,proto3" json:"balance_after,omitempty"`
+	Source        string                 `protobuf:"bytes,4,opt,name=source,proto3" json:"source,omitempty"` // "account" | "transaction_journal"
+	JournalCutoff string                 `protobuf:"bytes,5,opt,name=journal_cutoff,json=journalCutoff,proto3" json:"journal_cutoff,omitempty"`
+	Skipped       bool                   `protobuf:"varint,6,opt,name=skipped,proto3" json:"skipped,omitempty"`
+	Reason        string                 `protobuf:"bytes,7,opt,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RebuildHotAccountEntry) Reset() {
+	*x = RebuildHotAccountEntry{}
+	mi := &file_accounting_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RebuildHotAccountEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RebuildHotAccountEntry) ProtoMessage() {}
+
+func (x *RebuildHotAccountEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RebuildHotAccountEntry.ProtoReflect.Descriptor instead.
+func (*RebuildHotAccountEntry) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *RebuildHotAccountEntry) GetAccountNo() string {
+	if x != nil {
+		return x.AccountNo
+	}
+	return ""
+}
+
+func (x *RebuildHotAccountEntry) GetBalanceBefore() string {
+	if x != nil {
+		return x.BalanceBefore
+	}
+	return ""
+}
+
+func (x *RebuildHotAccountEntry) GetBalanceAfter() string {
+	if x != nil {
+		return x.BalanceAfter
+	}
+	return ""
+}
+
+func (x *RebuildHotAccountEntry) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *RebuildHotAccountEntry) GetJournalCutoff() string {
+	if x != nil {
+		return x.JournalCutoff
+	}
+	return ""
+}
+
+func (x *RebuildHotAccountEntry) GetSkipped() bool {
+	if x != nil {
+		return x.Skipped
+	}
+	return false
+}
+
+func (x *RebuildHotAccountEntry) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+type RebuildHotAccountsResponse struct {
+	state         protoimpl.MessageState    `protogen:"open.v1"`
+	Code          int32                     `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Message       string                    `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	AsOf          string                    `protobuf:"bytes,3,opt,name=as_of,json=asOf,proto3" json:"as_of,omitempty"`
+	DryRun        bool                      `protobuf:"varint,4,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
+	Total         int32                     `protobuf:"varint,5,opt,name=total,proto3" json:"total,omitempty"`
+	Updated       int32                     `protobuf:"varint,6,opt,name=updated,proto3" json:"updated,omitempty"`
+	Skipped       int32                     `protobuf:"varint,7,opt,name=skipped,proto3" json:"skipped,omitempty"`
+	Failed        int32                     `protobuf:"varint,8,opt,name=failed,proto3" json:"failed,omitempty"`
+	Duration      string                    `protobuf:"bytes,9,opt,name=duration,proto3" json:"duration,omitempty"`
+	Entries       []*RebuildHotAccountEntry `protobuf:"bytes,10,rep,name=entries,proto3" json:"entries,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RebuildHotAccountsResponse) Reset() {
+	*x = RebuildHotAccountsResponse{}
+	mi := &file_accounting_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RebuildHotAccountsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RebuildHotAccountsResponse) ProtoMessage() {}
+
+func (x *RebuildHotAccountsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_accounting_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RebuildHotAccountsResponse.ProtoReflect.Descriptor instead.
+func (*RebuildHotAccountsResponse) Descriptor() ([]byte, []int) {
+	return file_accounting_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *RebuildHotAccountsResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *RebuildHotAccountsResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *RebuildHotAccountsResponse) GetAsOf() string {
+	if x != nil {
+		return x.AsOf
+	}
+	return ""
+}
+
+func (x *RebuildHotAccountsResponse) GetDryRun() bool {
+	if x != nil {
+		return x.DryRun
+	}
+	return false
+}
+
+func (x *RebuildHotAccountsResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *RebuildHotAccountsResponse) GetUpdated() int32 {
+	if x != nil {
+		return x.Updated
+	}
+	return 0
+}
+
+func (x *RebuildHotAccountsResponse) GetSkipped() int32 {
+	if x != nil {
+		return x.Skipped
+	}
+	return 0
+}
+
+func (x *RebuildHotAccountsResponse) GetFailed() int32 {
+	if x != nil {
+		return x.Failed
+	}
+	return 0
+}
+
+func (x *RebuildHotAccountsResponse) GetDuration() string {
+	if x != nil {
+		return x.Duration
+	}
+	return ""
+}
+
+func (x *RebuildHotAccountsResponse) GetEntries() []*RebuildHotAccountEntry {
+	if x != nil {
+		return x.Entries
+	}
+	return nil
+}
+
 var File_accounting_proto protoreflect.FileDescriptor
 
 const file_accounting_proto_rawDesc = "" +
@@ -4512,7 +4909,41 @@ const file_accounting_proto_rawDesc = "" +
 	"\x16revenue_ending_balance\x18\f \x01(\tR\x14revenueEndingBalance\x124\n" +
 	"\x16expense_ending_balance\x18\r \x01(\tR\x14expenseEndingBalance\x12*\n" +
 	"\x11is_equation_valid\x18\x0e \x01(\bR\x0fisEquationValid\x12#\n" +
-	"\requation_diff\x18\x0f \x01(\tR\fequationDiff*\xd2\x02\n" +
+	"\requation_diff\x18\x0f \x01(\tR\fequationDiff\"\xb7\x01\n" +
+	"(ListAccountsByUserAndBusinessTypeRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12V\n" +
+	"\x15account_business_type\x18\x02 \x01(\x0e2\".accounting.v1.AccountBusinessTypeR\x13accountBusinessType\x12\x1a\n" +
+	"\bcurrency\x18\x03 \x01(\tR\bcurrency\"\x8d\x01\n" +
+	")ListAccountsByUserAndBusinessTypeResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x122\n" +
+	"\baccounts\x18\x03 \x03(\v2\x16.accounting.v1.AccountR\baccounts\"j\n" +
+	"\x19RebuildHotAccountsRequest\x12\x13\n" +
+	"\x05as_of\x18\x01 \x01(\tR\x04asOf\x12\x1f\n" +
+	"\vaccount_nos\x18\x02 \x03(\tR\n" +
+	"accountNos\x12\x17\n" +
+	"\adry_run\x18\x03 \x01(\bR\x06dryRun\"\xf4\x01\n" +
+	"\x16RebuildHotAccountEntry\x12\x1d\n" +
+	"\n" +
+	"account_no\x18\x01 \x01(\tR\taccountNo\x12%\n" +
+	"\x0ebalance_before\x18\x02 \x01(\tR\rbalanceBefore\x12#\n" +
+	"\rbalance_after\x18\x03 \x01(\tR\fbalanceAfter\x12\x16\n" +
+	"\x06source\x18\x04 \x01(\tR\x06source\x12%\n" +
+	"\x0ejournal_cutoff\x18\x05 \x01(\tR\rjournalCutoff\x12\x18\n" +
+	"\askipped\x18\x06 \x01(\bR\askipped\x12\x16\n" +
+	"\x06reason\x18\a \x01(\tR\x06reason\"\xb7\x02\n" +
+	"\x1aRebuildHotAccountsResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x13\n" +
+	"\x05as_of\x18\x03 \x01(\tR\x04asOf\x12\x17\n" +
+	"\adry_run\x18\x04 \x01(\bR\x06dryRun\x12\x14\n" +
+	"\x05total\x18\x05 \x01(\x05R\x05total\x12\x18\n" +
+	"\aupdated\x18\x06 \x01(\x05R\aupdated\x12\x18\n" +
+	"\askipped\x18\a \x01(\x05R\askipped\x12\x16\n" +
+	"\x06failed\x18\b \x01(\x05R\x06failed\x12\x1a\n" +
+	"\bduration\x18\t \x01(\tR\bduration\x12?\n" +
+	"\aentries\x18\n" +
+	" \x03(\v2%.accounting.v1.RebuildHotAccountEntryR\aentries*\xd2\x02\n" +
 	"\vAccountType\x12\x1c\n" +
 	"\x18ACCOUNT_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11ACCOUNT_TYPE_USER\x10\x01\x12\x19\n" +
@@ -4558,7 +4989,7 @@ const file_accounting_proto_rawDesc = "" +
 	"\x1aEXECUTION_MODE_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13EXECUTION_MODE_SYNC\x10\x01\x12\x18\n" +
 	"\x14EXECUTION_MODE_ASYNC\x10\x02\x12\x18\n" +
-	"\x14EXECUTION_MODE_BATCH\x10\x032\x94\x0f\n" +
+	"\x14EXECUTION_MODE_BATCH\x10\x032\x98\x11\n" +
 	"\x11AccountingService\x12Z\n" +
 	"\rCreateAccount\x12#.accounting.v1.CreateAccountRequest\x1a$.accounting.v1.CreateAccountResponse\x12Q\n" +
 	"\n" +
@@ -4580,7 +5011,9 @@ const file_accounting_proto_rawDesc = "" +
 	"\x0fCancelTccBranch\x12%.accounting.v1.CancelTccBranchRequest\x1a&.accounting.v1.CancelTccBranchResponse\x12`\n" +
 	"\x0fRunTrialBalance\x12%.accounting.v1.RunTrialBalanceRequest\x1a&.accounting.v1.RunTrialBalanceResponse\x12f\n" +
 	"\x11ListDayCutHistory\x12'.accounting.v1.ListDayCutHistoryRequest\x1a(.accounting.v1.ListDayCutHistoryResponse\x12f\n" +
-	"\x11ListSnapshotDates\x12'.accounting.v1.ListSnapshotDatesRequest\x1a(.accounting.v1.ListSnapshotDatesResponseBGZEgithub.com/xiongwp/accounting-grpc-api/gen/accounting/v1;accountingv1b\x06proto3"
+	"\x11ListSnapshotDates\x12'.accounting.v1.ListSnapshotDatesRequest\x1a(.accounting.v1.ListSnapshotDatesResponse\x12\x96\x01\n" +
+	"!ListAccountsByUserAndBusinessType\x127.accounting.v1.ListAccountsByUserAndBusinessTypeRequest\x1a8.accounting.v1.ListAccountsByUserAndBusinessTypeResponse\x12i\n" +
+	"\x12RebuildHotAccounts\x12(.accounting.v1.RebuildHotAccountsRequest\x1a).accounting.v1.RebuildHotAccountsResponseBGZEgithub.com/xiongwp/accounting-grpc-api/gen/accounting/v1;accountingv1b\x06proto3"
 
 var (
 	file_accounting_proto_rawDescOnce sync.Once
@@ -4595,82 +5028,87 @@ func file_accounting_proto_rawDescGZIP() []byte {
 }
 
 var file_accounting_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
-var file_accounting_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
+var file_accounting_proto_msgTypes = make([]protoimpl.MessageInfo, 58)
 var file_accounting_proto_goTypes = []any{
-	(AccountType)(0),                         // 0: accounting.v1.AccountType
-	(AccountCategory)(0),                     // 1: accounting.v1.AccountCategory
-	(AccountStatus)(0),                       // 2: accounting.v1.AccountStatus
-	(AccountBusinessType)(0),                 // 3: accounting.v1.AccountBusinessType
-	(BusinessType)(0),                        // 4: accounting.v1.BusinessType
-	(ExecutionMode)(0),                       // 5: accounting.v1.ExecutionMode
-	(*Account)(nil),                          // 6: accounting.v1.Account
-	(*Money)(nil),                            // 7: accounting.v1.Money
-	(*AccountingEntry)(nil),                  // 8: accounting.v1.AccountingEntry
-	(*Transaction)(nil),                      // 9: accounting.v1.Transaction
-	(*BalanceSnapshot)(nil),                  // 10: accounting.v1.BalanceSnapshot
-	(*TccBranchInfo)(nil),                    // 11: accounting.v1.TccBranchInfo
-	(*TrialBalanceCategorySummary)(nil),      // 12: accounting.v1.TrialBalanceCategorySummary
-	(*CreateAccountRequest)(nil),             // 13: accounting.v1.CreateAccountRequest
-	(*CreateAccountResponse)(nil),            // 14: accounting.v1.CreateAccountResponse
-	(*UserIdAndBusinessTypeQuery)(nil),       // 15: accounting.v1.UserIdAndBusinessTypeQuery
-	(*GetAccountRequest)(nil),                // 16: accounting.v1.GetAccountRequest
-	(*GetAccountResponse)(nil),               // 17: accounting.v1.GetAccountResponse
-	(*FreezeAccountRequest)(nil),             // 18: accounting.v1.FreezeAccountRequest
-	(*FreezeAccountResponse)(nil),            // 19: accounting.v1.FreezeAccountResponse
-	(*UnfreezeAccountRequest)(nil),           // 20: accounting.v1.UnfreezeAccountRequest
-	(*UnfreezeAccountResponse)(nil),          // 21: accounting.v1.UnfreezeAccountResponse
-	(*DoubleEntryBookingRequest)(nil),        // 22: accounting.v1.DoubleEntryBookingRequest
-	(*DoubleEntryBookingResponse)(nil),       // 23: accounting.v1.DoubleEntryBookingResponse
-	(*BatchBookingRequest)(nil),              // 24: accounting.v1.BatchBookingRequest
-	(*BatchBookingResponse)(nil),             // 25: accounting.v1.BatchBookingResponse
-	(*HybridDoubleEntryBookingRequest)(nil),  // 26: accounting.v1.HybridDoubleEntryBookingRequest
-	(*HybridDoubleEntryBookingResponse)(nil), // 27: accounting.v1.HybridDoubleEntryBookingResponse
-	(*AtomicBatchBookingEntry)(nil),          // 28: accounting.v1.AtomicBatchBookingEntry
-	(*AtomicBatchBookingRequest)(nil),        // 29: accounting.v1.AtomicBatchBookingRequest
-	(*AtomicBatchBookingItemResult)(nil),     // 30: accounting.v1.AtomicBatchBookingItemResult
-	(*AtomicBatchBookingResponse)(nil),       // 31: accounting.v1.AtomicBatchBookingResponse
-	(*MoneyFlowRequest)(nil),                 // 32: accounting.v1.MoneyFlowRequest
-	(*MoneyFlowResponse)(nil),                // 33: accounting.v1.MoneyFlowResponse
-	(*GetTransactionRequest)(nil),            // 34: accounting.v1.GetTransactionRequest
-	(*GetTransactionResponse)(nil),           // 35: accounting.v1.GetTransactionResponse
-	(*GetBalanceSnapshotRequest)(nil),        // 36: accounting.v1.GetBalanceSnapshotRequest
-	(*GetBalanceSnapshotResponse)(nil),       // 37: accounting.v1.GetBalanceSnapshotResponse
-	(*TriggerDayCutRequest)(nil),             // 38: accounting.v1.TriggerDayCutRequest
-	(*TriggerDayCutResponse)(nil),            // 39: accounting.v1.TriggerDayCutResponse
-	(*AdjustBalanceRequest)(nil),             // 40: accounting.v1.AdjustBalanceRequest
-	(*AdjustBalanceResponse)(nil),            // 41: accounting.v1.AdjustBalanceResponse
-	(*GetTccStatusRequest)(nil),              // 42: accounting.v1.GetTccStatusRequest
-	(*GetTccStatusResponse)(nil),             // 43: accounting.v1.GetTccStatusResponse
-	(*ListStuckTccRequest)(nil),              // 44: accounting.v1.ListStuckTccRequest
-	(*ListStuckTccResponse)(nil),             // 45: accounting.v1.ListStuckTccResponse
-	(*CancelTccRequest)(nil),                 // 46: accounting.v1.CancelTccRequest
-	(*CancelTccResponse)(nil),                // 47: accounting.v1.CancelTccResponse
-	(*CancelTccBranchRequest)(nil),           // 48: accounting.v1.CancelTccBranchRequest
-	(*CancelTccBranchResponse)(nil),          // 49: accounting.v1.CancelTccBranchResponse
-	(*ListDayCutHistoryRequest)(nil),         // 50: accounting.v1.ListDayCutHistoryRequest
-	(*ListDayCutHistoryResponse)(nil),        // 51: accounting.v1.ListDayCutHistoryResponse
-	(*DayCutHistoryEntry)(nil),               // 52: accounting.v1.DayCutHistoryEntry
-	(*ListSnapshotDatesRequest)(nil),         // 53: accounting.v1.ListSnapshotDatesRequest
-	(*ListSnapshotDatesResponse)(nil),        // 54: accounting.v1.ListSnapshotDatesResponse
-	(*RunTrialBalanceRequest)(nil),           // 55: accounting.v1.RunTrialBalanceRequest
-	(*RunTrialBalanceResponse)(nil),          // 56: accounting.v1.RunTrialBalanceResponse
-	nil,                                      // 57: accounting.v1.MoneyFlowRequest.ParticipantsEntry
-	nil,                                      // 58: accounting.v1.MoneyFlowRequest.ExtParamsEntry
-	(*timestamppb.Timestamp)(nil),            // 59: google.protobuf.Timestamp
+	(AccountType)(0),                                  // 0: accounting.v1.AccountType
+	(AccountCategory)(0),                              // 1: accounting.v1.AccountCategory
+	(AccountStatus)(0),                                // 2: accounting.v1.AccountStatus
+	(AccountBusinessType)(0),                          // 3: accounting.v1.AccountBusinessType
+	(BusinessType)(0),                                 // 4: accounting.v1.BusinessType
+	(ExecutionMode)(0),                                // 5: accounting.v1.ExecutionMode
+	(*Account)(nil),                                   // 6: accounting.v1.Account
+	(*Money)(nil),                                     // 7: accounting.v1.Money
+	(*AccountingEntry)(nil),                           // 8: accounting.v1.AccountingEntry
+	(*Transaction)(nil),                               // 9: accounting.v1.Transaction
+	(*BalanceSnapshot)(nil),                           // 10: accounting.v1.BalanceSnapshot
+	(*TccBranchInfo)(nil),                             // 11: accounting.v1.TccBranchInfo
+	(*TrialBalanceCategorySummary)(nil),               // 12: accounting.v1.TrialBalanceCategorySummary
+	(*CreateAccountRequest)(nil),                      // 13: accounting.v1.CreateAccountRequest
+	(*CreateAccountResponse)(nil),                     // 14: accounting.v1.CreateAccountResponse
+	(*UserIdAndBusinessTypeQuery)(nil),                // 15: accounting.v1.UserIdAndBusinessTypeQuery
+	(*GetAccountRequest)(nil),                         // 16: accounting.v1.GetAccountRequest
+	(*GetAccountResponse)(nil),                        // 17: accounting.v1.GetAccountResponse
+	(*FreezeAccountRequest)(nil),                      // 18: accounting.v1.FreezeAccountRequest
+	(*FreezeAccountResponse)(nil),                     // 19: accounting.v1.FreezeAccountResponse
+	(*UnfreezeAccountRequest)(nil),                    // 20: accounting.v1.UnfreezeAccountRequest
+	(*UnfreezeAccountResponse)(nil),                   // 21: accounting.v1.UnfreezeAccountResponse
+	(*DoubleEntryBookingRequest)(nil),                 // 22: accounting.v1.DoubleEntryBookingRequest
+	(*DoubleEntryBookingResponse)(nil),                // 23: accounting.v1.DoubleEntryBookingResponse
+	(*BatchBookingRequest)(nil),                       // 24: accounting.v1.BatchBookingRequest
+	(*BatchBookingResponse)(nil),                      // 25: accounting.v1.BatchBookingResponse
+	(*HybridDoubleEntryBookingRequest)(nil),           // 26: accounting.v1.HybridDoubleEntryBookingRequest
+	(*HybridDoubleEntryBookingResponse)(nil),          // 27: accounting.v1.HybridDoubleEntryBookingResponse
+	(*AtomicBatchBookingEntry)(nil),                   // 28: accounting.v1.AtomicBatchBookingEntry
+	(*AtomicBatchBookingRequest)(nil),                 // 29: accounting.v1.AtomicBatchBookingRequest
+	(*AtomicBatchBookingItemResult)(nil),              // 30: accounting.v1.AtomicBatchBookingItemResult
+	(*AtomicBatchBookingResponse)(nil),                // 31: accounting.v1.AtomicBatchBookingResponse
+	(*MoneyFlowRequest)(nil),                          // 32: accounting.v1.MoneyFlowRequest
+	(*MoneyFlowResponse)(nil),                         // 33: accounting.v1.MoneyFlowResponse
+	(*GetTransactionRequest)(nil),                     // 34: accounting.v1.GetTransactionRequest
+	(*GetTransactionResponse)(nil),                    // 35: accounting.v1.GetTransactionResponse
+	(*GetBalanceSnapshotRequest)(nil),                 // 36: accounting.v1.GetBalanceSnapshotRequest
+	(*GetBalanceSnapshotResponse)(nil),                // 37: accounting.v1.GetBalanceSnapshotResponse
+	(*TriggerDayCutRequest)(nil),                      // 38: accounting.v1.TriggerDayCutRequest
+	(*TriggerDayCutResponse)(nil),                     // 39: accounting.v1.TriggerDayCutResponse
+	(*AdjustBalanceRequest)(nil),                      // 40: accounting.v1.AdjustBalanceRequest
+	(*AdjustBalanceResponse)(nil),                     // 41: accounting.v1.AdjustBalanceResponse
+	(*GetTccStatusRequest)(nil),                       // 42: accounting.v1.GetTccStatusRequest
+	(*GetTccStatusResponse)(nil),                      // 43: accounting.v1.GetTccStatusResponse
+	(*ListStuckTccRequest)(nil),                       // 44: accounting.v1.ListStuckTccRequest
+	(*ListStuckTccResponse)(nil),                      // 45: accounting.v1.ListStuckTccResponse
+	(*CancelTccRequest)(nil),                          // 46: accounting.v1.CancelTccRequest
+	(*CancelTccResponse)(nil),                         // 47: accounting.v1.CancelTccResponse
+	(*CancelTccBranchRequest)(nil),                    // 48: accounting.v1.CancelTccBranchRequest
+	(*CancelTccBranchResponse)(nil),                   // 49: accounting.v1.CancelTccBranchResponse
+	(*ListDayCutHistoryRequest)(nil),                  // 50: accounting.v1.ListDayCutHistoryRequest
+	(*ListDayCutHistoryResponse)(nil),                 // 51: accounting.v1.ListDayCutHistoryResponse
+	(*DayCutHistoryEntry)(nil),                        // 52: accounting.v1.DayCutHistoryEntry
+	(*ListSnapshotDatesRequest)(nil),                  // 53: accounting.v1.ListSnapshotDatesRequest
+	(*ListSnapshotDatesResponse)(nil),                 // 54: accounting.v1.ListSnapshotDatesResponse
+	(*RunTrialBalanceRequest)(nil),                    // 55: accounting.v1.RunTrialBalanceRequest
+	(*RunTrialBalanceResponse)(nil),                   // 56: accounting.v1.RunTrialBalanceResponse
+	(*ListAccountsByUserAndBusinessTypeRequest)(nil),  // 57: accounting.v1.ListAccountsByUserAndBusinessTypeRequest
+	(*ListAccountsByUserAndBusinessTypeResponse)(nil), // 58: accounting.v1.ListAccountsByUserAndBusinessTypeResponse
+	(*RebuildHotAccountsRequest)(nil),                 // 59: accounting.v1.RebuildHotAccountsRequest
+	(*RebuildHotAccountEntry)(nil),                    // 60: accounting.v1.RebuildHotAccountEntry
+	(*RebuildHotAccountsResponse)(nil),                // 61: accounting.v1.RebuildHotAccountsResponse
+	nil,                                               // 62: accounting.v1.MoneyFlowRequest.ParticipantsEntry
+	nil,                                               // 63: accounting.v1.MoneyFlowRequest.ExtParamsEntry
+	(*timestamppb.Timestamp)(nil),                     // 64: google.protobuf.Timestamp
 }
 var file_accounting_proto_depIdxs = []int32{
 	0,  // 0: accounting.v1.Account.account_type:type_name -> accounting.v1.AccountType
 	1,  // 1: accounting.v1.Account.category:type_name -> accounting.v1.AccountCategory
 	2,  // 2: accounting.v1.Account.status:type_name -> accounting.v1.AccountStatus
-	59, // 3: accounting.v1.Account.created_at:type_name -> google.protobuf.Timestamp
-	59, // 4: accounting.v1.Account.updated_at:type_name -> google.protobuf.Timestamp
+	64, // 3: accounting.v1.Account.created_at:type_name -> google.protobuf.Timestamp
+	64, // 4: accounting.v1.Account.updated_at:type_name -> google.protobuf.Timestamp
 	3,  // 5: accounting.v1.Account.account_business_type:type_name -> accounting.v1.AccountBusinessType
 	7,  // 6: accounting.v1.AccountingEntry.debit_money:type_name -> accounting.v1.Money
 	7,  // 7: accounting.v1.AccountingEntry.credit_money:type_name -> accounting.v1.Money
 	4,  // 8: accounting.v1.Transaction.business_type:type_name -> accounting.v1.BusinessType
-	59, // 9: accounting.v1.Transaction.transaction_time:type_name -> google.protobuf.Timestamp
-	59, // 10: accounting.v1.TccBranchInfo.created_at:type_name -> google.protobuf.Timestamp
-	59, // 11: accounting.v1.TccBranchInfo.updated_at:type_name -> google.protobuf.Timestamp
+	64, // 9: accounting.v1.Transaction.transaction_time:type_name -> google.protobuf.Timestamp
+	64, // 10: accounting.v1.TccBranchInfo.created_at:type_name -> google.protobuf.Timestamp
+	64, // 11: accounting.v1.TccBranchInfo.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 12: accounting.v1.CreateAccountRequest.account_type:type_name -> accounting.v1.AccountType
 	1,  // 13: accounting.v1.CreateAccountRequest.category:type_name -> accounting.v1.AccountCategory
 	3,  // 14: accounting.v1.CreateAccountRequest.account_business_type:type_name -> accounting.v1.AccountBusinessType
@@ -4689,59 +5127,66 @@ var file_accounting_proto_depIdxs = []int32{
 	8,  // 27: accounting.v1.AtomicBatchBookingEntry.entries:type_name -> accounting.v1.AccountingEntry
 	28, // 28: accounting.v1.AtomicBatchBookingRequest.requests:type_name -> accounting.v1.AtomicBatchBookingEntry
 	30, // 29: accounting.v1.AtomicBatchBookingResponse.results:type_name -> accounting.v1.AtomicBatchBookingItemResult
-	57, // 30: accounting.v1.MoneyFlowRequest.participants:type_name -> accounting.v1.MoneyFlowRequest.ParticipantsEntry
-	58, // 31: accounting.v1.MoneyFlowRequest.ext_params:type_name -> accounting.v1.MoneyFlowRequest.ExtParamsEntry
+	62, // 30: accounting.v1.MoneyFlowRequest.participants:type_name -> accounting.v1.MoneyFlowRequest.ParticipantsEntry
+	63, // 31: accounting.v1.MoneyFlowRequest.ext_params:type_name -> accounting.v1.MoneyFlowRequest.ExtParamsEntry
 	9,  // 32: accounting.v1.GetTransactionResponse.transactions:type_name -> accounting.v1.Transaction
 	10, // 33: accounting.v1.GetBalanceSnapshotResponse.snapshot:type_name -> accounting.v1.BalanceSnapshot
 	11, // 34: accounting.v1.GetTccStatusResponse.branches:type_name -> accounting.v1.TccBranchInfo
 	11, // 35: accounting.v1.ListStuckTccResponse.branches:type_name -> accounting.v1.TccBranchInfo
 	52, // 36: accounting.v1.ListDayCutHistoryResponse.entries:type_name -> accounting.v1.DayCutHistoryEntry
 	12, // 37: accounting.v1.RunTrialBalanceResponse.summaries:type_name -> accounting.v1.TrialBalanceCategorySummary
-	13, // 38: accounting.v1.AccountingService.CreateAccount:input_type -> accounting.v1.CreateAccountRequest
-	16, // 39: accounting.v1.AccountingService.GetAccount:input_type -> accounting.v1.GetAccountRequest
-	18, // 40: accounting.v1.AccountingService.FreezeAccount:input_type -> accounting.v1.FreezeAccountRequest
-	20, // 41: accounting.v1.AccountingService.UnfreezeAccount:input_type -> accounting.v1.UnfreezeAccountRequest
-	22, // 42: accounting.v1.AccountingService.DoubleEntryBooking:input_type -> accounting.v1.DoubleEntryBookingRequest
-	24, // 43: accounting.v1.AccountingService.BatchBooking:input_type -> accounting.v1.BatchBookingRequest
-	32, // 44: accounting.v1.AccountingService.MoneyFlow:input_type -> accounting.v1.MoneyFlowRequest
-	26, // 45: accounting.v1.AccountingService.HybridDoubleEntryBooking:input_type -> accounting.v1.HybridDoubleEntryBookingRequest
-	29, // 46: accounting.v1.AccountingService.AtomicBatchBooking:input_type -> accounting.v1.AtomicBatchBookingRequest
-	34, // 47: accounting.v1.AccountingService.GetTransaction:input_type -> accounting.v1.GetTransactionRequest
-	36, // 48: accounting.v1.AccountingService.GetBalanceSnapshot:input_type -> accounting.v1.GetBalanceSnapshotRequest
-	38, // 49: accounting.v1.AccountingService.TriggerDayCut:input_type -> accounting.v1.TriggerDayCutRequest
-	40, // 50: accounting.v1.AccountingService.AdjustBalance:input_type -> accounting.v1.AdjustBalanceRequest
-	42, // 51: accounting.v1.AccountingService.GetTccStatus:input_type -> accounting.v1.GetTccStatusRequest
-	44, // 52: accounting.v1.AccountingService.ListStuckTcc:input_type -> accounting.v1.ListStuckTccRequest
-	46, // 53: accounting.v1.AccountingService.CancelTcc:input_type -> accounting.v1.CancelTccRequest
-	48, // 54: accounting.v1.AccountingService.CancelTccBranch:input_type -> accounting.v1.CancelTccBranchRequest
-	55, // 55: accounting.v1.AccountingService.RunTrialBalance:input_type -> accounting.v1.RunTrialBalanceRequest
-	50, // 56: accounting.v1.AccountingService.ListDayCutHistory:input_type -> accounting.v1.ListDayCutHistoryRequest
-	53, // 57: accounting.v1.AccountingService.ListSnapshotDates:input_type -> accounting.v1.ListSnapshotDatesRequest
-	14, // 58: accounting.v1.AccountingService.CreateAccount:output_type -> accounting.v1.CreateAccountResponse
-	17, // 59: accounting.v1.AccountingService.GetAccount:output_type -> accounting.v1.GetAccountResponse
-	19, // 60: accounting.v1.AccountingService.FreezeAccount:output_type -> accounting.v1.FreezeAccountResponse
-	21, // 61: accounting.v1.AccountingService.UnfreezeAccount:output_type -> accounting.v1.UnfreezeAccountResponse
-	23, // 62: accounting.v1.AccountingService.DoubleEntryBooking:output_type -> accounting.v1.DoubleEntryBookingResponse
-	25, // 63: accounting.v1.AccountingService.BatchBooking:output_type -> accounting.v1.BatchBookingResponse
-	33, // 64: accounting.v1.AccountingService.MoneyFlow:output_type -> accounting.v1.MoneyFlowResponse
-	27, // 65: accounting.v1.AccountingService.HybridDoubleEntryBooking:output_type -> accounting.v1.HybridDoubleEntryBookingResponse
-	31, // 66: accounting.v1.AccountingService.AtomicBatchBooking:output_type -> accounting.v1.AtomicBatchBookingResponse
-	35, // 67: accounting.v1.AccountingService.GetTransaction:output_type -> accounting.v1.GetTransactionResponse
-	37, // 68: accounting.v1.AccountingService.GetBalanceSnapshot:output_type -> accounting.v1.GetBalanceSnapshotResponse
-	39, // 69: accounting.v1.AccountingService.TriggerDayCut:output_type -> accounting.v1.TriggerDayCutResponse
-	41, // 70: accounting.v1.AccountingService.AdjustBalance:output_type -> accounting.v1.AdjustBalanceResponse
-	43, // 71: accounting.v1.AccountingService.GetTccStatus:output_type -> accounting.v1.GetTccStatusResponse
-	45, // 72: accounting.v1.AccountingService.ListStuckTcc:output_type -> accounting.v1.ListStuckTccResponse
-	47, // 73: accounting.v1.AccountingService.CancelTcc:output_type -> accounting.v1.CancelTccResponse
-	49, // 74: accounting.v1.AccountingService.CancelTccBranch:output_type -> accounting.v1.CancelTccBranchResponse
-	56, // 75: accounting.v1.AccountingService.RunTrialBalance:output_type -> accounting.v1.RunTrialBalanceResponse
-	51, // 76: accounting.v1.AccountingService.ListDayCutHistory:output_type -> accounting.v1.ListDayCutHistoryResponse
-	54, // 77: accounting.v1.AccountingService.ListSnapshotDates:output_type -> accounting.v1.ListSnapshotDatesResponse
-	58, // [58:78] is the sub-list for method output_type
-	38, // [38:58] is the sub-list for method input_type
-	38, // [38:38] is the sub-list for extension type_name
-	38, // [38:38] is the sub-list for extension extendee
-	0,  // [0:38] is the sub-list for field type_name
+	3,  // 38: accounting.v1.ListAccountsByUserAndBusinessTypeRequest.account_business_type:type_name -> accounting.v1.AccountBusinessType
+	6,  // 39: accounting.v1.ListAccountsByUserAndBusinessTypeResponse.accounts:type_name -> accounting.v1.Account
+	60, // 40: accounting.v1.RebuildHotAccountsResponse.entries:type_name -> accounting.v1.RebuildHotAccountEntry
+	13, // 41: accounting.v1.AccountingService.CreateAccount:input_type -> accounting.v1.CreateAccountRequest
+	16, // 42: accounting.v1.AccountingService.GetAccount:input_type -> accounting.v1.GetAccountRequest
+	18, // 43: accounting.v1.AccountingService.FreezeAccount:input_type -> accounting.v1.FreezeAccountRequest
+	20, // 44: accounting.v1.AccountingService.UnfreezeAccount:input_type -> accounting.v1.UnfreezeAccountRequest
+	22, // 45: accounting.v1.AccountingService.DoubleEntryBooking:input_type -> accounting.v1.DoubleEntryBookingRequest
+	24, // 46: accounting.v1.AccountingService.BatchBooking:input_type -> accounting.v1.BatchBookingRequest
+	32, // 47: accounting.v1.AccountingService.MoneyFlow:input_type -> accounting.v1.MoneyFlowRequest
+	26, // 48: accounting.v1.AccountingService.HybridDoubleEntryBooking:input_type -> accounting.v1.HybridDoubleEntryBookingRequest
+	29, // 49: accounting.v1.AccountingService.AtomicBatchBooking:input_type -> accounting.v1.AtomicBatchBookingRequest
+	34, // 50: accounting.v1.AccountingService.GetTransaction:input_type -> accounting.v1.GetTransactionRequest
+	36, // 51: accounting.v1.AccountingService.GetBalanceSnapshot:input_type -> accounting.v1.GetBalanceSnapshotRequest
+	38, // 52: accounting.v1.AccountingService.TriggerDayCut:input_type -> accounting.v1.TriggerDayCutRequest
+	40, // 53: accounting.v1.AccountingService.AdjustBalance:input_type -> accounting.v1.AdjustBalanceRequest
+	42, // 54: accounting.v1.AccountingService.GetTccStatus:input_type -> accounting.v1.GetTccStatusRequest
+	44, // 55: accounting.v1.AccountingService.ListStuckTcc:input_type -> accounting.v1.ListStuckTccRequest
+	46, // 56: accounting.v1.AccountingService.CancelTcc:input_type -> accounting.v1.CancelTccRequest
+	48, // 57: accounting.v1.AccountingService.CancelTccBranch:input_type -> accounting.v1.CancelTccBranchRequest
+	55, // 58: accounting.v1.AccountingService.RunTrialBalance:input_type -> accounting.v1.RunTrialBalanceRequest
+	50, // 59: accounting.v1.AccountingService.ListDayCutHistory:input_type -> accounting.v1.ListDayCutHistoryRequest
+	53, // 60: accounting.v1.AccountingService.ListSnapshotDates:input_type -> accounting.v1.ListSnapshotDatesRequest
+	57, // 61: accounting.v1.AccountingService.ListAccountsByUserAndBusinessType:input_type -> accounting.v1.ListAccountsByUserAndBusinessTypeRequest
+	59, // 62: accounting.v1.AccountingService.RebuildHotAccounts:input_type -> accounting.v1.RebuildHotAccountsRequest
+	14, // 63: accounting.v1.AccountingService.CreateAccount:output_type -> accounting.v1.CreateAccountResponse
+	17, // 64: accounting.v1.AccountingService.GetAccount:output_type -> accounting.v1.GetAccountResponse
+	19, // 65: accounting.v1.AccountingService.FreezeAccount:output_type -> accounting.v1.FreezeAccountResponse
+	21, // 66: accounting.v1.AccountingService.UnfreezeAccount:output_type -> accounting.v1.UnfreezeAccountResponse
+	23, // 67: accounting.v1.AccountingService.DoubleEntryBooking:output_type -> accounting.v1.DoubleEntryBookingResponse
+	25, // 68: accounting.v1.AccountingService.BatchBooking:output_type -> accounting.v1.BatchBookingResponse
+	33, // 69: accounting.v1.AccountingService.MoneyFlow:output_type -> accounting.v1.MoneyFlowResponse
+	27, // 70: accounting.v1.AccountingService.HybridDoubleEntryBooking:output_type -> accounting.v1.HybridDoubleEntryBookingResponse
+	31, // 71: accounting.v1.AccountingService.AtomicBatchBooking:output_type -> accounting.v1.AtomicBatchBookingResponse
+	35, // 72: accounting.v1.AccountingService.GetTransaction:output_type -> accounting.v1.GetTransactionResponse
+	37, // 73: accounting.v1.AccountingService.GetBalanceSnapshot:output_type -> accounting.v1.GetBalanceSnapshotResponse
+	39, // 74: accounting.v1.AccountingService.TriggerDayCut:output_type -> accounting.v1.TriggerDayCutResponse
+	41, // 75: accounting.v1.AccountingService.AdjustBalance:output_type -> accounting.v1.AdjustBalanceResponse
+	43, // 76: accounting.v1.AccountingService.GetTccStatus:output_type -> accounting.v1.GetTccStatusResponse
+	45, // 77: accounting.v1.AccountingService.ListStuckTcc:output_type -> accounting.v1.ListStuckTccResponse
+	47, // 78: accounting.v1.AccountingService.CancelTcc:output_type -> accounting.v1.CancelTccResponse
+	49, // 79: accounting.v1.AccountingService.CancelTccBranch:output_type -> accounting.v1.CancelTccBranchResponse
+	56, // 80: accounting.v1.AccountingService.RunTrialBalance:output_type -> accounting.v1.RunTrialBalanceResponse
+	51, // 81: accounting.v1.AccountingService.ListDayCutHistory:output_type -> accounting.v1.ListDayCutHistoryResponse
+	54, // 82: accounting.v1.AccountingService.ListSnapshotDates:output_type -> accounting.v1.ListSnapshotDatesResponse
+	58, // 83: accounting.v1.AccountingService.ListAccountsByUserAndBusinessType:output_type -> accounting.v1.ListAccountsByUserAndBusinessTypeResponse
+	61, // 84: accounting.v1.AccountingService.RebuildHotAccounts:output_type -> accounting.v1.RebuildHotAccountsResponse
+	63, // [63:85] is the sub-list for method output_type
+	41, // [41:63] is the sub-list for method input_type
+	41, // [41:41] is the sub-list for extension type_name
+	41, // [41:41] is the sub-list for extension extendee
+	0,  // [0:41] is the sub-list for field type_name
 }
 
 func init() { file_accounting_proto_init() }
@@ -4759,7 +5204,7 @@ func file_accounting_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_accounting_proto_rawDesc), len(file_accounting_proto_rawDesc)),
 			NumEnums:      6,
-			NumMessages:   53,
+			NumMessages:   58,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

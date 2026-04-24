@@ -19,26 +19,26 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AccountingService_CreateAccount_FullMethodName            = "/accounting.v1.AccountingService/CreateAccount"
-	AccountingService_GetAccount_FullMethodName               = "/accounting.v1.AccountingService/GetAccount"
-	AccountingService_FreezeAccount_FullMethodName            = "/accounting.v1.AccountingService/FreezeAccount"
-	AccountingService_UnfreezeAccount_FullMethodName          = "/accounting.v1.AccountingService/UnfreezeAccount"
-	AccountingService_DoubleEntryBooking_FullMethodName       = "/accounting.v1.AccountingService/DoubleEntryBooking"
-	AccountingService_BatchBooking_FullMethodName             = "/accounting.v1.AccountingService/BatchBooking"
-	AccountingService_MoneyFlow_FullMethodName                = "/accounting.v1.AccountingService/MoneyFlow"
-	AccountingService_HybridDoubleEntryBooking_FullMethodName = "/accounting.v1.AccountingService/HybridDoubleEntryBooking"
-	AccountingService_AtomicBatchBooking_FullMethodName       = "/accounting.v1.AccountingService/AtomicBatchBooking"
-	AccountingService_GetTransaction_FullMethodName           = "/accounting.v1.AccountingService/GetTransaction"
-	AccountingService_GetBalanceSnapshot_FullMethodName       = "/accounting.v1.AccountingService/GetBalanceSnapshot"
-	AccountingService_TriggerDayCut_FullMethodName            = "/accounting.v1.AccountingService/TriggerDayCut"
-	AccountingService_AdjustBalance_FullMethodName            = "/accounting.v1.AccountingService/AdjustBalance"
-	AccountingService_GetTccStatus_FullMethodName             = "/accounting.v1.AccountingService/GetTccStatus"
-	AccountingService_ListStuckTcc_FullMethodName             = "/accounting.v1.AccountingService/ListStuckTcc"
-	AccountingService_CancelTcc_FullMethodName                = "/accounting.v1.AccountingService/CancelTcc"
-	AccountingService_CancelTccBranch_FullMethodName          = "/accounting.v1.AccountingService/CancelTccBranch"
-	AccountingService_RunTrialBalance_FullMethodName          = "/accounting.v1.AccountingService/RunTrialBalance"
-	AccountingService_ListDayCutHistory_FullMethodName        = "/accounting.v1.AccountingService/ListDayCutHistory"
-	AccountingService_ListSnapshotDates_FullMethodName        = "/accounting.v1.AccountingService/ListSnapshotDates"
+	AccountingService_CreateAccount_FullMethodName                     = "/accounting.v1.AccountingService/CreateAccount"
+	AccountingService_GetAccount_FullMethodName                        = "/accounting.v1.AccountingService/GetAccount"
+	AccountingService_FreezeAccount_FullMethodName                     = "/accounting.v1.AccountingService/FreezeAccount"
+	AccountingService_UnfreezeAccount_FullMethodName                   = "/accounting.v1.AccountingService/UnfreezeAccount"
+	AccountingService_DoubleEntryBooking_FullMethodName                = "/accounting.v1.AccountingService/DoubleEntryBooking"
+	AccountingService_BatchBooking_FullMethodName                      = "/accounting.v1.AccountingService/BatchBooking"
+	AccountingService_MoneyFlow_FullMethodName                         = "/accounting.v1.AccountingService/MoneyFlow"
+	AccountingService_HybridDoubleEntryBooking_FullMethodName          = "/accounting.v1.AccountingService/HybridDoubleEntryBooking"
+	AccountingService_AtomicBatchBooking_FullMethodName                = "/accounting.v1.AccountingService/AtomicBatchBooking"
+	AccountingService_GetTransaction_FullMethodName                    = "/accounting.v1.AccountingService/GetTransaction"
+	AccountingService_GetBalanceSnapshot_FullMethodName                = "/accounting.v1.AccountingService/GetBalanceSnapshot"
+	AccountingService_TriggerDayCut_FullMethodName                     = "/accounting.v1.AccountingService/TriggerDayCut"
+	AccountingService_AdjustBalance_FullMethodName                     = "/accounting.v1.AccountingService/AdjustBalance"
+	AccountingService_GetTccStatus_FullMethodName                      = "/accounting.v1.AccountingService/GetTccStatus"
+	AccountingService_ListStuckTcc_FullMethodName                      = "/accounting.v1.AccountingService/ListStuckTcc"
+	AccountingService_CancelTcc_FullMethodName                         = "/accounting.v1.AccountingService/CancelTcc"
+	AccountingService_CancelTccBranch_FullMethodName                   = "/accounting.v1.AccountingService/CancelTccBranch"
+	AccountingService_RunTrialBalance_FullMethodName                   = "/accounting.v1.AccountingService/RunTrialBalance"
+	AccountingService_ListDayCutHistory_FullMethodName                 = "/accounting.v1.AccountingService/ListDayCutHistory"
+	AccountingService_ListSnapshotDates_FullMethodName                 = "/accounting.v1.AccountingService/ListSnapshotDates"
 	AccountingService_ListAccountsByUserAndBusinessType_FullMethodName = "/accounting.v1.AccountingService/ListAccountsByUserAndBusinessType"
 	AccountingService_RebuildHotAccounts_FullMethodName                = "/accounting.v1.AccountingService/RebuildHotAccounts"
 )
@@ -74,16 +74,17 @@ type AccountingServiceClient interface {
 	// ── 试算平衡（日切后触发，验证借贷平衡与会计恒等式） ──────────────────────────
 	RunTrialBalance(ctx context.Context, in *RunTrialBalanceRequest, opts ...grpc.CallOption) (*RunTrialBalanceResponse, error)
 	// ── 日切历史 / 快照日期（admin 查询） ─────────────────────────────────────────
+	// 消息定义见 gen/accounting/v1/admin_extensions.go（手写扩展，暂未迁入 proto）
 	ListDayCutHistory(ctx context.Context, in *ListDayCutHistoryRequest, opts ...grpc.CallOption) (*ListDayCutHistoryResponse, error)
 	ListSnapshotDates(ctx context.Context, in *ListSnapshotDatesRequest, opts ...grpc.CallOption) (*ListSnapshotDatesResponse, error)
-	// ListAccountsByUserAndBusinessType returns all currency accounts for a
-	// (user_id, business_type) pair; used by admin-web which previously called
-	// GetAccount and got an ambiguous "first" match when multiple currencies
-	// existed.
+	// ListAccountsByUserAndBusinessType 按 (user_id, business_type) 列出所有币种
+	// 的账户。GetAccount 的 oneof 语义是"精确一个"，但同一个用户在同一个业务类型下
+	// 可以有多币种账户（PHP / USD / ...），所以按 user_id+bt 查询需要返回列表。
+	// 消息定义见 gen/accounting/v1/admin_extensions.go。
 	ListAccountsByUserAndBusinessType(ctx context.Context, in *ListAccountsByUserAndBusinessTypeRequest, opts ...grpc.CallOption) (*ListAccountsByUserAndBusinessTypeResponse, error)
-	// RebuildHotAccounts (disaster recovery) — rebuild Redis hot-account
-	// balances from MySQL. Triggered by admin-web when Redis data is lost
-	// or suspected corrupted.
+	// RebuildHotAccounts 灾难恢复：从 MySQL 重建 Redis 上的热点账户余额。
+	// 触发场景：Redis 数据丢失 / 损坏，或怀疑最近一段时间的 Redis 写入被污染。
+	// 消息定义见 gen/accounting/v1/admin_extensions.go。
 	RebuildHotAccounts(ctx context.Context, in *RebuildHotAccountsRequest, opts ...grpc.CallOption) (*RebuildHotAccountsResponse, error)
 }
 
@@ -346,9 +347,17 @@ type AccountingServiceServer interface {
 	// ── 试算平衡（日切后触发，验证借贷平衡与会计恒等式） ──────────────────────────
 	RunTrialBalance(context.Context, *RunTrialBalanceRequest) (*RunTrialBalanceResponse, error)
 	// ── 日切历史 / 快照日期（admin 查询） ─────────────────────────────────────────
+	// 消息定义见 gen/accounting/v1/admin_extensions.go（手写扩展，暂未迁入 proto）
 	ListDayCutHistory(context.Context, *ListDayCutHistoryRequest) (*ListDayCutHistoryResponse, error)
 	ListSnapshotDates(context.Context, *ListSnapshotDatesRequest) (*ListSnapshotDatesResponse, error)
+	// ListAccountsByUserAndBusinessType 按 (user_id, business_type) 列出所有币种
+	// 的账户。GetAccount 的 oneof 语义是"精确一个"，但同一个用户在同一个业务类型下
+	// 可以有多币种账户（PHP / USD / ...），所以按 user_id+bt 查询需要返回列表。
+	// 消息定义见 gen/accounting/v1/admin_extensions.go。
 	ListAccountsByUserAndBusinessType(context.Context, *ListAccountsByUserAndBusinessTypeRequest) (*ListAccountsByUserAndBusinessTypeResponse, error)
+	// RebuildHotAccounts 灾难恢复：从 MySQL 重建 Redis 上的热点账户余额。
+	// 触发场景：Redis 数据丢失 / 损坏，或怀疑最近一段时间的 Redis 写入被污染。
+	// 消息定义见 gen/accounting/v1/admin_extensions.go。
 	RebuildHotAccounts(context.Context, *RebuildHotAccountsRequest) (*RebuildHotAccountsResponse, error)
 	mustEmbedUnimplementedAccountingServiceServer()
 }
