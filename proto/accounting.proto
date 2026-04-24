@@ -546,4 +546,11 @@ service AccountingService {
   // 消息定义见 gen/accounting/v1/admin_extensions.go（手写扩展，暂未迁入 proto）
   rpc ListDayCutHistory (ListDayCutHistoryRequest) returns (ListDayCutHistoryResponse);
   rpc ListSnapshotDates (ListSnapshotDatesRequest) returns (ListSnapshotDatesResponse);
+
+  // ListAccountsByUserAndBusinessType 按 (user_id, business_type) 列出所有币种
+  // 的账户。GetAccount 的 oneof 语义是"精确一个"，但同一个用户在同一个业务类型下
+  // 可以有多币种账户（PHP / USD / ...），所以按 user_id+bt 查询需要返回列表。
+  // 消息定义见 gen/accounting/v1/admin_extensions.go。
+  rpc ListAccountsByUserAndBusinessType (ListAccountsByUserAndBusinessTypeRequest)
+      returns (ListAccountsByUserAndBusinessTypeResponse);
 }

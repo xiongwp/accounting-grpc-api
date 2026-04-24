@@ -39,6 +39,7 @@ const (
 	AccountingService_RunTrialBalance_FullMethodName          = "/accounting.v1.AccountingService/RunTrialBalance"
 	AccountingService_ListDayCutHistory_FullMethodName        = "/accounting.v1.AccountingService/ListDayCutHistory"
 	AccountingService_ListSnapshotDates_FullMethodName        = "/accounting.v1.AccountingService/ListSnapshotDates"
+	AccountingService_ListAccountsByUserAndBusinessType_FullMethodName = "/accounting.v1.AccountingService/ListAccountsByUserAndBusinessType"
 )
 
 // AccountingServiceClient is the client API for AccountingService service.
@@ -74,6 +75,11 @@ type AccountingServiceClient interface {
 	// ── 日切历史 / 快照日期（admin 查询） ─────────────────────────────────────────
 	ListDayCutHistory(ctx context.Context, in *ListDayCutHistoryRequest, opts ...grpc.CallOption) (*ListDayCutHistoryResponse, error)
 	ListSnapshotDates(ctx context.Context, in *ListSnapshotDatesRequest, opts ...grpc.CallOption) (*ListSnapshotDatesResponse, error)
+	// ListAccountsByUserAndBusinessType returns all currency accounts for a
+	// (user_id, business_type) pair; used by admin-web which previously called
+	// GetAccount and got an ambiguous "first" match when multiple currencies
+	// existed.
+	ListAccountsByUserAndBusinessType(ctx context.Context, in *ListAccountsByUserAndBusinessTypeRequest, opts ...grpc.CallOption) (*ListAccountsByUserAndBusinessTypeResponse, error)
 }
 
 type accountingServiceClient struct {
@@ -284,6 +290,16 @@ func (c *accountingServiceClient) ListSnapshotDates(ctx context.Context, in *Lis
 	return out, nil
 }
 
+func (c *accountingServiceClient) ListAccountsByUserAndBusinessType(ctx context.Context, in *ListAccountsByUserAndBusinessTypeRequest, opts ...grpc.CallOption) (*ListAccountsByUserAndBusinessTypeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAccountsByUserAndBusinessTypeResponse)
+	err := c.cc.Invoke(ctx, AccountingService_ListAccountsByUserAndBusinessType_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountingServiceServer is the server API for AccountingService service.
 // All implementations must embed UnimplementedAccountingServiceServer
 // for forward compatibility.
@@ -317,6 +333,7 @@ type AccountingServiceServer interface {
 	// ── 日切历史 / 快照日期（admin 查询） ─────────────────────────────────────────
 	ListDayCutHistory(context.Context, *ListDayCutHistoryRequest) (*ListDayCutHistoryResponse, error)
 	ListSnapshotDates(context.Context, *ListSnapshotDatesRequest) (*ListSnapshotDatesResponse, error)
+	ListAccountsByUserAndBusinessType(context.Context, *ListAccountsByUserAndBusinessTypeRequest) (*ListAccountsByUserAndBusinessTypeResponse, error)
 	mustEmbedUnimplementedAccountingServiceServer()
 }
 
@@ -386,6 +403,9 @@ func (UnimplementedAccountingServiceServer) ListDayCutHistory(context.Context, *
 }
 func (UnimplementedAccountingServiceServer) ListSnapshotDates(context.Context, *ListSnapshotDatesRequest) (*ListSnapshotDatesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListSnapshotDates not implemented")
+}
+func (UnimplementedAccountingServiceServer) ListAccountsByUserAndBusinessType(context.Context, *ListAccountsByUserAndBusinessTypeRequest) (*ListAccountsByUserAndBusinessTypeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListAccountsByUserAndBusinessType not implemented")
 }
 func (UnimplementedAccountingServiceServer) mustEmbedUnimplementedAccountingServiceServer() {}
 func (UnimplementedAccountingServiceServer) testEmbeddedByValue()                           {}
@@ -768,6 +788,24 @@ func _AccountingService_ListSnapshotDates_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountingService_ListAccountsByUserAndBusinessType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAccountsByUserAndBusinessTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountingServiceServer).ListAccountsByUserAndBusinessType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountingService_ListAccountsByUserAndBusinessType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountingServiceServer).ListAccountsByUserAndBusinessType(ctx, req.(*ListAccountsByUserAndBusinessTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountingService_ServiceDesc is the grpc.ServiceDesc for AccountingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -854,6 +892,10 @@ var AccountingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSnapshotDates",
 			Handler:    _AccountingService_ListSnapshotDates_Handler,
+		},
+		{
+			MethodName: "ListAccountsByUserAndBusinessType",
+			Handler:    _AccountingService_ListAccountsByUserAndBusinessType_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
