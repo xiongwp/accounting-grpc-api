@@ -459,6 +459,9 @@ message DayCutHistoryEntry {
   int32 processing = 5;
   int32 completed = 6;
   int32 failed = 7;
+  // currency 该次 run 的币种过滤；空 = 历史 run（未带 filter）。
+  // 同一 (cut_date, currency) 各自独立的 run_id 进度。
+  string currency = 8;
 }
 message ListSnapshotDatesRequest {}
 message ListSnapshotDatesResponse {
