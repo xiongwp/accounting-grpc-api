@@ -365,6 +365,10 @@ message GetBalanceSnapshotResponse {
 
 message TriggerDayCutRequest {
   string cut_date = 1; // 格式 "2006-01-02"
+  // currency 可选：空 → 对全部币种做日切（该日期下一次性跑完所有币种）；
+  // 非空 → 仅对指定币种的账户创建快照。不同币种精度不同，汇总毫无意义，
+  // 因此推荐每个币种独立跑一次，各自拿到一份自己币种的 snapshot。
+  string currency = 2;
 }
 
 message TriggerDayCutResponse {
@@ -469,6 +473,10 @@ message ListSnapshotDatesResponse {
 message RunTrialBalanceRequest {
   // snapshot_date 日切日期（格式 "2006-01-02"），对应 account_balance_snapshot.snapshot_date
   string snapshot_date = 1;
+  // currency 可选：空 → 汇总全部币种（数值相加毫无意义，仅用于对账 is_balanced 的
+  // 借贷恒等，不保证 ending_balance 有物理含义）；非空 → 仅统计该币种账户，
+  // 所有金额字段都在该币种下。推荐每个币种独立跑一次。
+  string currency = 2;
 }
 
 // RunTrialBalanceResponse 试算平衡响应
