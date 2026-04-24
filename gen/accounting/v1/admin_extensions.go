@@ -227,6 +227,42 @@ func (x *DeleteBufferAccountResponse) Reset()         { *x = DeleteBufferAccount
 func (x *DeleteBufferAccountResponse) String() string { return fmt.Sprintf("%+v", *x) }
 func (*DeleteBufferAccountResponse) ProtoMessage()    {}
 
+// ─── Multi-currency account lookup (on AccountingService) ────────────────────
+//
+// GetAccount(user_id, business_type) returns a single account, but the same
+// (user_id, business_type) pair can have several accounts if the user holds
+// balances in multiple currencies. ListAccountsByUserAndBusinessType returns
+// all of them so admin UIs don't have to guess which currency to show.
+
+// ListAccountsByUserAndBusinessTypeRequest 按 user_id + business_type 查询该
+// 用户在该业务类型下全部币种的账户。currency 留空则返回所有币种；指定则
+// 等价于精确匹配单账户。
+type ListAccountsByUserAndBusinessTypeRequest struct {
+	UserId              int64               `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	AccountBusinessType AccountBusinessType `protobuf:"varint,2,opt,name=account_business_type,json=accountBusinessType,proto3,enum=accounting.v1.AccountBusinessType" json:"account_business_type,omitempty"`
+	Currency            string              `protobuf:"bytes,3,opt,name=currency,proto3" json:"currency,omitempty"`
+}
+
+func (x *ListAccountsByUserAndBusinessTypeRequest) Reset() {
+	*x = ListAccountsByUserAndBusinessTypeRequest{}
+}
+func (x *ListAccountsByUserAndBusinessTypeRequest) String() string { return fmt.Sprintf("%+v", *x) }
+func (*ListAccountsByUserAndBusinessTypeRequest) ProtoMessage()    {}
+
+// ListAccountsByUserAndBusinessTypeResponse carries the account list; code/message
+// follow the same envelope as the rest of AccountingService.
+type ListAccountsByUserAndBusinessTypeResponse struct {
+	Code     int32      `protobuf:"varint,1,opt,name=code,proto3"        json:"code,omitempty"`
+	Message  string     `protobuf:"bytes,2,opt,name=message,proto3"      json:"message,omitempty"`
+	Accounts []*Account `protobuf:"bytes,3,rep,name=accounts,proto3"     json:"accounts,omitempty"`
+}
+
+func (x *ListAccountsByUserAndBusinessTypeResponse) Reset() {
+	*x = ListAccountsByUserAndBusinessTypeResponse{}
+}
+func (x *ListAccountsByUserAndBusinessTypeResponse) String() string { return fmt.Sprintf("%+v", *x) }
+func (*ListAccountsByUserAndBusinessTypeResponse) ProtoMessage()    {}
+
 // ─── AccountingAdminServiceClient ───────────────────────────────────────────
 
 // AccountingAdminServiceClient is the client API for AccountingAdminService.
