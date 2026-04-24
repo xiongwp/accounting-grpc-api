@@ -2916,8 +2916,12 @@ func (x *GetBalanceSnapshotResponse) GetSnapshot() *BalanceSnapshot {
 }
 
 type TriggerDayCutRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CutDate       string                 `protobuf:"bytes,1,opt,name=cut_date,json=cutDate,proto3" json:"cut_date,omitempty"` // 格式 "2006-01-02"
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	CutDate string                 `protobuf:"bytes,1,opt,name=cut_date,json=cutDate,proto3" json:"cut_date,omitempty"` // 格式 "2006-01-02"
+	// currency 可选：空 → 对全部币种做日切（该日期下一次性跑完所有币种）；
+	// 非空 → 仅对指定币种的账户创建快照。不同币种精度不同，汇总毫无意义，
+	// 因此推荐每个币种独立跑一次，各自拿到一份自己币种的 snapshot。
+	Currency      string `protobuf:"bytes,2,opt,name=currency,proto3" json:"currency,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2955,6 +2959,13 @@ func (*TriggerDayCutRequest) Descriptor() ([]byte, []int) {
 func (x *TriggerDayCutRequest) GetCutDate() string {
 	if x != nil {
 		return x.CutDate
+	}
+	return ""
+}
+
+func (x *TriggerDayCutRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
 	}
 	return ""
 }
@@ -3955,7 +3966,11 @@ func (x *ListSnapshotDatesResponse) GetDates() []string {
 type RunTrialBalanceRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// snapshot_date 日切日期（格式 "2006-01-02"），对应 account_balance_snapshot.snapshot_date
-	SnapshotDate  string `protobuf:"bytes,1,opt,name=snapshot_date,json=snapshotDate,proto3" json:"snapshot_date,omitempty"`
+	SnapshotDate string `protobuf:"bytes,1,opt,name=snapshot_date,json=snapshotDate,proto3" json:"snapshot_date,omitempty"`
+	// currency 可选：空 → 汇总全部币种（数值相加毫无意义，仅用于对账 is_balanced 的
+	// 借贷恒等，不保证 ending_balance 有物理含义）；非空 → 仅统计该币种账户，
+	// 所有金额字段都在该币种下。推荐每个币种独立跑一次。
+	Currency      string `protobuf:"bytes,2,opt,name=currency,proto3" json:"currency,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3993,6 +4008,13 @@ func (*RunTrialBalanceRequest) Descriptor() ([]byte, []int) {
 func (x *RunTrialBalanceRequest) GetSnapshotDate() string {
 	if x != nil {
 		return x.SnapshotDate
+	}
+	return ""
+}
+
+func (x *RunTrialBalanceRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
 	}
 	return ""
 }
@@ -4811,9 +4833,10 @@ const file_accounting_proto_rawDesc = "" +
 	"\x1aGetBalanceSnapshotResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12:\n" +
-	"\bsnapshot\x18\x03 \x01(\v2\x1e.accounting.v1.BalanceSnapshotR\bsnapshot\"1\n" +
+	"\bsnapshot\x18\x03 \x01(\v2\x1e.accounting.v1.BalanceSnapshotR\bsnapshot\"M\n" +
 	"\x14TriggerDayCutRequest\x12\x19\n" +
-	"\bcut_date\x18\x01 \x01(\tR\acutDate\"E\n" +
+	"\bcut_date\x18\x01 \x01(\tR\acutDate\x12\x1a\n" +
+	"\bcurrency\x18\x02 \x01(\tR\bcurrency\"E\n" +
 	"\x15TriggerDayCutResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\"\xec\x01\n" +
@@ -4888,9 +4911,10 @@ const file_accounting_proto_rawDesc = "" +
 	"\x19ListSnapshotDatesResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12\x14\n" +
-	"\x05dates\x18\x03 \x03(\tR\x05dates\"=\n" +
+	"\x05dates\x18\x03 \x03(\tR\x05dates\"Y\n" +
 	"\x16RunTrialBalanceRequest\x12#\n" +
-	"\rsnapshot_date\x18\x01 \x01(\tR\fsnapshotDate\"\x96\x05\n" +
+	"\rsnapshot_date\x18\x01 \x01(\tR\fsnapshotDate\x12\x1a\n" +
+	"\bcurrency\x18\x02 \x01(\tR\bcurrency\"\x96\x05\n" +
 	"\x17RunTrialBalanceResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\x05R\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12#\n" +
