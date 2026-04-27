@@ -377,13 +377,18 @@ message TriggerDayCutResponse {
 }
 
 message AdjustBalanceRequest {
-  string account_no      = 1;
-  string adjustment_type = 2; // 调账类型
-  string amount          = 3;
-  bool   is_increase     = 4;
-  string reason          = 5;
-  string operator        = 6;
-  string approval_no     = 7; // 审批单号
+  string account_no        = 1;
+  string adjustment_type   = 2; // 调账类型
+  string amount            = 3 [deprecated = true]; // 兼容老调用方；新代码用 amount_money
+  bool   is_increase       = 4;
+  string reason            = 5;
+  string operator          = 6;
+  string approval_no       = 7; // 审批单号（必填，权限审计依据）
+  string offset_account_no = 8; // 调账对方科目（通常为平台调差损益账户）
+  string currency          = 9; // ISO 4217；不传时回退取 account_no 的账户币种
+  Money  amount_money      = 10; // 推荐：(minor_units, currency)
+  string related_tx_id     = 11; // 关联原交易（冲正/补偿场景）
+  string request_id        = 12; // 幂等键（必填）；重复返回首次结果不再次记账
 }
 
 message AdjustBalanceResponse {
